@@ -1,0 +1,1227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>COOP — The Gamified Memecoin Launchpad on Solana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* sourced from coop.meme logo + site stylesheet */
+    --bg:#FDF6E8;          /* warm cream (their site bg) */
+    --surface:#FFFBF1;     /* lightest cream */
+    --ink:#1E1712;         /* warm brown-black (their text) */
+    --ink-soft:#3A2A1F;
+    --muted:#6B5A42;       /* taupe (their secondary text) */
+    --line:#1E1712;
+    --yolk:#F4C455;        /* chicken body (logo) */
+    --yolk-deep:#E8A63C;   /* chicken shadow (logo) */
+    --burn:#C87C15;        /* chicken outline (logo) */
+    --grass:#3F8A3A;       /* buy — warm forest green that works on cream */
+    --tomato:#D64A2E;      /* terracotta — chicken comb (logo) */
+    --civic:#1E1712;       /* vote — ink (high contrast, palette-coherent) */
+    --sand:#D4C5A0;        /* phase fairlaunch */
+    --cream-mid:#E6D4A8;   /* phase bonding */
+    --coral:#F4B5A8;       /* phase graduating */
+    --shadow:4px 4px 0 var(--ink);
+    --shadow-lg:6px 6px 0 var(--ink);
+    --shadow-sm:3px 3px 0 var(--ink);
+    --r:0px;
+    --bw:2.5px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.4;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-feature-settings:"tnum"}
+  .display{font-family:'Tektur',sans-serif;letter-spacing:-0.01em;line-height:0.95}
+
+  /* === LAYOUT ====================================================== */
+  .shell{max-width:1320px;margin:0 auto;padding:0 24px}
+
+  /* === TOP BAR ===================================================== */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--bg);
+    border-bottom:var(--bw) solid var(--line);
+  }
+  .topbar-inner{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:16px;
+    height:64px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:8px;
+    font-family:'Tektur',sans-serif;
+    font-size:24px;letter-spacing:-0.02em;
+    text-decoration:none;color:var(--ink);
+  }
+  .logo .chick{
+    width:36px;height:36px;background:var(--surface);
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--shadow-sm);
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .logo .chick svg{width:28px;height:28px;display:block}
+  .cycle-strip{
+    display:flex;align-items:center;justify-content:center;
+    gap:14px;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .pill{
+    border:var(--bw) solid var(--line);
+    padding:5px 10px;
+    background:var(--surface);
+    font-weight:600;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .pill.live::before{
+    content:"";width:8px;height:8px;background:var(--tomato);
+    border:1.5px solid var(--ink);display:inline-block;
+    animation:blink 1.4s infinite;
+  }
+  .pill.bonding{background:var(--cream-mid)}
+  .pill.fair{background:var(--sand)}
+  .pill.grad{background:var(--coral)}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0.25}}
+
+  .topbar-actions{display:flex;align-items:center;gap:8px}
+
+  /* === BUTTONS ===================================================== */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    gap:8px;
+    border:var(--bw) solid var(--line);
+    background:var(--surface);
+    color:var(--ink);
+    font-weight:700;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    padding:10px 16px;
+    cursor:pointer;
+    text-decoration:none;
+    box-shadow:var(--shadow-sm);
+    transition:transform 70ms ease,box-shadow 70ms ease;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .btn.primary{background:var(--yolk)}
+  .btn.buy{background:var(--grass);color:#fff}
+  .btn.sell{background:var(--tomato);color:#fff}
+  .btn.vote{background:var(--civic);color:#fff}
+  .btn.ghost{background:transparent;box-shadow:none;border-color:transparent}
+  .btn.ghost:hover{background:var(--surface);box-shadow:var(--shadow-sm);border-color:var(--line)}
+  .btn.lg{padding:14px 22px;font-size:16px;box-shadow:var(--shadow)}
+  .btn.xl{padding:18px 28px;font-size:18px;box-shadow:var(--shadow-lg)}
+  .btn.sm{padding:6px 10px;font-size:12px;box-shadow:2px 2px 0 var(--ink)}
+
+  /* === TABS ======================================================== */
+  .tabs{
+    display:flex;gap:0;
+    border-bottom:var(--bw) solid var(--line);
+  }
+  .tab{
+    flex:0 0 auto;padding:14px 22px;
+    font-family:'Tektur',sans-serif;
+    font-size:15px;letter-spacing:0.02em;
+    text-transform:uppercase;
+    background:transparent;border:0;
+    border-right:var(--bw) solid var(--line);
+    cursor:pointer;color:var(--ink);
+    position:relative;
+  }
+  .tab:last-child{border-right:0}
+  .tab[aria-selected="true"]{
+    background:var(--yolk);
+  }
+  .tab .dot{
+    display:inline-block;width:7px;height:7px;background:var(--tomato);
+    border:1.5px solid var(--ink);margin-left:8px;vertical-align:middle;
+  }
+
+  /* === CARDS ======================================================= */
+  .card{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow);
+    padding:20px;
+  }
+  .card.flat{box-shadow:none}
+  .card .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--muted);
+    margin:0 0 6px;
+  }
+
+  /* === HERO (cycle hub) ============================================ */
+  .hero{
+    margin:24px 0 0;
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow-lg);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+  }
+  .hero-left{
+    padding:32px;
+    border-right:var(--bw) solid var(--line);
+    background:
+      repeating-linear-gradient(45deg, transparent 0 22px, rgba(0,0,0,0.04) 22px 23px),
+      var(--cream-mid);
+  }
+  .cycle-tag{
+    display:inline-block;
+    background:var(--ink);color:var(--bg);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:700;
+    letter-spacing:0.08em;text-transform:uppercase;
+    padding:6px 10px;margin-bottom:18px;
+  }
+  .phase-title{
+    font-family:'Tektur',sans-serif;
+    font-size:clamp(48px,7vw,96px);
+    line-height:0.92;letter-spacing:-0.02em;
+    margin:0 0 8px;
+  }
+  .phase-sub{
+    font-size:16px;color:var(--ink-soft);
+    max-width:38ch;margin:0 0 24px;
+  }
+  .countdown{
+    display:flex;gap:10px;margin:0 0 26px;
+  }
+  .cd-block{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow-sm);
+    width:74px;height:84px;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+  }
+  .cd-block .num{
+    font-family:'Tektur',sans-serif;
+    font-size:34px;line-height:1;
+  }
+  .cd-block .unit{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);
+    margin-top:4px;
+  }
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+
+  .hero-right{
+    padding:28px;
+    display:flex;flex-direction:column;gap:18px;
+    background:var(--surface);
+  }
+  .winner{
+    display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center;
+  }
+  .winner-logo{
+    width:88px;height:88px;
+    border:var(--bw) solid var(--line);
+    background:var(--yolk);
+    box-shadow:var(--shadow-sm);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;font-size:42px;
+  }
+  .winner h3{
+    font-family:'Tektur',sans-serif;
+    font-size:30px;margin:0;line-height:1;
+  }
+  .winner .ticker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;color:var(--muted);
+    letter-spacing:0.04em;
+  }
+  .winner-meta{
+    display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;
+  }
+  .price-row{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:0;
+    border:var(--bw) solid var(--line);
+  }
+  .price-cell{padding:14px 16px}
+  .price-cell + .price-cell{border-left:var(--bw) solid var(--line)}
+  .price-cell .v{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;
+  }
+  .price-cell .v.up{color:var(--grass)}
+  .price-cell .v.dn{color:var(--tomato)}
+
+  /* === STAT ROW ==================================================== */
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    margin:24px 0 0;
+    border:var(--bw) solid var(--line);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .stat{
+    padding:18px 20px;
+    border-right:var(--bw) solid var(--line);
+  }
+  .stat:last-child{border-right:0}
+  .stat .v{
+    font-family:'Tektur',sans-serif;
+    font-size:28px;line-height:1;
+  }
+  .stat .l{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--muted);
+    margin-top:6px;
+  }
+  .stat.airdrop{background:var(--yolk)}
+
+  /* === SPLIT 2COL ================================================== */
+  .split{
+    display:grid;grid-template-columns:1.5fr 1fr;
+    gap:24px;margin:24px 0 0;
+  }
+
+  /* === FEED ======================================================== */
+  .feed-list{
+    display:flex;flex-direction:column;
+  }
+  .feed-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:12px;align-items:center;
+    padding:12px 0;
+    border-bottom:1.5px dashed var(--line);
+  }
+  .feed-row:last-child{border-bottom:0}
+  .feed-icon{
+    width:28px;height:28px;
+    border:var(--bw) solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;
+    font-size:14px;
+  }
+  .feed-icon.buy{background:var(--grass);color:#fff}
+  .feed-icon.sell{background:var(--tomato);color:#fff}
+  .feed-icon.vote{background:var(--civic);color:#fff}
+  .feed-row .who{font-weight:700}
+  .feed-row .what{color:var(--muted);font-size:13.5px}
+  .feed-row .amount{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+  }
+  .feed-row .amount .u{color:var(--muted);font-size:11px;margin-left:2px}
+
+  /* === HOW IT WORKS ================================================ */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:24px 0 0}
+  .how .card{padding:22px}
+  .how .step{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;background:var(--ink);color:var(--bg);
+    font-family:'Tektur',sans-serif;font-size:20px;
+    margin-bottom:14px;
+  }
+  .how h4{font-family:'Tektur',sans-serif;font-size:20px;margin:0 0 6px}
+  .how p{margin:0;color:var(--ink-soft);font-size:14px}
+
+  /* === PAST CYCLES ================================================= */
+  .past{margin:24px 0 0}
+  .past h3{
+    font-family:'Tektur',sans-serif;
+    font-size:22px;margin:0 0 12px;
+  }
+  .past-strip{
+    display:grid;grid-template-columns:repeat(6,1fr);
+    gap:12px;
+  }
+  .past-tile{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow-sm);
+    padding:14px;
+    cursor:pointer;
+  }
+  .past-tile:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+  .past-tile .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+  .past-tile .t{font-family:'Tektur',sans-serif;font-size:18px;margin:4px 0 6px}
+  .past-tile .x{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .past-tile .x .up{color:var(--grass);font-weight:700}
+  .past-tile .x .dn{color:var(--tomato);font-weight:700}
+
+  /* === VOTE TAB ==================================================== */
+  .vote-header{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;margin:24px 0 0;
+  }
+  .vote-cols{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:24px;margin:24px 0 0;
+  }
+  .vcol h3{
+    font-family:'Tektur',sans-serif;
+    font-size:22px;margin:0 0 12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .vcol h3 .badge{
+    background:var(--ink);color:var(--bg);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.08em;
+    padding:3px 8px;text-transform:uppercase;
+  }
+  .vrow{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow-sm);
+    padding:14px;margin-bottom:12px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  }
+  .vrow .rank{
+    font-family:'Tektur',sans-serif;
+    font-size:22px;width:34px;text-align:center;
+  }
+  .vrow .body .name{font-weight:700;font-family:'Tektur',sans-serif;font-size:18px}
+  .vrow .body .meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:2px}
+  .vrow .pct-bar{
+    height:8px;background:var(--bg);
+    border:1.5px solid var(--line);
+    margin-top:8px;width:100%;position:relative;overflow:hidden;
+  }
+  .vrow .pct-bar::after{
+    content:"";display:block;height:100%;background:var(--civic);
+    width:var(--pct,0%);
+  }
+  .vrow.lead{background:var(--cream-mid)}
+  .vrow .swatch{
+    width:46px;height:46px;border:var(--bw) solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;font-size:22px;
+  }
+  .vrow .vote-btn{padding:8px 12px;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
+  .vrow .vote-btn.voted{background:var(--ink);color:var(--bg)}
+
+  .submit-card{
+    background:var(--yolk);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow);
+    padding:18px;margin-bottom:14px;
+  }
+  .submit-card h4{margin:0 0 6px;font-family:'Tektur',sans-serif;font-size:18px}
+  .submit-card p{margin:0 0 12px;font-size:13.5px}
+  .submit-card input{
+    width:100%;border:var(--bw) solid var(--line);
+    padding:10px 12px;background:var(--surface);
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    border-radius:0;outline:none;
+  }
+  .submit-card input:focus{box-shadow:var(--shadow-sm);transform:translate(-1px,-1px)}
+  .submit-card .row{display:flex;gap:8px;margin-top:8px}
+
+  /* === TRADE TAB =================================================== */
+  .trade-grid{
+    display:grid;grid-template-columns:1.45fr 1fr;
+    gap:24px;margin:24px 0 0;
+  }
+  .identity-bar{
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:14px;align-items:center;
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow-sm);
+    padding:14px 16px;margin-bottom:14px;
+  }
+  .identity-bar .logo-mini{
+    width:54px;height:54px;background:var(--yolk);
+    border:var(--bw) solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;font-size:26px;
+  }
+  .identity-bar h2{
+    margin:0;font-family:'Tektur',sans-serif;font-size:24px;line-height:1;
+  }
+  .identity-bar .tk{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:4px}
+  .identity-bar .price{
+    font-family:'Tektur',sans-serif;font-size:26px;text-align:right;
+  }
+  .identity-bar .delta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--grass);text-align:right}
+
+  /* time-progress bar (the coop differentiator) */
+  .timebar-wrap{margin:0 0 14px}
+  .timebar-head{
+    display:flex;justify-content:space-between;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:6px;
+  }
+  .timebar{
+    height:18px;border:var(--bw) solid var(--line);background:var(--surface);
+    box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+  }
+  .timebar .seg{height:100%;float:left;border-right:1.5px solid var(--line)}
+  .timebar .seg:last-child{border-right:0}
+  .timebar .seg.fair{background:var(--sand)}
+  .timebar .seg.bond{background:var(--cream-mid);position:relative}
+  .timebar .seg.bond .fill{
+    height:100%;background:var(--yolk);width:64%;
+    border-right:2px solid var(--ink);
+  }
+  .timebar .seg.grad{background:var(--coral)}
+
+  .chart-wrap{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow);
+    padding:14px;
+  }
+  .chart{
+    height:330px;width:100%;
+    background:
+      linear-gradient(to right, rgba(10,10,10,0.06) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(to bottom, rgba(10,10,10,0.06) 1px, transparent 1px) 0 0/40px 40px,
+      var(--bg);
+    border:var(--bw) solid var(--line);
+    position:relative;overflow:hidden;
+  }
+  .chart svg{position:absolute;inset:0;width:100%;height:100%}
+  .chart-toolbar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:10px;
+  }
+  .chart-toolbar .ranges{display:flex;gap:4px}
+  .range-btn{
+    padding:5px 10px;border:var(--bw) solid var(--line);
+    background:var(--surface);font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    cursor:pointer;font-weight:700;
+  }
+  .range-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+  .tradetabs{
+    display:flex;border:var(--bw) solid var(--line);margin:14px 0 0;background:var(--surface);
+  }
+  .tradetabs button{
+    flex:1;padding:12px;background:transparent;border:0;border-right:var(--bw) solid var(--line);
+    font-family:'Tektur',sans-serif;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;
+    cursor:pointer;
+  }
+  .tradetabs button:last-child{border-right:0}
+  .tradetabs button[aria-selected="true"]{background:var(--yolk)}
+  .tradepanel{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);border-top:0;
+    padding:14px;max-height:280px;overflow-y:auto;
+  }
+  .trades-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12.5px}
+  .trades-table th{
+    text-align:left;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;padding:6px 4px;border-bottom:1.5px solid var(--line);
+  }
+  .trades-table td{padding:8px 4px;border-bottom:1px dashed rgba(0,0,0,0.15)}
+  .trades-table .b{color:var(--grass);font-weight:700}
+  .trades-table .s{color:var(--tomato);font-weight:700}
+
+  /* trade pane (right) */
+  .trade-pane{position:sticky;top:88px;align-self:start}
+  .bs-tabs{
+    display:grid;grid-template-columns:1fr 1fr;
+    border:var(--bw) solid var(--line);
+    border-bottom:0;
+  }
+  .bs-tabs button{
+    padding:14px;background:var(--surface);border:0;
+    font-family:'Tektur',sans-serif;font-size:16px;letter-spacing:0.02em;
+    cursor:pointer;
+  }
+  .bs-tabs button[data-mode="buy"][aria-selected="true"]{background:var(--grass);color:#fff}
+  .bs-tabs button[data-mode="sell"][aria-selected="true"]{background:var(--tomato);color:#fff}
+  .bs-body{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);
+    box-shadow:var(--shadow);
+    padding:18px;
+  }
+  .amt-input{
+    display:grid;grid-template-columns:1fr auto;
+    border:var(--bw) solid var(--line);align-items:center;
+  }
+  .amt-input input{
+    border:0;outline:0;padding:14px;background:transparent;
+    font-family:'Tektur',sans-serif;font-size:24px;width:100%;
+    -moz-appearance:textfield;
+  }
+  .amt-input input::-webkit-outer-spin-button,.amt-input input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .amt-input .currency{
+    padding:0 14px;font-family:'Tektur',sans-serif;font-size:14px;
+    border-left:var(--bw) solid var(--line);background:var(--bg);
+    align-self:stretch;display:flex;align-items:center;
+  }
+  .quick-amts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:10px 0 14px;border:var(--bw) solid var(--line)}
+  .quick-amts button{
+    border:0;border-right:var(--bw) solid var(--line);background:var(--surface);
+    padding:10px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;cursor:pointer;
+  }
+  .quick-amts button:last-child{border-right:0}
+  .quick-amts button:hover{background:var(--yolk)}
+  .quote{
+    background:var(--bg);border:var(--bw) solid var(--line);padding:12px;margin-bottom:14px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;
+  }
+  .quote .row{display:flex;justify-content:space-between;padding:3px 0}
+  .quote .row .l{color:var(--muted)}
+
+  .small-note{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    text-align:center;margin-top:10px;
+  }
+
+  /* === ME TAB ====================================================== */
+  .me-grid{
+    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:24px;margin:24px 0 0;
+  }
+  .bag .v{font-family:'Tektur',sans-serif;font-size:54px;line-height:1;margin:0}
+  .bag .delta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--grass);margin-top:6px}
+  .bag-rows{margin-top:18px;border-top:var(--bw) solid var(--line)}
+  .bag-row{
+    display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;
+    padding:12px 0;border-bottom:1.5px dashed var(--line);
+  }
+  .bag-row .logo-mini{
+    width:36px;height:36px;border:var(--bw) solid var(--line);
+    background:var(--yolk);display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;font-size:16px;
+  }
+  .bag-row .nm{font-family:'Tektur',sans-serif;font-size:14px}
+  .bag-row .ti{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)}
+  .bag-row .qty{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right}
+  .bag-row .val{font-family:'Tektur',sans-serif;font-size:14px;text-align:right}
+
+  .airdrop-card{background:var(--yolk)}
+  .airdrop-card .v{font-family:'Tektur',sans-serif;font-size:42px;line-height:1;margin:0}
+  .airdrop-card p{font-size:13.5px;margin:10px 0 0}
+
+  .votes-card .vline{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:9px 0;border-bottom:1.5px dashed var(--line);font-size:14px;
+  }
+  .votes-card .vline:last-child{border-bottom:0}
+  .votes-card .vline .v{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+
+  /* === FOOTER ====================================================== */
+  footer{
+    margin-top:48px;border-top:var(--bw) solid var(--line);
+    background:var(--ink);color:var(--bg);
+  }
+  footer .shell{padding:28px 24px}
+  footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+  footer .links{display:flex;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--bg);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.04em;text-transform:uppercase}
+  footer a:hover{color:var(--yolk)}
+
+  /* === MISC ======================================================== */
+  .section-title{
+    font-family:'Tektur',sans-serif;
+    font-size:22px;margin:24px 0 12px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .marquee{
+    background:var(--ink);color:var(--bg);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;
+    padding:8px 0;border-bottom:var(--bw) solid var(--line);
+    overflow:hidden;white-space:nowrap;
+  }
+  .marquee .track{display:inline-block;animation:scroll 40s linear infinite;padding-left:100%}
+  .marquee .track span{margin-right:48px}
+  .marquee .track .pos{color:var(--grass)}
+  .marquee .track .neg{color:var(--tomato)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+  .hidden{display:none !important}
+
+  /* === RESPONSIVE ================================================== */
+  @media (max-width:980px){
+    .hero-grid,.split,.trade-grid,.me-grid,.how,.vote-cols{grid-template-columns:1fr}
+    .hero-left{border-right:0;border-bottom:var(--bw) solid var(--line)}
+    .stat-row{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:0}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:var(--bw) solid var(--line)}
+    .past-strip{grid-template-columns:repeat(2,1fr)}
+    .topbar-inner{grid-template-columns:auto auto;height:auto;padding:10px 0}
+    .cycle-strip{display:none}
+    .trade-pane{position:static}
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================== TOPBAR ============================== -->
+<div class="topbar">
+  <div class="shell topbar-inner">
+    <a href="#" class="logo">
+      <span class="chick" aria-hidden="true">
+        <svg viewBox="0 0 48 48" style="overflow:visible">
+          <style>
+            @keyframes hh-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+            @keyframes hh-peck{0%,45%,100%{transform:rotate(0)}55%,68%{transform:rotate(26deg)}80%{transform:rotate(0)}}
+            @keyframes hh-wing{0%,45%,100%{transform:scaleX(1)}55%,68%{transform:scaleX(1.55) translateX(1px)}80%{transform:scaleX(1)}}
+            .hh-float{animation:hh-float 2.4s ease-in-out infinite}
+            .hh-peck{transform-box:fill-box;transform-origin:50% 100%;animation:hh-peck 4s ease-in-out infinite}
+            .hh-wing{transform-box:fill-box;transform-origin:0% 50%;animation:hh-wing 4s ease-in-out infinite}
+          </style>
+          <g class="hh-float">
+            <ellipse cx="24" cy="29" rx="15" ry="13" fill="#F4C455"/>
+            <ellipse cx="20" cy="30" rx="6" ry="8" fill="#E8A63C"/>
+            <path d="M20 42 l-1 3 M21 42 l0 3 M22 42 l1 3" stroke="#C87C15" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M27 42 l-1 3 M28 42 l0 3 M29 42 l1 3" stroke="#C87C15" stroke-width="1.5" stroke-linecap="round"/>
+            <g class="hh-wing"><path d="M32 17 l5 1 l-5 2 z" fill="#C87C15"/></g>
+            <g class="hh-peck">
+              <circle cx="24" cy="17" r="10" fill="#F4C455"/>
+              <path d="M19 8 q1 -4 3 -2 q1 -3 3 0 q2 -3 3 1 q2 0 1 3 z" fill="#D64A2E"/>
+              <circle cx="27" cy="15" r="1.6" fill="#1E1712"/>
+              <circle cx="27.5" cy="14.5" r="0.5" fill="#fff"/>
+            </g>
+          </g>
+        </svg>
+      </span>
+      COOP
+    </a>
+    <div class="cycle-strip">
+      <span class="pill live">LIVE</span>
+      <span class="pill bonding mono" id="phase-pill">CYCLE #14 · BONDING CURVE</span>
+      <span class="pill mono" id="cd-mini">3D 14H 22M LEFT</span>
+      <span class="pill mono">PRICE <strong style="margin-left:6px">0.000142 SOL</strong></span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn ghost" title="Search">⌘K</button>
+      <button class="btn primary">CONNECT WALLET</button>
+    </div>
+  </div>
+  <div class="shell">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true"  data-tab="home">THE COOP</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="vote">VOTE <span class="dot"></span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="trade">TRADE</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="me">ME</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================== HOME ================================ -->
+<main class="shell" id="tab-home">
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <span class="cycle-tag">CYCLE #14 · ROOST</span>
+        <h1 class="phase-title">THE FLOCK<br/>IS BUYING.</h1>
+        <p class="phase-sub">Bonding curve is open. Price moves with time. Cycle ends in:</p>
+        <div class="countdown" id="cd">
+          <div class="cd-block"><div class="num" id="cd-d">03</div><div class="unit">days</div></div>
+          <div class="cd-block"><div class="num" id="cd-h">14</div><div class="unit">hrs</div></div>
+          <div class="cd-block"><div class="num" id="cd-m">22</div><div class="unit">min</div></div>
+          <div class="cd-block"><div class="num" id="cd-s">07</div><div class="unit">sec</div></div>
+        </div>
+        <div class="hero-cta">
+          <button class="btn buy xl" onclick="goTab('trade')">BUY $CLUCK →</button>
+          <button class="btn lg" onclick="goTab('vote')">VOTE ON IDENTITY</button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div>
+          <div class="label">CURRENT WINNING IDENTITY</div>
+          <div class="winner">
+            <div class="winner-logo">🐔</div>
+            <div>
+              <h3>CLUCK</h3>
+              <div class="ticker">$CLUCK · CHICKEN.PNG</div>
+              <div class="winner-meta">
+                <span class="pill" style="font-size:11px">NAME · 41% LEAD</span>
+                <span class="pill" style="font-size:11px">LOGO · 52% LEAD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div class="price-cell">
+            <div class="label">PRICE</div>
+            <div class="v">0.000142 <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+          </div>
+          <div class="price-cell">
+            <div class="label">24H</div>
+            <div class="v up">+12.4%</div>
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div class="price-cell">
+            <div class="label">MARKET CAP</div>
+            <div class="v">142.0K <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+          </div>
+          <div class="price-cell">
+            <div class="label">VOLUME 24H</div>
+            <div class="v">1,284 <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- stat row -->
+  <section class="stat-row">
+    <div class="stat"><div class="v">3,217</div><div class="l">Holders this cycle</div></div>
+    <div class="stat"><div class="v">14,820</div><div class="l">Trades</div></div>
+    <div class="stat"><div class="v">8,712</div><div class="l">Votes cast</div></div>
+    <div class="stat airdrop">
+      <div class="v">412 SOL</div>
+      <div class="l">Airdrop pool · 50% of fees</div>
+    </div>
+  </section>
+
+  <!-- live feed + voting strip -->
+  <section class="split">
+    <div class="card">
+      <div class="section-title" style="margin-top:0">
+        LIVE ACTIVITY
+        <span class="pill live" style="font-size:11px">REAL-TIME</span>
+      </div>
+      <div class="feed-list" id="feed-list">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <div class="card flat" style="background:var(--cream-mid);border:var(--bw) solid var(--line);box-shadow:var(--shadow)">
+      <div class="section-title" style="margin-top:0">VOTING SNAPSHOT</div>
+      <div class="vrow lead" style="margin-bottom:10px">
+        <div class="rank">1</div>
+        <div class="body">
+          <div class="name">CLUCK</div>
+          <div class="meta">2,418 votes · 41%</div>
+          <div class="pct-bar" style="--pct:41%"></div>
+        </div>
+        <div class="swatch" style="background:#F4C455">🐔</div>
+      </div>
+      <div class="vrow" style="margin-bottom:10px">
+        <div class="rank">2</div>
+        <div class="body">
+          <div class="name">PECK</div>
+          <div class="meta">1,652 votes · 28%</div>
+          <div class="pct-bar" style="--pct:28%"></div>
+        </div>
+        <div class="swatch" style="background:#D4C5A0">🪶</div>
+      </div>
+      <div class="vrow">
+        <div class="rank">3</div>
+        <div class="body">
+          <div class="name">EGG GANG</div>
+          <div class="meta">1,121 votes · 19%</div>
+          <div class="pct-bar" style="--pct:19%"></div>
+        </div>
+        <div class="swatch" style="background:#F4B5A8">🥚</div>
+      </div>
+      <button class="btn vote lg" style="width:100%;margin-top:14px" onclick="goTab('vote')">CAST YOUR VOTE</button>
+    </div>
+  </section>
+
+  <!-- how it works -->
+  <section>
+    <div class="section-title">HOW A CYCLE WORKS</div>
+    <div class="how">
+      <div class="card">
+        <div class="step">1</div>
+        <h4>FAIRLAUNCH</h4>
+        <p>Fixed price for 24h. Bots can't snipe — everyone enters at the same price. Vote on the cycle's name, ticker and logo while you buy.</p>
+      </div>
+      <div class="card" style="background:var(--cream-mid)">
+        <div class="step">2</div>
+        <h4>BONDING CURVE</h4>
+        <p>Price moves with <em>time</em>, not market cap. The longer the cycle runs, the more it costs to enter. Trade freely, leaderboard updates live.</p>
+      </div>
+      <div class="card">
+        <div class="step">3</div>
+        <h4>GRADUATION</h4>
+        <p>Cycle ends, token auto-lists on Raydium. 50% of fees route to the COOP airdrop. Then the next cycle begins. One token at a time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- past cycles -->
+  <section class="past">
+    <div class="section-title">PAST CYCLES</div>
+    <div class="past-strip">
+      <div class="past-tile"><div class="n">#13 · WORM</div><div class="t">$WORM 🪱</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
+      <div class="past-tile"><div class="n">#12 · ROOSTER</div><div class="t">$ROO 🐓</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
+      <div class="past-tile"><div class="n">#11 · NEST</div><div class="t">$NEST 🪺</div><div class="x"><span>820 holders</span><span class="dn">−42%</span></div></div>
+      <div class="past-tile"><div class="n">#10 · CORN</div><div class="t">$CORN 🌽</div><div class="x"><span>2.1K holders</span><span class="up">+512%</span></div></div>
+      <div class="past-tile"><div class="n">#09 · YOLK</div><div class="t">$YOLK 🟡</div><div class="x"><span>3.4K holders</span><span class="up">+221%</span></div></div>
+      <div class="past-tile"><div class="n">#08 · PEEP</div><div class="t">$PEEP 🐤</div><div class="x"><span>1.9K holders</span><span class="up">+98%</span></div></div>
+    </div>
+  </section>
+</main>
+
+<!-- =========================== VOTE ================================ -->
+<main class="shell hidden" id="tab-vote">
+  <section class="vote-header">
+    <div class="card" style="background:var(--civic);color:#fff;border-color:var(--ink)">
+      <div class="label" style="color:rgba(255,255,255,0.7)">YOUR VOTING WEIGHT</div>
+      <div style="font-family:'Tektur',sans-serif;font-size:42px;line-height:1">14.2K</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;opacity:0.85">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
+    </div>
+    <div class="card">
+      <div class="label">VOTING ENDS WITH CYCLE</div>
+      <div style="font-family:'Tektur',sans-serif;font-size:30px;line-height:1">3D 14H</div>
+      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px">winner auto-applies to Raydium listing</div>
+    </div>
+    <div class="card">
+      <div class="label">TOTAL VOTES</div>
+      <div style="font-family:'Tektur',sans-serif;font-size:30px;line-height:1">8,712</div>
+      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px">across 5,890 wallets</div>
+    </div>
+  </section>
+
+  <section class="vote-cols">
+    <div class="vcol">
+      <h3>NAME <span class="badge">41% lead</span></h3>
+      <div class="submit-card">
+        <h4>SUBMIT A NAME</h4>
+        <p>Costs 0.05 SOL. Refunded if you finish top-3.</p>
+        <input placeholder="e.g. CLUCKZILLA" maxlength="22" />
+        <div class="row"><button class="btn lg" style="flex:1">PROPOSE</button></div>
+      </div>
+      <div class="vrow lead">
+        <div class="rank">1</div>
+        <div class="body"><div class="name">CLUCK</div><div class="meta">2,418 votes · 41%</div><div class="pct-bar" style="--pct:41%"></div></div>
+        <button class="btn vote-btn voted">VOTED</button>
+      </div>
+      <div class="vrow">
+        <div class="rank">2</div>
+        <div class="body"><div class="name">PECK</div><div class="meta">1,652 votes · 28%</div><div class="pct-bar" style="--pct:28%"></div></div>
+        <button class="btn vote-btn vote">VOTE</button>
+      </div>
+      <div class="vrow">
+        <div class="rank">3</div>
+        <div class="body"><div class="name">EGG GANG</div><div class="meta">1,121 votes · 19%</div><div class="pct-bar" style="--pct:19%"></div></div>
+        <button class="btn vote-btn vote">VOTE</button>
+      </div>
+      <div class="vrow">
+        <div class="rank">4</div>
+        <div class="body"><div class="name">FEATHER</div><div class="meta">418 votes · 7%</div><div class="pct-bar" style="--pct:7%"></div></div>
+        <button class="btn vote-btn vote">VOTE</button>
+      </div>
+      <div class="vrow">
+        <div class="rank">5</div>
+        <div class="body"><div class="name">CHICK INC</div><div class="meta">298 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div>
+        <button class="btn vote-btn vote">VOTE</button>
+      </div>
+    </div>
+
+    <div class="vcol">
+      <h3>TICKER <span class="badge">$CLUCK 38%</span></h3>
+      <div class="submit-card">
+        <h4>SUBMIT A TICKER</h4>
+        <p>3–6 chars. Costs 0.05 SOL.</p>
+        <input placeholder="$YOURIDEA" maxlength="7" />
+        <div class="row"><button class="btn lg" style="flex:1">PROPOSE</button></div>
+      </div>
+      <div class="vrow lead"><div class="rank">1</div><div class="body"><div class="name">$CLUCK</div><div class="meta">2,201 votes · 38%</div><div class="pct-bar" style="--pct:38%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="body"><div class="name">$PECK</div><div class="meta">1,490 votes · 26%</div><div class="pct-bar" style="--pct:26%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="body"><div class="name">$COOP</div><div class="meta">1,212 votes · 21%</div><div class="pct-bar" style="--pct:21%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="body"><div class="name">$EGG</div><div class="meta">510 votes · 9%</div><div class="pct-bar" style="--pct:9%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="body"><div class="name">$YOLK</div><div class="meta">340 votes · 6%</div><div class="pct-bar" style="--pct:6%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+    </div>
+
+    <div class="vcol">
+      <h3>LOGO <span class="badge">52% lead</span></h3>
+      <div class="submit-card">
+        <h4>SUBMIT A LOGO</h4>
+        <p>PNG/SVG · 1:1 · &lt;200KB · 0.05 SOL</p>
+        <button class="btn lg" style="width:100%">UPLOAD IMAGE</button>
+      </div>
+      <div class="vrow lead"><div class="rank">1</div><div class="swatch" style="background:#F4C455">🐔</div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:#F4B5A8">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:#D4C5A0">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="swatch" style="background:#E6D4A8">🌽</div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="swatch">🐤</div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+    </div>
+  </section>
+</main>
+
+<!-- =========================== TRADE =============================== -->
+<main class="shell hidden" id="tab-trade">
+  <section class="trade-grid">
+    <div>
+      <div class="identity-bar">
+        <div class="logo-mini">🐔</div>
+        <div>
+          <h2>CLUCK</h2>
+          <div class="tk">$CLUCK · CYCLE #14 · current winning identity</div>
+        </div>
+        <div>
+          <div class="price">0.000142</div>
+          <div class="delta">+12.4% · 24H</div>
+        </div>
+      </div>
+
+      <div class="timebar-wrap">
+        <div class="timebar-head">
+          <span>CYCLE TIME-PROGRESS · 64% complete</span>
+          <span>3D 14H REMAINING</span>
+        </div>
+        <div class="timebar">
+          <div class="seg fair" style="width:14%"></div>
+          <div class="seg bond" style="width:71%"><div class="fill"></div></div>
+          <div class="seg grad" style="width:15%"></div>
+        </div>
+        <div class="timebar-head" style="margin-top:6px">
+          <span>FAIRLAUNCH ✓</span>
+          <span>BONDING (you are here)</span>
+          <span>GRADUATION</span>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">PRICE · SOL</div>
+          <div class="ranges">
+            <button class="range-btn">1H</button>
+            <button class="range-btn">4H</button>
+            <button class="range-btn" aria-pressed="true">1D</button>
+            <button class="range-btn">CYCLE</button>
+          </div>
+        </div>
+        <div class="chart">
+          <svg viewBox="0 0 600 320" preserveAspectRatio="none">
+            <defs>
+              <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y="0" x2="0" y2="6" stroke="#F4C455" stroke-width="3"/>
+              </pattern>
+            </defs>
+            <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80 L600,320 L0,320 Z"
+                  fill="url(#hatch)" opacity="0.55"/>
+            <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80"
+                  fill="none" stroke="#1E1712" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
+            <circle cx="600" cy="80" r="6" fill="#F4C455" stroke="#1E1712" stroke-width="2.5"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="tradetabs" role="tablist">
+        <button role="tab" aria-selected="true">TRADES</button>
+        <button role="tab" aria-selected="false">HOLDERS</button>
+        <button role="tab" aria-selected="false">CHAT</button>
+      </div>
+      <div class="tradepanel">
+        <table class="trades-table">
+          <thead><tr><th>TYPE</th><th>WALLET</th><th>AMOUNT</th><th>SOL</th><th>PRICE</th><th>TIME</th></tr></thead>
+          <tbody>
+            <tr><td class="b">BUY</td><td>chicken.sol</td><td>1.24M</td><td>0.176</td><td>0.000142</td><td>4s ago</td></tr>
+            <tr><td class="s">SELL</td><td>7Hk2…3FaR</td><td>820K</td><td>0.116</td><td>0.000141</td><td>11s ago</td></tr>
+            <tr><td class="b">BUY</td><td>feathers.sol</td><td>3.10M</td><td>0.440</td><td>0.000141</td><td>22s ago</td></tr>
+            <tr><td class="b">BUY</td><td>9Pq8…uX2K</td><td>540K</td><td>0.076</td><td>0.000140</td><td>45s ago</td></tr>
+            <tr><td class="s">SELL</td><td>nest.sol</td><td>2.00M</td><td>0.280</td><td>0.000140</td><td>1m ago</td></tr>
+            <tr><td class="b">BUY</td><td>roost.sol</td><td>4.80M</td><td>0.671</td><td>0.000140</td><td>1m ago</td></tr>
+            <tr><td class="b">BUY</td><td>Bk4t…aLm9</td><td>1.20M</td><td>0.167</td><td>0.000139</td><td>2m ago</td></tr>
+            <tr><td class="s">SELL</td><td>peck.sol</td><td>880K</td><td>0.122</td><td>0.000139</td><td>2m ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="trade-pane">
+      <div class="bs-tabs" role="tablist">
+        <button role="tab" data-mode="buy" aria-selected="true">BUY</button>
+        <button role="tab" data-mode="sell" aria-selected="false">SELL</button>
+      </div>
+      <div class="bs-body">
+        <div class="amt-input">
+          <input type="number" id="amt" value="0.5" step="0.01" />
+          <div class="currency">SOL</div>
+        </div>
+        <div class="quick-amts">
+          <button data-v="0.1">0.1</button>
+          <button data-v="0.5">0.5</button>
+          <button data-v="1">1.0</button>
+          <button data-v="5">5.0</button>
+        </div>
+        <div class="quote">
+          <div class="row"><span class="l">YOU GET</span><span><strong id="qty-out">3,521,126</strong> $CLUCK</span></div>
+          <div class="row"><span class="l">PRICE IMPACT</span><span>0.42%</span></div>
+          <div class="row"><span class="l">SLIPPAGE</span><span>1.0% <button class="btn sm" style="margin-left:6px">EDIT</button></span></div>
+          <div class="row"><span class="l">FEE (50% → AIRDROP)</span><span>0.005 SOL</span></div>
+        </div>
+        <button class="btn buy xl" style="width:100%">BUY $CLUCK</button>
+        <div class="small-note">no migration · auto-graduates to raydium</div>
+      </div>
+
+      <div class="card" style="margin-top:18px;padding:16px">
+        <div class="label">YOUR POSITION</div>
+        <div style="font-family:'Tektur',sans-serif;font-size:24px;line-height:1;margin-top:6px">2.1M $CLUCK</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);margin-top:4px">≈ 0.298 SOL · entry 0.000118</div>
+        <div class="mono" style="font-size:12px;color:var(--grass);font-weight:700;margin-top:4px">+20.3% unrealized</div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<!-- =========================== ME ================================== -->
+<main class="shell hidden" id="tab-me">
+  <section class="me-grid">
+    <div class="card bag">
+      <div class="label">YOUR BAG · CYCLE 14</div>
+      <p class="v">0.298 <span style="font-size:24px;color:var(--muted)">SOL</span></p>
+      <div class="delta">+20.3% · +0.050 SOL unrealized</div>
+      <div class="bag-rows">
+        <div class="bag-row">
+          <div class="logo-mini">🐔</div>
+          <div><div class="nm">CLUCK</div><div class="ti">$CLUCK · cycle #14 · live</div></div>
+          <div class="qty">2.1M</div>
+          <div class="val">0.298</div>
+        </div>
+        <div class="bag-row">
+          <div class="logo-mini" style="background:#D4C5A0">🪱</div>
+          <div><div class="nm">WORM</div><div class="ti">$WORM · cycle #13 · graduated</div></div>
+          <div class="qty">410K</div>
+          <div class="val">0.082</div>
+        </div>
+        <div class="bag-row">
+          <div class="logo-mini" style="background:#F4B5A8">🐓</div>
+          <div><div class="nm">ROO</div><div class="ti">$ROO · cycle #12 · graduated</div></div>
+          <div class="qty">88K</div>
+          <div class="val">0.041</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card airdrop-card">
+      <div class="label">YOUR ESTIMATED AIRDROP</div>
+      <p class="v">14,820 <span style="font-size:18px">$COOP</span></p>
+      <p>Earned by paying fees this cycle. 50% of every fee is split among traders by volume. Claim opens when COOP launches.</p>
+      <div class="mono" style="margin-top:14px;font-size:11.5px">SHARE OF POOL · 0.083%<br/>POOL · 412 SOL · GROWING</div>
+    </div>
+
+    <div class="card votes-card">
+      <div class="label">YOUR VOTES THIS CYCLE</div>
+      <div class="vline"><span><strong>NAME</strong> · CLUCK</span><span class="v">winning · +14.2K weight</span></div>
+      <div class="vline"><span><strong>TICKER</strong> · $CLUCK</span><span class="v">winning · +14.2K weight</span></div>
+      <div class="vline"><span><strong>LOGO</strong> · CHICKEN.PNG</span><span class="v">winning · +14.2K weight</span></div>
+      <button class="btn vote lg" style="width:100%;margin-top:14px" onclick="goTab('vote')">CHANGE VOTES</button>
+      <div class="label" style="margin-top:18px">CYCLES JOINED</div>
+      <div class="vline"><span>#13 WORM</span><span class="v">+318% · still holding</span></div>
+      <div class="vline"><span>#12 ROO</span><span class="v">+1,402% · still holding</span></div>
+      <div class="vline"><span>#10 CORN</span><span class="v">−12% · sold</span></div>
+    </div>
+  </section>
+</main>
+
+<!-- =========================== FOOTER ============================== -->
+<footer>
+  <div class="shell">
+    <div class="row">
+      <div style="font-family:'Tektur',sans-serif;font-size:18px">COOP — ONE CYCLE. ONE TOKEN. ONE FLOCK.</div>
+      <div class="links">
+        <a href="#">DOCS</a>
+        <a href="#">TELEGRAM</a>
+        <a href="#">X</a>
+        <a href="#">FEES</a>
+        <a href="#">TERMS</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // === tabs ============================================================
+  const tabs = document.querySelectorAll('.tab');
+  const panels = ['home','vote','trade','me'];
+  function goTab(name){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
+    panels.forEach(p=>{
+      document.getElementById('tab-'+p).classList.toggle('hidden', p!==name);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach(t=>t.addEventListener('click', ()=>goTab(t.dataset.tab)));
+  window.goTab = goTab;
+
+  // === buy/sell tabs ===================================================
+  document.querySelectorAll('.bs-tabs button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.bs-tabs button').forEach(x=>x.setAttribute('aria-selected', x===b));
+      const main = document.querySelector('.bs-body .btn.xl');
+      if(b.dataset.mode==='buy'){ main.className='btn buy xl'; main.textContent='BUY $CLUCK'; main.style.width='100%' }
+      else { main.className='btn sell xl'; main.textContent='SELL $CLUCK'; main.style.width='100%' }
+    });
+  });
+
+  // === quick amounts ===================================================
+  document.querySelectorAll('.quick-amts button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.getElementById('amt').value = b.dataset.v;
+      recalcQty();
+    });
+  });
+  function recalcQty(){
+    const a = parseFloat(document.getElementById('amt').value||0);
+    const out = Math.round(a / 0.000142).toLocaleString();
+    document.getElementById('qty-out').textContent = out;
+  }
+  document.getElementById('amt').addEventListener('input', recalcQty);
+
+  // === countdown =======================================================
+  let total = (3*86400 + 14*3600 + 22*60 + 7);
+  function tick(){
+    total--; if(total<0) total = 3*86400;
+    const d = String(Math.floor(total/86400)).padStart(2,'0');
+    const h = String(Math.floor((total%86400)/3600)).padStart(2,'0');
+    const m = String(Math.floor((total%3600)/60)).padStart(2,'0');
+    const s = String(total%60).padStart(2,'0');
+    document.getElementById('cd-d').textContent=d;
+    document.getElementById('cd-h').textContent=h;
+    document.getElementById('cd-m').textContent=m;
+    document.getElementById('cd-s').textContent=s;
+    document.getElementById('cd-mini').textContent = `${d}D ${h}H ${m}M LEFT`;
+  }
+  tick(); setInterval(tick, 1000);
+
+  // === live feed =======================================================
+  const feedSeed = [
+    {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s'},
+    {kind:'vote', who:'feathers.sol', what:'voted CHICKEN.PNG',     amount:'+820',   unit:'wt',    t:'9s'},
+    {kind:'buy',  who:'roost.sol',    what:'bought $CLUCK',         amount:'+4.80M', unit:'CLUCK', t:'14s'},
+    {kind:'sell', who:'7Hk2…3FaR',    what:'sold $CLUCK',           amount:'−820K',  unit:'CLUCK', t:'22s'},
+    {kind:'vote', who:'corn.sol',     what:'voted PECK',            amount:'+2.4K',  unit:'wt',    t:'31s'},
+    {kind:'buy',  who:'9Pq8…uX2K',    what:'bought $CLUCK',         amount:'+540K',  unit:'CLUCK', t:'45s'},
+    {kind:'vote', who:'yolk.sol',     what:'submitted "CLUCKZILLA"',amount:'NEW',    unit:'',      t:'1m'},
+    {kind:'sell', who:'nest.sol',     what:'sold $CLUCK',           amount:'−2.00M', unit:'CLUCK', t:'1m'},
+  ];
+  const feedEl = document.getElementById('feed-list');
+  feedSeed.forEach(r=>{
+    const row = document.createElement('div'); row.className='feed-row';
+    row.innerHTML = `
+      <div class="feed-icon ${r.kind}">${r.kind==='buy'?'B':r.kind==='sell'?'S':'V'}</div>
+      <div><div class="who">${r.who}</div><div class="what">${r.what} · ${r.t} ago</div></div>
+      <div class="amount">${r.amount}<span class="u"> ${r.unit}</span></div>
+    `;
+    feedEl.appendChild(row);
+  });
+</script>
+</body>
+</html>
