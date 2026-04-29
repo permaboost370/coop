@@ -71,9 +71,9 @@
     --muted:#878375;
     --line:#3A3A3C;        /* visible-but-subtle border */
     /* yolk stays bright as the brand accent — but big surfaces use deep yolk */
-    --yolk-soft:#2B2104;   /* deep yolk fill (replaces light-mode #FFEC8A) */
+    --yolk-soft:#22221F;   /* fills that were soft yolk in light — neutral dark in dark */
     --yolk-deep:#FFE14F;   /* hover: a touch brighter, not deeper, on dark */
-    --surface-yolk:#1F1803;/* deep-yolk slab for big brand surfaces */
+    --surface-yolk:#141416;/* near-neutral slab — yolk identity comes from the pattern weave */
     --shadow-color:#000000;
     --hover-tint:rgba(255,255,255,0.06);
     --backdrop:rgba(0,0,0,0.7);
@@ -103,15 +103,15 @@
   :root[data-theme="dark"] .trades-table td{border-bottom-color:rgba(255,255,255,0.1)}
   /* pct bar bg */
   :root[data-theme="dark"] .vrow .pct-bar{background:rgba(255,255,255,0.1)}
-  /* GIANT brand surfaces — drop from bright yolk to deep yolk wash, with subtle yolk pattern on top */
+  /* GIANT brand surfaces — neutral dark slab + clearly-visible yolk weave carries the brand */
   :root[data-theme="dark"] .hero-left{
     background:
-      repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,212,0,0.06) 28px 29px),
+      repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,212,0,0.10) 28px 29px),
       var(--surface-yolk);
   }
-  :root[data-theme="dark"] .hero-left::after{opacity:0.18}
+  :root[data-theme="dark"] .hero-left::after{opacity:0.22}
   :root[data-theme="dark"] .hero-poster{
-    background-image:repeating-linear-gradient(45deg, transparent 0 32px, rgba(255,212,0,0.05) 32px 33px);
+    background-image:repeating-linear-gradient(45deg, transparent 0 32px, rgba(255,212,0,0.09) 32px 33px);
     background-color:var(--surface-yolk);
   }
   :root[data-theme="dark"] .band-yolk{
