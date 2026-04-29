@@ -61,7 +61,7 @@
     color-scheme:light;
   }
 
-  /* ── dark mode (charcoal + same yolk) ─────────── */
+  /* ── dark mode (charcoal + deep yolk + bright yolk accent) ───── */
   :root[data-theme="dark"]{
     --bg:#0F0F10;          /* charcoal */
     --bg-2:#181819;        /* slightly raised second surface */
@@ -70,19 +70,23 @@
     --ink-soft:#C9C5B7;
     --muted:#878375;
     --line:#3A3A3C;        /* visible-but-subtle border */
-    /* yolk stays — that's the whole point of the duo */
-    --yolk-soft:#3A3204;   /* recoded for dark — yolk-on-dark fill */
+    /* yolk stays bright as the brand accent — but big surfaces use deep yolk */
+    --yolk-soft:#2B2104;   /* deep yolk fill (replaces light-mode #FFEC8A) */
+    --yolk-deep:#FFE14F;   /* hover: a touch brighter, not deeper, on dark */
+    --surface-yolk:#1F1803;/* deep-yolk slab for big brand surfaces */
     --shadow-color:#000000;
     --hover-tint:rgba(255,255,255,0.06);
     --backdrop:rgba(0,0,0,0.7);
     color-scheme:dark;
   }
-  /* on dark, hard black shadows get lost — give brand surfaces a yolk shadow */
+  /* brand surfaces in dark — black shadow gets lost, so use a darker-yolk amber.
+     darker than the surface yolk = reads as shadow, not halo. */
   :root[data-theme="dark"] .btn.primary,
   :root[data-theme="dark"] .btn.xl,
+  :root[data-theme="dark"] .btn.vote,
   :root[data-theme="dark"] .hero-poster .mark,
   :root[data-theme="dark"] .nav-link[aria-selected="true"]{
-    --shadow-color:#FFD400;
+    --shadow-color:#6B5102;
   }
   /* tone down the chart grid lines so they're visible on dark */
   :root[data-theme="dark"] .chart{
@@ -99,11 +103,30 @@
   :root[data-theme="dark"] .trades-table td{border-bottom-color:rgba(255,255,255,0.1)}
   /* pct bar bg */
   :root[data-theme="dark"] .vrow .pct-bar{background:rgba(255,255,255,0.1)}
-  /* hero-poster pattern darker */
+  /* GIANT brand surfaces — drop from bright yolk to deep yolk wash, with subtle yolk pattern on top */
   :root[data-theme="dark"] .hero-left{
     background:
-      repeating-linear-gradient(45deg, transparent 0 28px, rgba(0,0,0,0.18) 28px 29px),
-      var(--yolk);
+      repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,212,0,0.06) 28px 29px),
+      var(--surface-yolk);
+  }
+  :root[data-theme="dark"] .hero-left::after{opacity:0.18}
+  :root[data-theme="dark"] .hero-poster{
+    background-image:repeating-linear-gradient(45deg, transparent 0 32px, rgba(255,212,0,0.05) 32px 33px);
+    background-color:var(--surface-yolk);
+  }
+  :root[data-theme="dark"] .band-yolk{
+    background:var(--surface-yolk);
+    border-top-color:var(--line);border-bottom-color:var(--line);
+  }
+  :root[data-theme="dark"] .cycle-bar{
+    background:var(--surface-yolk);
+    border-top-color:var(--line);border-bottom-color:var(--line);
+  }
+  :root[data-theme="dark"] .airdrop-card{background:var(--surface-yolk);border-color:var(--line)}
+  :root[data-theme="dark"] .stat.airdrop{background:var(--surface-yolk)}
+  /* keep the giant cycle-num outline visible against deep yolk */
+  :root[data-theme="dark"] .hero-poster .cycle-num{
+    -webkit-text-stroke-color:rgba(255,212,0,0.45);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -835,11 +858,51 @@
     border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
     background:var(--surface);box-shadow:var(--sh-lg);
     padding:18px;
+    overflow:hidden;
     transform:rotate(-2deg);
-    transition:transform 220ms var(--ease);
+    transition:transform 220ms var(--ease), box-shadow 220ms var(--ease);
+    animation:mark-wobble 4.6s ease-in-out infinite;
+    will-change:transform;
   }
-  .hero-poster .mark:hover{transform:rotate(0)}
-  .hero-poster .mark img{width:100%;display:block}
+  .hero-poster .mark::before{
+    /* sticker shine sweep */
+    content:"";
+    position:absolute;top:-20%;bottom:-20%;left:0;
+    width:42%;
+    background:linear-gradient(100deg,
+      transparent 0%,
+      rgba(255,255,255,0.0) 30%,
+      rgba(255,255,255,0.55) 50%,
+      rgba(255,255,255,0.0) 70%,
+      transparent 100%);
+    transform:translateX(-160%) skewX(-22deg);
+    animation:mark-shine 5.6s ease-in-out infinite;
+    animation-delay:1.2s;
+    pointer-events:none;z-index:2;
+  }
+  .hero-poster .mark img{width:100%;display:block;position:relative;z-index:1}
+  .hero-poster .mark:hover{
+    animation:none;
+    transform:rotate(0) scale(1.03);
+    box-shadow:var(--sh-xl);
+  }
+  .hero-poster .mark:hover::before{animation:none;opacity:0}
+  @keyframes mark-wobble{
+    0%,100%{ transform:rotate(-2deg) translateY(0) }
+    25%    { transform:rotate(-3.2deg) translateY(-2px) }
+    50%    { transform:rotate(-1deg) translateY(0) }
+    75%    { transform:rotate(-2.6deg) translateY(-1px) }
+  }
+  @keyframes mark-shine{
+    0%   { transform:translateX(-160%) skewX(-22deg) }
+    55%  { transform:translateX(-160%) skewX(-22deg) }
+    75%  { transform:translateX(260%) skewX(-22deg) }
+    100% { transform:translateX(260%) skewX(-22deg) }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-poster .mark{ animation:none }
+    .hero-poster .mark::before{ animation:none; opacity:0 }
+  }
   .hero-poster .tape{
     position:absolute;left:-40px;top:50%;
     transform:translateY(-50%) rotate(-90deg);transform-origin:center;
