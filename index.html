@@ -884,6 +884,96 @@
   }
   .modal .legal a{color:var(--ink);text-decoration:underline}
 
+  /* ── search modal ─────────────────────────────── */
+  .search-modal{
+    background:var(--surface);
+    border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
+    box-shadow:var(--sh-xl);
+    width:100%;max-width:560px;
+    overflow:hidden;
+    animation:pop-in 200ms var(--ease);
+  }
+  .search-input-wrap{
+    display:grid;grid-template-columns:auto 1fr auto;
+    align-items:center;gap:14px;
+    padding:18px 22px;
+    border-bottom:var(--bw) solid var(--ink);
+    background:var(--bg);
+  }
+  .search-input-wrap svg{width:20px;height:20px;color:var(--ink);flex-shrink:0}
+  .search-input-wrap input{
+    border:0;outline:0;background:transparent;
+    font-family:'Tektur',sans-serif;font-weight:700;
+    font-size:18px;letter-spacing:-0.01em;
+    color:var(--ink);width:100%;
+  }
+  .search-input-wrap input::placeholder{color:var(--muted);font-weight:500}
+  .kbd{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--surface);
+    border:1.5px solid var(--ink);border-radius:6px;
+    box-shadow:1.5px 1.5px 0 var(--ink);
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10.5px;letter-spacing:0.04em;
+    padding:2px 7px;color:var(--ink);
+    min-width:24px;text-transform:lowercase;
+  }
+  .search-results{
+    max-height:420px;overflow-y:auto;
+    padding:8px;
+  }
+  .search-results::-webkit-scrollbar{width:8px}
+  .search-results::-webkit-scrollbar-thumb{background:var(--ink);border-radius:4px}
+  .sr-group-label{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--muted);padding:10px 12px 6px;
+  }
+  .sr-item{
+    display:grid;grid-template-columns:auto 1fr auto;
+    align-items:center;gap:12px;
+    padding:10px 12px;border-radius:var(--r-md);
+    cursor:pointer;border:0;background:transparent;
+    text-align:left;width:100%;font:inherit;color:inherit;
+    transition:background 80ms var(--ease);
+  }
+  .sr-item:hover,.sr-item[aria-selected="true"]{
+    background:var(--yolk);
+  }
+  .sr-item .sr-icon{
+    width:36px;height:36px;border:var(--bw) solid var(--ink);border-radius:var(--r-sm);
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface);overflow:hidden;flex-shrink:0;
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:13px;
+  }
+  .sr-item .sr-icon img{width:100%;height:100%;object-fit:cover;display:block}
+  .sr-item .sr-icon.cycle{background:var(--ink);color:var(--bg);font-size:11px}
+  .sr-item .sr-icon.page,.sr-item .sr-icon.action,.sr-item .sr-icon.docs{background:var(--bg-2)}
+  .sr-item .sr-body{min-width:0}
+  .sr-item .sr-label{font-family:'Tektur',sans-serif;font-weight:900;font-size:14px;line-height:1.1;letter-spacing:-0.005em}
+  .sr-item .sr-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sr-item:hover .sr-meta,.sr-item[aria-selected="true"] .sr-meta{color:var(--ink-soft)}
+  .sr-item .sr-type{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:9.5px;
+    letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);
+    background:var(--bg);border:1.5px solid var(--ink);border-radius:var(--r-pill);
+    padding:3px 8px;flex-shrink:0;
+  }
+  .sr-item:hover .sr-type,.sr-item[aria-selected="true"] .sr-type{background:var(--surface)}
+  .sr-empty{
+    padding:40px 22px;text-align:center;
+    color:var(--muted);font-size:14px;
+  }
+  .sr-empty strong{color:var(--ink);font-family:'Tektur',sans-serif;font-weight:900;display:block;font-size:16px;margin-bottom:6px}
+  .search-footer{
+    display:flex;align-items:center;gap:14px;
+    padding:10px 22px;
+    border-top:var(--bw) solid var(--ink);
+    background:var(--bg);
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:600;
+  }
+  .search-footer .seg{display:inline-flex;align-items:center;gap:6px}
+
   /* ── empty state ──────────────────────────────── */
   .empty-state{
     background:var(--surface);
@@ -988,7 +1078,7 @@
     </nav>
 
     <div class="topbar-actions">
-      <button class="icon-btn" aria-label="Search" title="Search (⌘K)">
+      <button class="icon-btn" aria-label="Search" title="Search (⌘K)" onclick="openSearch()">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2">
           <circle cx="7" cy="7" r="5"/>
           <line x1="11" y1="11" x2="14.5" y2="14.5" stroke-linecap="round"/>
@@ -1478,6 +1568,26 @@
   </div>
 </div>
 
+<!-- ═══════════════════════ SEARCH MODAL ═══════════════════════ -->
+<div class="modal-overlay" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-modal" onclick="event.stopPropagation()">
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+        <circle cx="7" cy="7" r="5"/>
+        <line x1="11" y1="11" x2="14.5" y2="14.5" stroke-linecap="round"/>
+      </svg>
+      <input id="search-input" type="text" placeholder="Search tokens, cycles, pages, docs…" autocomplete="off" spellcheck="false" />
+      <button class="kbd" onclick="closeSearch()">esc</button>
+    </div>
+    <div class="search-results" id="search-results" role="listbox"></div>
+    <div class="search-footer">
+      <span class="seg"><span class="kbd">↑</span><span class="kbd">↓</span> navigate</span>
+      <span class="seg"><span class="kbd">↵</span> select</span>
+      <span class="seg" style="margin-left:auto"><span class="kbd">esc</span> close</span>
+    </div>
+  </div>
+</div>
+
 <script>
   const navLinks = document.querySelectorAll('.nav-link');
   const panels = ['home','vote','trade','me'];
@@ -1527,23 +1637,166 @@
   tick(); setInterval(tick, 1000);
 
   // === wallet modal & connected state ===========================
-  const modal = document.getElementById('wallet-modal');
-  function openWallet(){ modal.classList.add('open'); document.body.style.overflow='hidden' }
-  function closeWallet(){ modal.classList.remove('open'); document.body.style.overflow='' }
+  const walletModal = document.getElementById('wallet-modal');
+  function openWallet(){ walletModal.classList.add('open'); document.body.style.overflow='hidden' }
+  function closeWallet(){ walletModal.classList.remove('open'); document.body.style.overflow='' }
   function connect(name, addr){
     document.body.dataset.connected = 'true';
     document.getElementById('wallet-addr').textContent = addr;
     closeWallet();
   }
-  function disconnect(){
-    document.body.dataset.connected = 'false';
+  function disconnect(){ document.body.dataset.connected = 'false' }
+  walletModal.addEventListener('click', closeWallet);
+  window.openWallet = openWallet; window.closeWallet = closeWallet;
+  window.connect = connect; window.disconnect = disconnect;
+
+  // === live search ==============================================
+  const SEARCH = [
+    // tokens — current
+    { type:'token',  group:'Tokens',  label:'$CLUCK', meta:'Cycle 14 · live · 0.000142 SOL · +12.4%', icon:'tokens/cluck.svg', go:()=>goTab('trade') },
+    // tokens — past cycles
+    { type:'token',  group:'Tokens',  label:'$WORM',  meta:'Cycle 13 · graduated · +318%',     icon:'tokens/worm.svg', go:()=>goTab('home') },
+    { type:'token',  group:'Tokens',  label:'$ROO',   meta:'Cycle 12 · graduated · +1,402%',   icon:'tokens/roo.svg',  go:()=>goTab('home') },
+    { type:'token',  group:'Tokens',  label:'$NEST',  meta:'Cycle 11 · graduated · −42%',      icon:'tokens/nest.svg', go:()=>goTab('home') },
+    { type:'token',  group:'Tokens',  label:'$CORN',  meta:'Cycle 10 · graduated · +512%',     icon:'tokens/corn.svg', go:()=>goTab('home') },
+    { type:'token',  group:'Tokens',  label:'$YOLK',  meta:'Cycle 9 · graduated · +221%',      icon:'tokens/yolk.svg', go:()=>goTab('home') },
+    { type:'token',  group:'Tokens',  label:'$PEEP',  meta:'Cycle 8 · graduated · +98%',       icon:'tokens/peep.svg', go:()=>goTab('home') },
+    // cycles
+    { type:'cycle',  group:'Cycles',  label:'Cycle 14 · Roost', meta:'bonding curve · 3D 14H left', cycleNum:'14', go:()=>goTab('home') },
+    { type:'cycle',  group:'Cycles',  label:'Cycle 13 · Worm',  meta:'graduated · 1.2K holders', cycleNum:'13', go:()=>goTab('home') },
+    { type:'cycle',  group:'Cycles',  label:'Cycle 12 · Rooster', meta:'graduated · 4.8K holders', cycleNum:'12', go:()=>goTab('home') },
+    // pages
+    { type:'page',   group:'Pages',   label:'The Coop',  meta:'cycle hub · live activity · voting snapshot', go:()=>goTab('home') },
+    { type:'page',   group:'Pages',   label:'Vote',      meta:'name · ticker · logo proposals',              go:()=>goTab('vote') },
+    { type:'page',   group:'Pages',   label:'Trade',     meta:'chart · buy / sell · holders',                go:()=>goTab('trade') },
+    { type:'page',   group:'Pages',   label:'Me',        meta:'your bag · airdrop · cycle history',          go:()=>goTab('me') },
+    // actions
+    { type:'action', group:'Actions', label:'Connect wallet',     meta:'Phantom · Solflare · Backpack · Glow', go:()=>{closeSearch();openWallet()} },
+    { type:'action', group:'Actions', label:'Submit a name proposal',  meta:'0.05 SOL · refundable if top-3', go:()=>goTab('vote') },
+    { type:'action', group:'Actions', label:'Submit a logo proposal',  meta:'PNG / SVG · 1:1 · 0.05 SOL',     go:()=>goTab('vote') },
+    { type:'action', group:'Actions', label:'Cast a vote',        meta:'use your weight before cycle ends',   go:()=>goTab('vote') },
+    // docs
+    { type:'docs',   group:'Docs',    label:'Fairlaunch',     meta:'fixed price · 24h · anti-snipe',                  go:()=>window.open('https://www.coop.meme/docs','_blank') },
+    { type:'docs',   group:'Docs',    label:'Bonding curve',  meta:'time-based price · not market cap',               go:()=>window.open('https://www.coop.meme/docs','_blank') },
+    { type:'docs',   group:'Docs',    label:'Graduation',     meta:'auto-list to Raydium when cycle ends',            go:()=>window.open('https://www.coop.meme/docs','_blank') },
+    { type:'docs',   group:'Docs',    label:'Airdrop',        meta:'50% of fees split among traders by volume',       go:()=>window.open('https://www.coop.meme/docs','_blank') },
+    { type:'docs',   group:'Docs',    label:'Voting weight',  meta:'based on $CLUCK held during fairlaunch',          go:()=>window.open('https://www.coop.meme/docs','_blank') },
+  ];
+
+  const searchModal   = document.getElementById('search-modal');
+  const searchInput   = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+  let activeIdx = 0;
+  let visibleItems = [];
+
+  function openSearch(){
+    searchModal.classList.add('open');
+    document.body.style.overflow='hidden';
+    searchInput.value='';
+    renderResults('');
+    setTimeout(()=>searchInput.focus(), 30);
   }
-  modal.addEventListener('click', closeWallet);
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeWallet() });
-  window.openWallet = openWallet;
-  window.closeWallet = closeWallet;
-  window.connect = connect;
-  window.disconnect = disconnect;
+  function closeSearch(){
+    searchModal.classList.remove('open');
+    document.body.style.overflow='';
+  }
+
+  function escHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+  function highlight(text, q){
+    if(!q) return escHtml(text);
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if(i<0) return escHtml(text);
+    return escHtml(text.slice(0,i)) + '<mark style="background:var(--ink);color:var(--bg);padding:0 2px;border-radius:3px">' + escHtml(text.slice(i,i+q.length)) + '</mark>' + escHtml(text.slice(i+q.length));
+  }
+
+  function iconHtml(item){
+    if(item.icon)        return `<span class="sr-icon"><img src="${item.icon}" alt=""/></span>`;
+    if(item.type==='cycle') return `<span class="sr-icon cycle">#${item.cycleNum}</span>`;
+    const map = { page:'⌘', action:'✦', docs:'?' };
+    return `<span class="sr-icon ${item.type}">${map[item.type]||'·'}</span>`;
+  }
+
+  function renderResults(q){
+    const query = q.trim().toLowerCase();
+    visibleItems = SEARCH.filter(it =>
+      !query || it.label.toLowerCase().includes(query) || it.meta.toLowerCase().includes(query) || it.type.includes(query)
+    );
+    activeIdx = 0;
+    if(!visibleItems.length){
+      searchResults.innerHTML = `<div class="sr-empty"><strong>No results</strong>Try “CLUCK”, “cycle 12”, “airdrop”, or “vote”.</div>`;
+      return;
+    }
+    // group by .group, preserving SEARCH order
+    const groups = [];
+    const groupMap = new Map();
+    visibleItems.forEach((it, i)=>{
+      if(!groupMap.has(it.group)){
+        groupMap.set(it.group, groups.length);
+        groups.push({ name: it.group, items: [] });
+      }
+      groups[groupMap.get(it.group)].items.push({ ...it, _idx:i });
+    });
+    searchResults.innerHTML = groups.map(g => `
+      <div class="sr-group-label">${escHtml(g.name)}</div>
+      ${g.items.map(it=>`
+        <button class="sr-item" data-idx="${it._idx}" role="option">
+          ${iconHtml(it)}
+          <div class="sr-body">
+            <div class="sr-label">${highlight(it.label, query)}</div>
+            <div class="sr-meta">${highlight(it.meta, query)}</div>
+          </div>
+          <span class="sr-type">${it.type}</span>
+        </button>
+      `).join('')}
+    `).join('');
+    syncActive();
+    // wire click handlers
+    searchResults.querySelectorAll('.sr-item').forEach(btn=>{
+      btn.addEventListener('mouseenter', ()=>{ activeIdx = parseInt(btn.dataset.idx,10); syncActive() });
+      btn.addEventListener('click', ()=>selectActive());
+    });
+  }
+
+  function syncActive(){
+    searchResults.querySelectorAll('.sr-item').forEach(b=>{
+      const i = parseInt(b.dataset.idx,10);
+      b.setAttribute('aria-selected', i===activeIdx ? 'true' : 'false');
+      if(i===activeIdx) b.scrollIntoView({block:'nearest'});
+    });
+  }
+  function selectActive(){
+    const item = visibleItems[activeIdx];
+    if(!item) return;
+    closeSearch();
+    item.go && item.go();
+  }
+
+  searchInput.addEventListener('input', e => renderResults(e.target.value));
+  searchInput.addEventListener('keydown', e => {
+    if(e.key==='ArrowDown'){ e.preventDefault(); activeIdx = Math.min(activeIdx+1, visibleItems.length-1); syncActive(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); activeIdx = Math.max(activeIdx-1, 0); syncActive(); }
+    else if(e.key==='Enter'){ e.preventDefault(); selectActive(); }
+  });
+  searchModal.addEventListener('click', closeSearch);
+
+  // global shortcuts
+  document.addEventListener('keydown', e => {
+    if(e.key==='Escape'){
+      if(searchModal.classList.contains('open')) closeSearch();
+      else if(walletModal.classList.contains('open')) closeWallet();
+    }
+    // ⌘K / Ctrl+K opens search
+    if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+      e.preventDefault();
+      if(searchModal.classList.contains('open')) closeSearch(); else openSearch();
+    }
+    // "/" opens search when not typing in an input
+    if(e.key==='/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+      e.preventDefault(); openSearch();
+    }
+  });
+  window.openSearch = openSearch;
+  window.closeSearch = closeSearch;
 
   const feedSeed = [
     {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s'},
