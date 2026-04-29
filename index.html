@@ -677,6 +677,198 @@
     margin-bottom:10px;
   }
 
+  /* ── full-width bands (section rhythm) ────────── */
+  .band{padding:56px 0;position:relative}
+  .band:first-of-type{padding-top:36px}
+  .band-yolk{background:var(--yolk);border-top:var(--bw-thick) solid var(--ink);border-bottom:var(--bw-thick) solid var(--ink)}
+  .band-warm{background:var(--bg-2);border-top:var(--bw) solid var(--ink);border-bottom:var(--bw) solid var(--ink)}
+  .band + .band{padding-top:56px}
+  .band-yolk .card{border-color:var(--ink)}
+  /* on yellow band, swap card backgrounds so they pop */
+  .band-yolk .vote-snap{background:var(--surface)}
+  .band-yolk .stat.airdrop{background:var(--ink);color:var(--bg)}
+  .band-yolk .stat.airdrop .l{color:rgba(253,246,232,0.7)}
+  .band-yolk .stat.airdrop::before{display:none}
+
+  /* ── hero poster (right column) ───────────────── */
+  .hero-poster{
+    position:relative;background:var(--yolk);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;min-height:560px;
+    background-image:repeating-linear-gradient(45deg, transparent 0 32px, rgba(0,0,0,0.06) 32px 33px);
+  }
+  .hero-poster .cycle-num{
+    position:absolute;top:-44px;right:-28px;
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:clamp(220px,22vw,360px);
+    color:transparent;-webkit-text-stroke:5px var(--ink);text-stroke:5px var(--ink);
+    letter-spacing:-0.06em;line-height:0.85;
+    pointer-events:none;user-select:none;z-index:0;
+  }
+  .hero-poster .mark{
+    position:relative;z-index:1;
+    width:60%;max-width:300px;
+    border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
+    background:var(--surface);box-shadow:var(--sh-lg);
+    padding:18px;
+    transform:rotate(-2deg);
+    transition:transform 220ms var(--ease);
+  }
+  .hero-poster .mark:hover{transform:rotate(0)}
+  .hero-poster .mark img{width:100%;display:block}
+  .hero-poster .tape{
+    position:absolute;left:-40px;top:50%;
+    transform:translateY(-50%) rotate(-90deg);transform-origin:center;
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:14px;letter-spacing:0.4em;
+    color:var(--ink);white-space:nowrap;
+    background:var(--ink);color:var(--bg);
+    padding:8px 22px;border:var(--bw) solid var(--ink);
+    z-index:2;
+  }
+  .hero-poster .winner-badge{
+    position:absolute;bottom:24px;right:24px;z-index:2;
+    background:var(--ink);color:var(--bg);
+    border:var(--bw) solid var(--ink);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    padding:10px 14px;text-align:right;
+    transform:rotate(2deg);
+  }
+  .hero-poster .winner-badge .lab{
+    display:block;font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.65;
+  }
+  .hero-poster .winner-badge .nm{
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:22px;line-height:1;margin-top:2px;
+  }
+
+  /* ── live data inline (replaces price-row stack) ── */
+  .hero-meta{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+    margin:0 0 22px;
+  }
+  .hero-meta .cell{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    padding:12px 14px;
+  }
+  .hero-meta .cell .l{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .hero-meta .cell .v{font-family:'Tektur',sans-serif;font-weight:900;font-size:18px;margin-top:3px;line-height:1}
+  .hero-meta .cell .v.up{color:var(--grass)}
+  .hero-meta .cell .v small{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:500;margin-left:3px}
+
+  /* ── modal ────────────────────────────────────── */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(10,10,10,0.55);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+    animation:fade-in 160ms var(--ease);
+  }
+  .modal-overlay.open{display:flex}
+  @keyframes fade-in{from{opacity:0}to{opacity:1}}
+  @keyframes pop-in{from{opacity:0;transform:translateY(8px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .modal{
+    background:var(--surface);
+    border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
+    box-shadow:var(--sh-xl);
+    width:100%;max-width:460px;
+    padding:28px;
+    animation:pop-in 200ms var(--ease);
+    position:relative;
+  }
+  .modal h2{
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;
+    margin:0 0 6px;letter-spacing:-0.01em;
+  }
+  .modal .sub{font-size:14px;color:var(--ink-soft);margin:0 0 20px}
+  .modal .x-close{
+    position:absolute;top:16px;right:16px;
+    width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    background:var(--surface);box-shadow:var(--sh-sm);
+    cursor:pointer;font-family:'Tektur',sans-serif;font-size:16px;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
+  }
+  .modal .x-close:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
+  .wallet-row{
+    display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
+    padding:12px 14px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    background:var(--surface);box-shadow:var(--sh-sm);
+    margin-bottom:10px;cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
+    text-align:left;width:100%;font:inherit;color:inherit;
+  }
+  .wallet-row:hover{transform:translate(-1.5px,-1.5px);box-shadow:var(--sh);background:var(--yolk-soft)}
+  .wallet-row .wlogo{
+    width:42px;height:42px;border-radius:var(--r-sm);
+    border:var(--bw) solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:18px;
+  }
+  .wallet-row .wlogo.phantom{background:#AB9FF2;color:#fff}
+  .wallet-row .wlogo.solflare{background:#FFB930;color:#000}
+  .wallet-row .wlogo.backpack{background:#E33E3F;color:#fff}
+  .wallet-row .wlogo.glow{background:#000;color:#fff}
+  .wallet-row .wname{font-family:'Tektur',sans-serif;font-weight:900;font-size:15px;line-height:1}
+  .wallet-row .wmeta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px}
+  .wallet-row .wbadge{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    background:var(--yolk);color:var(--ink);
+    border:1.5px solid var(--ink);border-radius:var(--r-pill);
+    padding:3px 8px;letter-spacing:0.06em;text-transform:uppercase;
+  }
+  .modal .legal{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    color:var(--muted);text-align:center;margin-top:14px;line-height:1.5;
+  }
+  .modal .legal a{color:var(--ink);text-decoration:underline}
+
+  /* ── empty state ──────────────────────────────── */
+  .empty-state{
+    background:var(--surface);
+    border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
+    box-shadow:var(--sh-lg);
+    padding:60px 32px 56px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;
+    margin:32px 0;
+  }
+  .empty-state .ill{
+    width:160px;height:160px;
+    background:var(--yolk);
+    border:var(--bw-thick) solid var(--ink);border-radius:var(--r-xl);
+    box-shadow:var(--sh-lg);
+    margin-bottom:28px;display:flex;align-items:center;justify-content:center;
+    transform:rotate(-4deg);
+    transition:transform 280ms var(--ease);
+    background-image:repeating-linear-gradient(45deg, transparent 0 18px, rgba(0,0,0,0.06) 18px 19px);
+  }
+  .empty-state:hover .ill{transform:rotate(0)}
+  .empty-state .ill img{width:78%;display:block}
+  .empty-state h2{font-family:'Tektur',sans-serif;font-weight:900;font-size:32px;margin:0 0 10px;letter-spacing:-0.01em}
+  .empty-state p{margin:0 0 24px;color:var(--ink-soft);max-width:46ch;font-size:15px;line-height:1.5}
+  .empty-state .ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+  /* ── connected state toggling ────────────────── */
+  body[data-connected="true"]  .when-disconnected{display:none !important}
+  body[data-connected="false"] .when-connected   {display:none !important}
+  .wallet-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--surface);border:var(--bw) solid var(--ink);
+    border-radius:var(--r-pill);padding:7px 14px 7px 7px;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
+    box-shadow:var(--sh-sm);cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
+  }
+  .wallet-pill:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
+  .wallet-pill .avatar{
+    width:24px;height:24px;border-radius:50%;
+    background:linear-gradient(135deg,#AB9FF2,#FFD400);
+    border:1.5px solid var(--ink);
+  }
+
   .hidden{display:none !important}
 
   /* ── responsive ───────────────────────────────── */
@@ -701,7 +893,7 @@
   }
 </style>
 </head>
-<body>
+<body data-connected="false">
 
 <!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
 <div class="topbar">
@@ -718,7 +910,11 @@
     </div>
     <div class="topbar-actions">
       <button class="btn ghost" title="Search">⌘K</button>
-      <button class="btn primary">CONNECT WALLET</button>
+      <button class="btn primary when-disconnected" onclick="openWallet()">CONNECT WALLET</button>
+      <button class="wallet-pill when-connected" onclick="disconnect()" title="Disconnect">
+        <span class="avatar"></span>
+        <span id="wallet-addr">chicken.sol</span>
+      </button>
     </div>
   </div>
   <div class="shell">
@@ -732,151 +928,157 @@
 </div>
 
 <!-- ═══════════════════════ HOME ═══════════════════════ -->
-<main class="shell" id="tab-home">
+<main id="tab-home">
 
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <span class="sticker yolk">CYCLE&nbsp;#14 · ROOST</span>
-        <h1 class="phase-title">The flock<br/>is buying.</h1>
-        <p class="phase-sub">Bonding curve is open. Price moves with time, not market cap. Cycle ends in:</p>
-        <div class="countdown" id="cd">
-          <div class="cd-block"><div class="num" id="cd-d">03</div><div class="unit">days</div></div>
-          <div class="cd-block"><div class="num" id="cd-h">14</div><div class="unit">hrs</div></div>
-          <div class="cd-block"><div class="num" id="cd-m">22</div><div class="unit">min</div></div>
-          <div class="cd-block"><div class="num" id="cd-s">07</div><div class="unit">sec</div></div>
-        </div>
-        <div class="hero-cta">
-          <button class="btn buy xl" onclick="goTab('trade')">BUY $CLUCK →</button>
-          <button class="btn xl" onclick="goTab('vote')">CAST VOTE</button>
-        </div>
-      </div>
-
-      <div class="hero-right">
-        <div>
-          <span class="sticker">WINNING IDENTITY</span>
-          <div class="winner" style="margin-top:14px">
-            <div class="winner-logo"><img src="tokens/cluck.svg" alt="CLUCK"/></div>
-            <div>
-              <h3>CLUCK</h3>
-              <div class="ticker">$CLUCK · CHICKEN.PNG</div>
-              <div class="winner-meta">
-                <span class="pill">NAME · 41% LEAD</span>
-                <span class="pill">LOGO · 52% LEAD</span>
+  <!-- ── HERO BAND ─────────────────────────────────── -->
+  <div class="band">
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <span class="sticker yolk">CYCLE 14 · LIVE NOW</span>
+            <h1 class="phase-title">ROOST</h1>
+            <p class="phase-sub">$CLUCK is on the bonding curve. Price climbs as time runs out — cycle ends in:</p>
+            <div class="hero-meta">
+              <div class="cell">
+                <div class="l">PRICE</div>
+                <div class="v">0.000142 <small>SOL</small></div>
+              </div>
+              <div class="cell">
+                <div class="l">24H</div>
+                <div class="v up">+12.4%</div>
+              </div>
+              <div class="cell">
+                <div class="l">MKT CAP</div>
+                <div class="v">142K <small>SOL</small></div>
               </div>
             </div>
+            <div class="countdown" id="cd">
+              <div class="cd-block"><div class="num" id="cd-d">03</div><div class="unit">days</div></div>
+              <div class="cd-block"><div class="num" id="cd-h">14</div><div class="unit">hrs</div></div>
+              <div class="cd-block"><div class="num" id="cd-m">22</div><div class="unit">min</div></div>
+              <div class="cd-block"><div class="num" id="cd-s">07</div><div class="unit">sec</div></div>
+            </div>
+            <div class="hero-cta">
+              <button class="btn buy xl" onclick="goTab('trade')">BUY $CLUCK →</button>
+              <button class="btn xl" onclick="goTab('vote')">CAST VOTE</button>
+            </div>
+          </div>
+
+          <aside class="hero-poster" aria-hidden="true">
+            <div class="cycle-num">14</div>
+            <span class="tape">★ ROOST · CYCLE 14 · ROOST ★</span>
+            <div class="mark"><img src="logo.png" alt=""/></div>
+            <div class="winner-badge">
+              <span class="lab">CURRENT IDENTITY</span>
+              <span class="nm">$CLUCK</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ── LIVE STATS + ACTIVITY (yellow band) ──────── -->
+  <div class="band band-yolk">
+    <div class="shell">
+      <section class="stat-row">
+        <div class="stat"><div class="v">3,217</div><div class="l">Holders</div></div>
+        <div class="stat"><div class="v">14,820</div><div class="l">Trades</div></div>
+        <div class="stat"><div class="v">8,712</div><div class="l">Votes cast</div></div>
+        <div class="stat airdrop">
+          <div class="v">412 SOL</div>
+          <div class="l">Airdrop pool · 50% of fees</div>
+        </div>
+      </section>
+
+      <section class="split">
+        <div class="card">
+          <div class="section-title">
+            Live activity
+            <span class="pill live">REAL-TIME</span>
+          </div>
+          <div class="feed-list" id="feed-list"></div>
+        </div>
+
+        <div class="card vote-snap">
+          <div class="section-title">Voting snapshot</div>
+          <div class="vrow lead">
+            <div class="rank">1</div>
+            <div class="body">
+              <div class="name">CLUCK</div>
+              <div class="meta">2,418 votes · 41%</div>
+              <div class="pct-bar" style="--pct:41%"></div>
+            </div>
+            <div class="swatch"><img src="tokens/cluck.svg" alt=""/></div>
+          </div>
+          <div class="vrow">
+            <div class="rank">2</div>
+            <div class="body">
+              <div class="name">PECK</div>
+              <div class="meta">1,652 votes · 28%</div>
+              <div class="pct-bar" style="--pct:28%"></div>
+            </div>
+            <div class="swatch"><img src="tokens/feather.svg" alt=""/></div>
+          </div>
+          <div class="vrow">
+            <div class="rank">3</div>
+            <div class="body">
+              <div class="name">EGG GANG</div>
+              <div class="meta">1,121 votes · 19%</div>
+              <div class="pct-bar" style="--pct:19%"></div>
+            </div>
+            <div class="swatch"><img src="tokens/egg.svg" alt=""/></div>
+          </div>
+          <button class="btn vote lg" style="width:100%;margin-top:18px" onclick="goTab('vote')">CAST YOUR VOTE</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ── HOW IT WORKS (cream) ─────────────────────── -->
+  <div class="band">
+    <div class="shell">
+      <section>
+        <div class="section-title lg">How a cycle works</div>
+        <div class="how">
+          <div class="card">
+            <div class="step">1</div>
+            <h4>Fairlaunch</h4>
+            <p>Fixed price for 24h. Bots can't snipe — everyone enters at the same price. Vote on the cycle's name, ticker and logo while you buy.</p>
+          </div>
+          <div class="card" style="background:var(--yolk-soft)">
+            <div class="step">2</div>
+            <h4>Bonding curve</h4>
+            <p>Price moves with <em>time</em>, not market cap. The longer the cycle runs, the more it costs to enter. Trade freely — leaderboard updates live.</p>
+          </div>
+          <div class="card">
+            <div class="step">3</div>
+            <h4>Graduation</h4>
+            <p>Cycle ends, token auto-lists on Raydium. 50% of all fees route to the COOP airdrop. Then the next cycle begins. One token at a time.</p>
           </div>
         </div>
+      </section>
+    </div>
+  </div>
 
-        <div class="price-row">
-          <div class="price-cell">
-            <div class="label">PRICE</div>
-            <div class="v">0.000142<small>SOL</small></div>
-          </div>
-          <div class="price-cell">
-            <div class="label">24H</div>
-            <div class="v up">+12.4%</div>
-          </div>
+  <!-- ── PAST CYCLES (warm band) ──────────────────── -->
+  <div class="band band-warm">
+    <div class="shell">
+      <section>
+        <div class="section-title lg">Past cycles</div>
+        <div class="past-strip">
+          <div class="past-tile"><div class="thumb"><img src="tokens/worm.svg" alt=""/></div><div class="n">#13 · WORM</div><div class="t">$WORM</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
+          <div class="past-tile"><div class="thumb"><img src="tokens/roo.svg" alt=""/></div><div class="n">#12 · ROOSTER</div><div class="t">$ROO</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
+          <div class="past-tile"><div class="thumb"><img src="tokens/nest.svg" alt=""/></div><div class="n">#11 · NEST</div><div class="t">$NEST</div><div class="x"><span>820 holders</span><span class="dn">−42%</span></div></div>
+          <div class="past-tile"><div class="thumb"><img src="tokens/corn.svg" alt=""/></div><div class="n">#10 · CORN</div><div class="t">$CORN</div><div class="x"><span>2.1K holders</span><span class="up">+512%</span></div></div>
+          <div class="past-tile"><div class="thumb"><img src="tokens/yolk.svg" alt=""/></div><div class="n">#09 · YOLK</div><div class="t">$YOLK</div><div class="x"><span>3.4K holders</span><span class="up">+221%</span></div></div>
+          <div class="past-tile"><div class="thumb"><img src="tokens/peep.svg" alt=""/></div><div class="n">#08 · PEEP</div><div class="t">$PEEP</div><div class="x"><span>1.9K holders</span><span class="up">+98%</span></div></div>
         </div>
-
-        <div class="price-row">
-          <div class="price-cell">
-            <div class="label">MARKET CAP</div>
-            <div class="v">142.0K<small>SOL</small></div>
-          </div>
-          <div class="price-cell">
-            <div class="label">VOLUME 24H</div>
-            <div class="v">1,284<small>SOL</small></div>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
-  </section>
+  </div>
 
-  <section class="stat-row">
-    <div class="stat"><div class="v">3,217</div><div class="l">Holders this cycle</div></div>
-    <div class="stat"><div class="v">14,820</div><div class="l">Trades</div></div>
-    <div class="stat"><div class="v">8,712</div><div class="l">Votes cast</div></div>
-    <div class="stat airdrop">
-      <div class="v">412 SOL</div>
-      <div class="l">Airdrop pool · 50% of fees</div>
-    </div>
-  </section>
-
-  <section class="split">
-    <div class="card">
-      <div class="section-title">
-        Live activity
-        <span class="pill live">REAL-TIME</span>
-      </div>
-      <div class="feed-list" id="feed-list"></div>
-    </div>
-
-    <div class="card vote-snap">
-      <div class="section-title">Voting snapshot</div>
-      <div class="vrow lead">
-        <div class="rank">1</div>
-        <div class="body">
-          <div class="name">CLUCK</div>
-          <div class="meta">2,418 votes · 41%</div>
-          <div class="pct-bar" style="--pct:41%"></div>
-        </div>
-        <div class="swatch"><img src="tokens/cluck.svg" alt=""/></div>
-      </div>
-      <div class="vrow">
-        <div class="rank">2</div>
-        <div class="body">
-          <div class="name">PECK</div>
-          <div class="meta">1,652 votes · 28%</div>
-          <div class="pct-bar" style="--pct:28%"></div>
-        </div>
-        <div class="swatch"><img src="tokens/feather.svg" alt=""/></div>
-      </div>
-      <div class="vrow">
-        <div class="rank">3</div>
-        <div class="body">
-          <div class="name">EGG GANG</div>
-          <div class="meta">1,121 votes · 19%</div>
-          <div class="pct-bar" style="--pct:19%"></div>
-        </div>
-        <div class="swatch"><img src="tokens/egg.svg" alt=""/></div>
-      </div>
-      <button class="btn vote lg" style="width:100%;margin-top:18px" onclick="goTab('vote')">CAST YOUR VOTE</button>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-title lg">How a cycle works</div>
-    <div class="how">
-      <div class="card">
-        <div class="step">1</div>
-        <h4>Fairlaunch</h4>
-        <p>Fixed price for 24h. Bots can't snipe — everyone enters at the same price. Vote on the cycle's name, ticker and logo while you buy.</p>
-      </div>
-      <div class="card" style="background:var(--yolk-soft)">
-        <div class="step">2</div>
-        <h4>Bonding curve</h4>
-        <p>Price moves with <em>time</em>, not market cap. The longer the cycle runs, the more it costs to enter. Trade freely — leaderboard updates live.</p>
-      </div>
-      <div class="card">
-        <div class="step">3</div>
-        <h4>Graduation</h4>
-        <p>Cycle ends, token auto-lists on Raydium. 50% of all fees route to the COOP airdrop. Then the next cycle begins. One token at a time.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-title lg">Past cycles</div>
-    <div class="past-strip">
-      <div class="past-tile"><div class="thumb"><img src="tokens/worm.svg" alt=""/></div><div class="n">#13 · WORM</div><div class="t">$WORM</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
-      <div class="past-tile"><div class="thumb"><img src="tokens/roo.svg" alt=""/></div><div class="n">#12 · ROOSTER</div><div class="t">$ROO</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
-      <div class="past-tile"><div class="thumb"><img src="tokens/nest.svg" alt=""/></div><div class="n">#11 · NEST</div><div class="t">$NEST</div><div class="x"><span>820 holders</span><span class="dn">−42%</span></div></div>
-      <div class="past-tile"><div class="thumb"><img src="tokens/corn.svg" alt=""/></div><div class="n">#10 · CORN</div><div class="t">$CORN</div><div class="x"><span>2.1K holders</span><span class="up">+512%</span></div></div>
-      <div class="past-tile"><div class="thumb"><img src="tokens/yolk.svg" alt=""/></div><div class="n">#09 · YOLK</div><div class="t">$YOLK</div><div class="x"><span>3.4K holders</span><span class="up">+221%</span></div></div>
-      <div class="past-tile"><div class="thumb"><img src="tokens/peep.svg" alt=""/></div><div class="n">#08 · PEEP</div><div class="t">$PEEP</div><div class="x"><span>1.9K holders</span><span class="up">+98%</span></div></div>
-    </div>
-  </section>
 </main>
 
 <!-- ═══════════════════════ VOTE ═══════════════════════ -->
@@ -1070,7 +1272,21 @@
 
 <!-- ═══════════════════════ ME ═══════════════════════ -->
 <main class="shell hidden" id="tab-me">
-  <section class="me-grid">
+
+  <!-- ── empty state (shown when not connected) ── -->
+  <section class="when-disconnected">
+    <div class="empty-state">
+      <div class="ill"><img src="logo.png" alt=""/></div>
+      <h2>Connect your wallet</h2>
+      <p>Your bag, votes, and airdrop share live here. Connect a Solana wallet to see what you own this cycle.</p>
+      <div class="ctas">
+        <button class="btn primary xl" onclick="openWallet()">CONNECT WALLET</button>
+        <button class="btn lg" onclick="goTab('home')">VIEW THE CYCLE</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="me-grid when-connected">
     <div class="card bag">
       <div class="label">YOUR BAG · CYCLE 14</div>
       <p class="v">0.298 <span style="font-size:24px;color:var(--muted);font-weight:600">SOL</span></p>
@@ -1134,6 +1350,37 @@
   </div>
 </footer>
 
+<!-- ═══════════════════════ WALLET MODAL ═══════════════════════ -->
+<div class="modal-overlay" id="wallet-modal" role="dialog" aria-modal="true" aria-label="Connect wallet">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="x-close" aria-label="Close" onclick="closeWallet()">✕</button>
+    <h2>Connect a wallet</h2>
+    <p class="sub">Pick a Solana wallet. Coop never holds your keys — every signature stays in your wallet.</p>
+
+    <button class="wallet-row" onclick="connect('Phantom','chicken.sol')">
+      <span class="wlogo phantom">P</span>
+      <span><span class="wname">Phantom</span><span class="wmeta">most popular · detected</span></span>
+      <span class="wbadge">Detected</span>
+    </button>
+    <button class="wallet-row" onclick="connect('Solflare','7Hk2…3FaR')">
+      <span class="wlogo solflare">S</span>
+      <span><span class="wname">Solflare</span><span class="wmeta">browser · mobile</span></span>
+    </button>
+    <button class="wallet-row" onclick="connect('Backpack','feathers.sol')">
+      <span class="wlogo backpack">B</span>
+      <span><span class="wname">Backpack</span><span class="wmeta">xNFT support</span></span>
+    </button>
+    <button class="wallet-row" onclick="connect('Glow','9Pq8…uX2K')">
+      <span class="wlogo glow">G</span>
+      <span><span class="wname">Glow</span><span class="wmeta">simple · fast</span></span>
+    </button>
+
+    <div class="legal">
+      By connecting you agree to the <a href="#">terms</a> and <a href="#">fee schedule</a>.
+    </div>
+  </div>
+</div>
+
 <script>
   const tabs = document.querySelectorAll('.tab');
   const panels = ['home','vote','trade','me'];
@@ -1181,6 +1428,25 @@
     document.getElementById('cd-mini').textContent = `${d}D ${h}H ${m}M LEFT`;
   }
   tick(); setInterval(tick, 1000);
+
+  // === wallet modal & connected state ===========================
+  const modal = document.getElementById('wallet-modal');
+  function openWallet(){ modal.classList.add('open'); document.body.style.overflow='hidden' }
+  function closeWallet(){ modal.classList.remove('open'); document.body.style.overflow='' }
+  function connect(name, addr){
+    document.body.dataset.connected = 'true';
+    document.getElementById('wallet-addr').textContent = addr;
+    closeWallet();
+  }
+  function disconnect(){
+    document.body.dataset.connected = 'false';
+  }
+  modal.addEventListener('click', closeWallet);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeWallet() });
+  window.openWallet = openWallet;
+  window.closeWallet = closeWallet;
+  window.connect = connect;
+  window.disconnect = disconnect;
 
   const feedSeed = [
     {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s'},
