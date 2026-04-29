@@ -64,20 +64,20 @@
   .topbar{
     position:sticky;top:0;z-index:50;
     background:var(--bg);
-    border-bottom:var(--bw-thick) solid var(--line);
   }
-  .topbar-inner{
+  .topbar-row{
     display:grid;grid-template-columns:auto 1fr auto;
-    align-items:center;gap:18px;height:74px;
+    align-items:center;gap:24px;height:68px;
   }
   .logo{
     display:flex;align-items:center;gap:12px;
     font-family:'Tektur',sans-serif;font-weight:900;
-    font-size:26px;letter-spacing:-0.02em;
+    font-size:23px;letter-spacing:-0.02em;
     text-decoration:none;color:var(--ink);
+    flex-shrink:0;
   }
   .logo .chick{
-    width:48px;height:48px;background:var(--surface);
+    width:42px;height:42px;background:var(--surface);
     border:var(--bw) solid var(--ink);border-radius:var(--r-md);
     box-shadow:var(--sh-sm);
     display:inline-flex;align-items:center;justify-content:center;
@@ -87,10 +87,46 @@
   .logo:hover .chick{transform:rotate(-6deg) translateY(-1px)}
   .logo .chick img{width:100%;height:100%;object-fit:contain;padding:5px;display:block}
 
-  .cycle-strip{
-    display:flex;align-items:center;justify-content:center;
-    gap:10px;flex-wrap:wrap;
+  /* nav links inside the header (replaces separate tab row) */
+  .nav{display:flex;gap:4px;justify-content:center;align-items:center}
+  .nav-link{
+    font-family:'Tektur',sans-serif;font-weight:700;
+    font-size:13.5px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:9px 16px;color:var(--ink-soft);
+    background:transparent;
+    border:var(--bw) solid transparent;border-radius:var(--r-pill);
+    cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease),color 100ms var(--ease);
+    display:inline-flex;align-items:center;gap:6px;
   }
+  .nav-link:hover{color:var(--ink);background:rgba(0,0,0,0.05)}
+  .nav-link[aria-selected="true"]{
+    background:var(--yolk);
+    border-color:var(--ink);
+    color:var(--ink);
+    box-shadow:var(--sh-sm);
+  }
+  .nav-link .dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--tomato);
+    box-shadow:0 0 0 1.5px var(--ink);
+  }
+
+  /* search icon-only button */
+  .icon-btn{
+    width:40px;height:40px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    background:var(--surface);box-shadow:var(--sh-sm);
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
+  }
+  .icon-btn:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
+  .icon-btn svg{width:16px;height:16px}
+
+  .topbar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+  /* general pill — kept for "REAL-TIME" type pills elsewhere */
   .pill{
     border:var(--bw) solid var(--line);border-radius:var(--r-pill);
     padding:6px 12px;background:var(--surface);
@@ -99,18 +135,64 @@
     text-transform:uppercase;letter-spacing:0.04em;
     display:inline-flex;align-items:center;gap:7px;
   }
-  .pill.live{background:var(--surface)}
   .pill.live::before{
     content:"";width:8px;height:8px;border-radius:50%;
     background:var(--tomato);animation:blink 1.4s infinite;
     box-shadow:0 0 0 2px rgba(255,59,48,0.25);
   }
-  .pill.bonding{background:var(--yolk-soft)}
-  .pill.fair{background:var(--bg-2)}
-  .pill.grad{background:var(--yolk)}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0.3}}
 
-  .topbar-actions{display:flex;align-items:center;gap:10px}
+  /* ── cycle status bar (sits below header) ─────── */
+  .cycle-bar{
+    background:var(--yolk);
+    border-top:var(--bw-thick) solid var(--ink);
+    border-bottom:var(--bw-thick) solid var(--ink);
+  }
+  .cycle-bar-inner{
+    display:grid;grid-template-columns:auto 1fr auto;
+    align-items:center;gap:20px;height:48px;
+  }
+  .cb-section{display:flex;align-items:center;gap:12px}
+  .cb-tag{
+    background:var(--ink);color:var(--bg);
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    padding:5px 11px;border-radius:var(--r-pill);
+  }
+  .cb-phase{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--ink);
+  }
+  .cb-token{justify-content:center;gap:10px}
+  .cb-token .ti{
+    width:24px;height:24px;border:var(--bw) solid var(--ink);
+    border-radius:50%;background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;flex-shrink:0;
+  }
+  .cb-token .ti img{width:100%;height:100%;object-fit:cover;display:block}
+  .cb-token .nm{font-family:'Tektur',sans-serif;font-weight:900;font-size:14px;letter-spacing:-0.005em}
+  .cb-token .pr{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12.5px}
+  .cb-delta{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11.5px;
+    background:var(--ink);color:var(--bg);
+    padding:3px 9px;border-radius:var(--r-pill);
+    letter-spacing:0.02em;
+  }
+  .cb-delta.up{background:var(--grass);color:#fff}
+  .cb-delta.dn{background:var(--tomato);color:#fff}
+  .cb-timer{justify-content:flex-end;gap:8px}
+  .cb-timer .pulse{
+    width:8px;height:8px;border-radius:50%;background:var(--tomato);
+    box-shadow:0 0 0 2px rgba(255,59,48,0.3);
+    animation:blink 1.4s infinite;
+  }
+  .cb-timer .lab{
+    font-family:'JetBrains Mono',monospace;font-weight:600;
+    font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.65;
+  }
+  .cb-timer .val{font-family:'Tektur',sans-serif;font-weight:900;font-size:14px;letter-spacing:-0.005em}
 
   /* ── buttons ───────────────────────────────────── */
   .btn{
@@ -136,30 +218,6 @@
   .btn.xl{padding:18px 26px;font-size:17px;border-radius:var(--r-lg);box-shadow:var(--sh-lg)}
   .btn.xl:hover{box-shadow:var(--sh-xl)}
   .btn.sm{padding:6px 10px;font-size:11.5px}
-
-  /* ── tabs ──────────────────────────────────────── */
-  .tabs{
-    display:flex;gap:8px;
-    padding:14px 0;
-    overflow-x:auto;
-  }
-  .tab{
-    flex:0 0 auto;
-    padding:11px 20px;
-    font-family:'Tektur',sans-serif;font-weight:700;
-    font-size:14px;letter-spacing:0.03em;text-transform:uppercase;
-    background:var(--surface);color:var(--ink);
-    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
-    cursor:pointer;box-shadow:var(--sh-sm);
-    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
-  }
-  .tab:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
-  .tab[aria-selected="true"]{background:var(--yolk);transform:none;box-shadow:var(--sh)}
-  .tab .dot{
-    display:inline-block;width:7px;height:7px;border-radius:50%;
-    background:var(--tomato);margin-left:8px;vertical-align:middle;
-    box-shadow:0 0 0 1.5px var(--ink);
-  }
 
   /* ── cards ─────────────────────────────────────── */
   .card{
@@ -879,10 +937,27 @@
     .past-strip{grid-template-columns:repeat(3,1fr)}
     .trade-pane{position:static}
   }
+  @media (max-width:920px){
+    /* nav drops to its own scrollable row under the logo */
+    .topbar-row{
+      grid-template-columns:auto auto;
+      grid-template-rows:auto auto;
+      height:auto;padding:12px 0;gap:10px 14px;
+    }
+    .nav{
+      grid-column:1 / -1;justify-content:flex-start;
+      overflow-x:auto;padding:2px 0 4px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .nav::-webkit-scrollbar{display:none}
+  }
+  @media (max-width:760px){
+    /* cycle bar drops the middle token block, keeps cycle tag + countdown */
+    .cb-token{display:none}
+    .cycle-bar-inner{grid-template-columns:auto auto;gap:12px;height:44px}
+  }
   @media (max-width:680px){
     .shell{padding:0 16px}
-    .topbar-inner{grid-template-columns:auto auto;height:auto;padding:12px 0;gap:10px}
-    .cycle-strip{display:none}
     .stat-row{grid-template-columns:1fr 1fr}
     .past-strip{grid-template-columns:repeat(2,1fr)}
     .countdown{gap:8px}
@@ -890,42 +965,64 @@
     .cd-block .num{font-size:30px}
     .hero-left,.hero-right{padding:24px}
     .phase-title{font-size:48px}
+    /* hide search icon to save space, keep wallet primary */
+    .icon-btn{display:none}
   }
 </style>
 </head>
 <body data-connected="false">
 
 <!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
-<div class="topbar">
-  <div class="shell topbar-inner">
+<header class="topbar">
+  <div class="shell topbar-row">
     <a href="#" class="logo">
       <span class="chick" aria-hidden="true"><img src="logo.png" alt="" /></span>
       COOP
     </a>
-    <div class="cycle-strip">
-      <span class="pill live">LIVE</span>
-      <span class="pill bonding" id="phase-pill">CYCLE&nbsp;#14 · BONDING</span>
-      <span class="pill" id="cd-mini">3D 14H 22M LEFT</span>
-      <span class="pill">PRICE 0.000142 SOL</span>
-    </div>
+
+    <nav class="nav" role="tablist" aria-label="Sections">
+      <button class="nav-link" role="tab" aria-selected="true"  data-tab="home">The Coop</button>
+      <button class="nav-link" role="tab" aria-selected="false" data-tab="vote">Vote <span class="dot"></span></button>
+      <button class="nav-link" role="tab" aria-selected="false" data-tab="trade">Trade</button>
+      <button class="nav-link" role="tab" aria-selected="false" data-tab="me">Me</button>
+    </nav>
+
     <div class="topbar-actions">
-      <button class="btn ghost" title="Search">⌘K</button>
-      <button class="btn primary when-disconnected" onclick="openWallet()">CONNECT WALLET</button>
+      <button class="icon-btn" aria-label="Search" title="Search (⌘K)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="7" cy="7" r="5"/>
+          <line x1="11" y1="11" x2="14.5" y2="14.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn primary when-disconnected" onclick="openWallet()">Connect Wallet</button>
       <button class="wallet-pill when-connected" onclick="disconnect()" title="Disconnect">
         <span class="avatar"></span>
         <span id="wallet-addr">chicken.sol</span>
       </button>
     </div>
   </div>
-  <div class="shell">
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true"  data-tab="home">THE COOP</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="vote">VOTE <span class="dot"></span></button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="trade">TRADE</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="me">ME</button>
+
+  <!-- cycle status bar — sits sticky just under the header -->
+  <div class="cycle-bar" role="status" aria-label="Current cycle">
+    <div class="shell cycle-bar-inner">
+      <div class="cb-section">
+        <span class="cb-tag">CYCLE 14</span>
+        <span class="cb-phase">Bonding curve · Live</span>
+      </div>
+      <div class="cb-section cb-token">
+        <span class="ti"><img src="tokens/cluck.svg" alt=""/></span>
+        <span class="nm">$CLUCK</span>
+        <span class="pr">0.000142 SOL</span>
+        <span class="cb-delta up">+12.4%</span>
+      </div>
+      <div class="cb-section cb-timer">
+        <span class="pulse" aria-hidden="true"></span>
+        <span class="lab">Ends in</span>
+        <span class="val" id="cd-mini">3D 14H 22M</span>
+      </div>
     </div>
   </div>
-</div>
+</header>
 
 <!-- ═══════════════════════ HOME ═══════════════════════ -->
 <main id="tab-home">
@@ -1382,14 +1479,14 @@
 </div>
 
 <script>
-  const tabs = document.querySelectorAll('.tab');
+  const navLinks = document.querySelectorAll('.nav-link');
   const panels = ['home','vote','trade','me'];
   function goTab(name){
-    tabs.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
+    navLinks.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
     panels.forEach(p=>document.getElementById('tab-'+p).classList.toggle('hidden', p!==name));
     window.scrollTo({top:0, behavior:'smooth'});
   }
-  tabs.forEach(t=>t.addEventListener('click', ()=>goTab(t.dataset.tab)));
+  navLinks.forEach(t=>t.addEventListener('click', ()=>goTab(t.dataset.tab)));
   window.goTab = goTab;
 
   document.querySelectorAll('.bs-tabs button').forEach(b=>{
