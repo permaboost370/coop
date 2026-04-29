@@ -148,11 +148,32 @@
     border-top-color:var(--line);border-bottom-color:var(--line);
   }
   :root[data-theme="dark"] .airdrop-card{background:var(--surface-yolk);border-color:var(--line)}
-  :root[data-theme="dark"] .stat.airdrop{background:var(--surface-yolk)}
+  :root[data-theme="dark"] .stat.airdrop,
+  :root[data-theme="dark"] .band-yolk .stat.airdrop{
+    background:var(--surface-yolk);color:var(--ink);border-color:var(--line);
+  }
+  :root[data-theme="dark"] .band-yolk .stat.airdrop .v{color:var(--ink)}
+  :root[data-theme="dark"] .band-yolk .stat.airdrop .l{color:var(--muted)}
   /* keep the giant cycle-num outline visible against deep yolk */
   :root[data-theme="dark"] .hero-poster .cycle-num{
     -webkit-text-stroke-color:rgba(255,212,0,0.45);
   }
+  /* footer — invert strategy fails in dark (cream bg appears). Use true-black anchor. */
+  :root[data-theme="dark"] footer{
+    background:#000;color:var(--ink);
+    border-top-color:var(--line);
+  }
+  :root[data-theme="dark"] footer a{color:var(--ink-soft)}
+  :root[data-theme="dark"] footer a:hover{color:var(--yolk)}
+  /* card.invert — high-contrast slab. Light: dark-on-cream. Dark: black-on-charcoal. */
+  .card.invert{
+    background:var(--ink);color:#FDF6E8;border-color:var(--ink);
+  }
+  .card.invert .label{color:rgba(253,246,232,0.6);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
+  :root[data-theme="dark"] .card.invert{
+    background:#000;color:var(--ink);border-color:var(--line);
+  }
+  :root[data-theme="dark"] .card.invert .label{color:rgba(242,238,224,0.55)}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
@@ -1441,8 +1462,8 @@
 <!-- ═══════════════════════ VOTE ═══════════════════════ -->
 <main class="shell hidden" id="tab-vote">
   <section class="vote-header">
-    <div class="card" style="background:var(--ink);color:#fff;border-color:var(--ink)">
-      <div class="label" style="color:rgba(255,255,255,0.6)">YOUR VOTING WEIGHT</div>
+    <div class="card invert">
+      <div class="label">YOUR VOTING WEIGHT</div>
       <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:46px;line-height:1;margin-top:4px">14.2K</div>
       <div class="mono" style="font-size:12px;margin-top:8px;opacity:0.85">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
     </div>

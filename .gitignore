@@ -6,3 +6,6 @@ node_modules
 *.log
 .idea
 .vscode
+.shots
+package.json
+package-lock.json
