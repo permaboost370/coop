@@ -80,13 +80,38 @@
     color-scheme:dark;
   }
   /* brand surfaces in dark — black shadow gets lost, so use a darker-yolk amber.
-     darker than the surface yolk = reads as shadow, not halo. */
+     darker than the surface yolk = reads as shadow, not halo.
+     scoped to actually-yolk surfaces only (not all .btn.xl, which can be buy/surface). */
   :root[data-theme="dark"] .btn.primary,
-  :root[data-theme="dark"] .btn.xl,
   :root[data-theme="dark"] .btn.vote,
   :root[data-theme="dark"] .hero-poster .mark,
   :root[data-theme="dark"] .nav-link[aria-selected="true"]{
     --shadow-color:#6B5102;
+  }
+  /* Bright yolk surfaces keep light-mode contrast — cream ink on yellow is illegible.
+     Locally redefine --ink/--ink-soft/--muted so descendants inherit dark text + dark borders. */
+  :root[data-theme="dark"] .btn.primary,
+  :root[data-theme="dark"] .btn.vote,
+  :root[data-theme="dark"] .nav-link[aria-selected="true"],
+  :root[data-theme="dark"] .sticker.yolk,
+  :root[data-theme="dark"] .feed-icon.vote,
+  :root[data-theme="dark"] .vrow.lead,
+  :root[data-theme="dark"] .vrow .vote-btn.voted,
+  :root[data-theme="dark"] .how .card:nth-child(2) .step,
+  :root[data-theme="dark"] .submit-card,
+  :root[data-theme="dark"] .tradetabs button[aria-selected="true"],
+  :root[data-theme="dark"] .quick-amts button:hover,
+  :root[data-theme="dark"] .wallet-row .wbadge,
+  :root[data-theme="dark"] .sr-item:hover,
+  :root[data-theme="dark"] .sr-item[aria-selected="true"],
+  :root[data-theme="dark"] .empty-state .ill,
+  :root[data-theme="dark"] .winner-logo,
+  :root[data-theme="dark"] .identity-bar .logo-mini,
+  :root[data-theme="dark"] .bag-row .logo-mini{
+    --ink:#0A0A0A;
+    --ink-soft:#222222;
+    --muted:#5A5648;
+    color:#0A0A0A;
   }
   /* tone down the chart grid lines so they're visible on dark */
   :root[data-theme="dark"] .chart{
