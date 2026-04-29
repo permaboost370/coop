@@ -1233,6 +1233,151 @@
     /* hide search icon to save space, keep wallet primary */
     .icon-btn{display:none}
   }
+
+  /* ── toasts ───────────────────────────────────── */
+  .toast-host{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    display:flex;flex-direction:column-reverse;gap:10px;z-index:200;
+    pointer-events:none;
+    width:min(440px, calc(100% - 32px));
+  }
+  .toast{
+    background:var(--surface);color:var(--ink);
+    border:var(--bw) solid var(--ink);border-radius:var(--r-md);
+    box-shadow:var(--sh);
+    padding:12px 16px;
+    font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;
+    display:flex;align-items:center;gap:12px;
+    animation:toast-in 220ms var(--ease);
+    pointer-events:auto;
+  }
+  .toast.exit{animation:toast-out 200ms var(--ease) forwards}
+  .toast .ti{
+    width:30px;height:30px;border-radius:8px;border:var(--bw) solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:900;flex-shrink:0;
+  }
+  .toast.success .ti{background:var(--grass);color:#fff;border-color:var(--ink)}
+  .toast.error   .ti{background:var(--tomato);color:#fff;border-color:var(--ink)}
+  .toast.info    .ti{background:var(--yolk);color:#0A0A0A;border-color:var(--ink)}
+  .toast .body{flex:1;min-width:0;line-height:1.3}
+  .toast .body strong{display:block;font-size:14px}
+  .toast .body small{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;letter-spacing:0.02em}
+  @keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes toast-out{to{opacity:0;transform:translateY(8px)}}
+
+  /* ── trade subpanels (HOLDERS, CHAT) ──────────── */
+  .tradepanel.hidden{display:none}
+
+  .holders-list{padding:0;margin:0;list-style:none;display:flex;flex-direction:column}
+  .holder-row{
+    display:grid;grid-template-columns:32px 1fr auto auto;align-items:center;gap:14px;
+    padding:12px 18px;border-bottom:1.5px dashed var(--line);
+    font-size:13.5px;
+  }
+  .holder-row:last-child{border-bottom:none}
+  .holder-row .h-rank{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:700}
+  .holder-row .h-who{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:13px}
+  .holder-row .h-pct{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:600;text-align:right}
+  .holder-row .h-qty{font-family:'Tektur',sans-serif;font-weight:900;font-size:14px;text-align:right}
+  .holder-row .h-pct-bar{
+    grid-column:1 / -1;
+    height:3px;background:var(--bg-2);border-radius:99px;overflow:hidden;margin-top:-2px;
+  }
+  .holder-row .h-pct-bar > span{display:block;height:100%;background:var(--yolk);border-radius:99px;transition:width 600ms var(--ease)}
+
+  .chat-host{display:flex;flex-direction:column;height:380px}
+  .chat-log{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:14px}
+  .chat-msg{display:flex;flex-direction:column;font-size:13.5px;line-height:1.4}
+  .chat-msg .meta-row{display:flex;align-items:baseline;gap:8px}
+  .chat-msg .who{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft)}
+  .chat-msg .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)}
+  .chat-msg .txt{margin-top:2px}
+  .chat-msg.you .who{color:var(--yolk)}
+  :root[data-theme="dark"] .chat-msg.you .who{color:#FFE14F}
+  .chat-input-wrap{
+    border-top:var(--bw) solid var(--line);padding:12px 14px;
+    display:flex;gap:8px;
+  }
+  .chat-input-wrap input{
+    flex:1;padding:10px 14px;
+    background:var(--bg);color:var(--ink);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    font-family:'Space Grotesk',sans-serif;font-size:14px;
+    outline:none;
+  }
+  .chat-input-wrap input:focus{border-color:var(--ink)}
+
+  /* slippage tags */
+  .slippage-tags{display:flex;gap:6px;margin-top:10px}
+  .slippage-tags button{
+    flex:1;padding:8px 10px;
+    background:var(--surface);border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+    cursor:pointer;color:var(--ink);
+    transition:all 100ms var(--ease);
+  }
+  .slippage-tags button:hover{border-color:var(--ink);transform:translate(-1px,-1px);box-shadow:var(--sh-sm)}
+  .slippage-tags button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  :root[data-theme="dark"] .slippage-tags button[aria-pressed="true"]{background:#000;color:var(--ink);border-color:var(--line)}
+
+  /* phase / chart pulse */
+  @keyframes flash-up{0%{background:rgba(0,200,83,0.25)}100%{background:transparent}}
+  @keyframes flash-down{0%{background:rgba(255,59,48,0.22)}100%{background:transparent}}
+  .trades-table tr.flash-up td{animation:flash-up 1200ms ease-out}
+  .trades-table tr.flash-down td{animation:flash-down 1200ms ease-out}
+
+  /* feed-row entrance */
+  @keyframes feed-pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  .feed-row.new{animation:feed-pop 260ms var(--ease)}
+
+  /* price-up / price-down inline tick */
+  .price-tick{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;
+    margin-left:8px;font-weight:700;opacity:0;
+    transition:opacity 220ms var(--ease);
+  }
+  .price-tick.up{color:var(--grass)}
+  .price-tick.down{color:var(--tomato)}
+  .price-tick.show{opacity:1}
+
+  /* tab transitions — smooth & fast */
+  main[id^="tab-"]{will-change:opacity,transform}
+  main.tab-exit{
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity 130ms cubic-bezier(0.4,0,0.6,1), transform 130ms cubic-bezier(0.4,0,0.6,1);
+    pointer-events:none;
+  }
+  main.tab-enter{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  main.tab-enter.tab-enter-active{
+    opacity:1;
+    transform:translateY(0);
+    transition:opacity 200ms cubic-bezier(0.2,0.7,0.2,1), transform 200ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+
+  /* connected wallet pill dropdown */
+  .wallet-menu{
+    position:absolute;top:calc(100% + 6px);right:0;z-index:60;
+    background:var(--surface);
+    border:var(--bw) solid var(--ink);border-radius:var(--r-md);
+    box-shadow:var(--sh);
+    min-width:200px;padding:6px;
+    display:none;
+  }
+  .wallet-menu.open{display:block}
+  .wallet-menu button{
+    display:flex;align-items:center;gap:10px;width:100%;
+    background:transparent;border:none;padding:9px 12px;border-radius:var(--r-sm);
+    font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;
+    color:var(--ink);cursor:pointer;text-align:left;
+  }
+  .wallet-menu button:hover{background:var(--hover-tint)}
+  .wallet-menu button.danger{color:var(--tomato)}
+  .wallet-pill-wrap{position:relative;display:inline-block}
 </style>
 </head>
 <body data-connected="false">
@@ -1293,8 +1438,8 @@
       <div class="cb-section cb-token">
         <span class="ti"><img src="tokens/cluck.svg" alt=""/></span>
         <span class="nm">$CLUCK</span>
-        <span class="pr">0.000142 SOL</span>
-        <span class="cb-delta up">+12.4%</span>
+        <span class="pr" id="cb-price">0.000142 SOL</span>
+        <span class="cb-delta up" id="cb-delta">+12.4%</span>
       </div>
       <div class="cb-section cb-timer">
         <span class="pulse" aria-hidden="true"></span>
@@ -1320,11 +1465,11 @@
             <div class="hero-meta">
               <div class="cell">
                 <div class="l">PRICE</div>
-                <div class="v">0.000142 <small>SOL</small></div>
+                <div class="v"><span id="hero-price">0.000142</span> <small>SOL</small></div>
               </div>
               <div class="cell">
                 <div class="l">24H</div>
-                <div class="v up">+12.4%</div>
+                <div class="v up" id="hero-delta">+12.4%</div>
               </div>
               <div class="cell">
                 <div class="l">MKT CAP</div>
@@ -1464,8 +1609,8 @@
   <section class="vote-header">
     <div class="card invert">
       <div class="label">YOUR VOTING WEIGHT</div>
-      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:46px;line-height:1;margin-top:4px">14.2K</div>
-      <div class="mono" style="font-size:12px;margin-top:8px;opacity:0.85">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
+      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:46px;line-height:1;margin-top:4px"><span id="vote-weight">14.2K</span></div>
+      <div class="mono" style="font-size:12px;margin-top:8px;opacity:0.85" id="vote-weight-sub">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
     </div>
     <div class="card">
       <div class="label">VOTING ENDS WITH CYCLE</div>
@@ -1474,8 +1619,8 @@
     </div>
     <div class="card">
       <div class="label">TOTAL VOTES</div>
-      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:34px;line-height:1;margin-top:4px">8,712</div>
-      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:600">across 5,890 wallets</div>
+      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:34px;line-height:1;margin-top:4px" id="total-votes">8,712</div>
+      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:600" id="total-wallets">across 5,890 wallets</div>
     </div>
   </section>
 
@@ -1541,8 +1686,8 @@
           <div class="tk">$CLUCK · CYCLE #14 · CURRENT WINNING IDENTITY</div>
         </div>
         <div>
-          <div class="price">0.000142</div>
-          <div class="delta">+12.4% · 24H</div>
+          <div class="price" id="ident-price">0.000142</div>
+          <div class="delta" id="ident-delta">+12.4% · 24H</div>
         </div>
       </div>
 
@@ -1565,50 +1710,53 @@
 
       <div class="chart-wrap">
         <div class="chart-toolbar">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:600">PRICE · SOL</div>
-          <div class="ranges">
-            <button class="range-btn">1H</button>
-            <button class="range-btn">4H</button>
-            <button class="range-btn" aria-pressed="true">1D</button>
-            <button class="range-btn">CYCLE</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:600">
+            PRICE · SOL <span class="price-tick" id="price-tick"></span>
+          </div>
+          <div class="ranges" id="ranges">
+            <button class="range-btn" data-range="1h">1H</button>
+            <button class="range-btn" data-range="4h">4H</button>
+            <button class="range-btn" data-range="1d" aria-pressed="true">1D</button>
+            <button class="range-btn" data-range="cycle">CYCLE</button>
           </div>
         </div>
         <div class="chart">
-          <svg viewBox="0 0 600 320" preserveAspectRatio="none">
+          <svg viewBox="0 0 600 320" preserveAspectRatio="none" id="chart-svg">
             <defs>
               <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#FFD400" stop-opacity="0.55"/>
                 <stop offset="100%" stop-color="#FFD400" stop-opacity="0"/>
               </linearGradient>
             </defs>
-            <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80 L600,320 L0,320 Z"
-                  fill="url(#g1)"/>
-            <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80"
-                  fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-            <circle cx="600" cy="80" r="7" fill="#FFD400" stroke="#0A0A0A" stroke-width="2.5"/>
+            <path id="chart-fill" d="" fill="url(#g1)"/>
+            <path id="chart-line" d="" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle id="chart-dot" cx="600" cy="80" r="7" fill="var(--yolk)" stroke="var(--ink)" stroke-width="2.5"/>
           </svg>
         </div>
       </div>
 
-      <div class="tradetabs" role="tablist">
-        <button role="tab" aria-selected="true">TRADES</button>
-        <button role="tab" aria-selected="false">HOLDERS</button>
-        <button role="tab" aria-selected="false">CHAT</button>
+      <div class="tradetabs" role="tablist" id="trade-subtabs">
+        <button role="tab" data-panel="trades" aria-selected="true">TRADES</button>
+        <button role="tab" data-panel="holders" aria-selected="false">HOLDERS</button>
+        <button role="tab" data-panel="chat" aria-selected="false">CHAT</button>
       </div>
-      <div class="tradepanel">
+      <div class="tradepanel" id="panel-trades">
         <table class="trades-table">
           <thead><tr><th>TYPE</th><th>WALLET</th><th>AMOUNT</th><th>SOL</th><th>PRICE</th><th>TIME</th></tr></thead>
-          <tbody>
-            <tr><td class="b">BUY</td><td>chicken.sol</td><td>1.24M</td><td>0.176</td><td>0.000142</td><td>4s ago</td></tr>
-            <tr><td class="s">SELL</td><td>7Hk2…3FaR</td><td>820K</td><td>0.116</td><td>0.000141</td><td>11s ago</td></tr>
-            <tr><td class="b">BUY</td><td>feathers.sol</td><td>3.10M</td><td>0.440</td><td>0.000141</td><td>22s ago</td></tr>
-            <tr><td class="b">BUY</td><td>9Pq8…uX2K</td><td>540K</td><td>0.076</td><td>0.000140</td><td>45s ago</td></tr>
-            <tr><td class="s">SELL</td><td>nest.sol</td><td>2.00M</td><td>0.280</td><td>0.000140</td><td>1m ago</td></tr>
-            <tr><td class="b">BUY</td><td>roost.sol</td><td>4.80M</td><td>0.671</td><td>0.000140</td><td>1m ago</td></tr>
-            <tr><td class="b">BUY</td><td>Bk4t…aLm9</td><td>1.20M</td><td>0.167</td><td>0.000139</td><td>2m ago</td></tr>
-            <tr><td class="s">SELL</td><td>peck.sol</td><td>880K</td><td>0.122</td><td>0.000139</td><td>2m ago</td></tr>
-          </tbody>
+          <tbody id="trades-tbody"></tbody>
         </table>
+      </div>
+      <div class="tradepanel hidden" id="panel-holders">
+        <ul class="holders-list" id="holders-list"></ul>
+      </div>
+      <div class="tradepanel hidden" id="panel-chat">
+        <div class="chat-host">
+          <div class="chat-log" id="chat-log"></div>
+          <form class="chat-input-wrap" id="chat-form">
+            <input type="text" id="chat-input" placeholder="say something to the flock…" maxlength="240" autocomplete="off"/>
+            <button class="btn primary" type="submit">SEND</button>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -1631,18 +1779,24 @@
         <div class="quote">
           <div class="row"><span class="l">YOU GET</span><span><strong id="qty-out">3,521,126</strong> $CLUCK</span></div>
           <div class="row"><span class="l">PRICE IMPACT</span><span>0.42%</span></div>
-          <div class="row"><span class="l">SLIPPAGE</span><span>1.0% <button class="btn sm" style="margin-left:6px">EDIT</button></span></div>
+          <div class="row"><span class="l">SLIPPAGE</span><span><span id="slippage-val">1.0</span>% <button class="btn sm" style="margin-left:6px" type="button" id="slippage-edit">EDIT</button></span></div>
+          <div class="slippage-tags" id="slippage-tags" style="display:none">
+            <button type="button" data-s="0.5">0.5%</button>
+            <button type="button" data-s="1.0" aria-pressed="true">1.0%</button>
+            <button type="button" data-s="2.0">2.0%</button>
+            <button type="button" data-s="5.0">5.0%</button>
+          </div>
           <div class="row airdrop"><span class="l">FEE → AIRDROP (50%)</span><span><strong>0.0025 SOL</strong></span></div>
         </div>
-        <button class="btn buy xl" style="width:100%">BUY $CLUCK</button>
+        <button class="btn buy xl" id="trade-action" style="width:100%" type="button">BUY $CLUCK</button>
         <div class="small-note">no migration · auto-graduates to raydium</div>
       </div>
 
-      <div class="card tight" style="margin-top:18px">
+      <div class="card tight" style="margin-top:18px" id="position-card">
         <div class="label">YOUR POSITION</div>
-        <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;line-height:1;margin-top:4px">2.1M $CLUCK</div>
-        <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:600">≈ 0.298 SOL · entry 0.000118</div>
-        <div class="mono" style="font-size:12.5px;color:var(--grass);font-weight:700;margin-top:4px">+20.3% unrealized</div>
+        <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;line-height:1;margin-top:4px"><span id="pos-qty">2.1M</span> $CLUCK</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:600">≈ <span id="pos-sol">0.298</span> SOL · entry <span id="pos-entry">0.000118</span></div>
+        <div class="mono" id="pos-pnl" style="font-size:12.5px;color:var(--grass);font-weight:700;margin-top:4px">+20.3% unrealized</div>
       </div>
     </aside>
   </section>
@@ -1779,13 +1933,47 @@
   </div>
 </div>
 
+<div class="toast-host" id="toast-host" aria-live="polite" aria-atomic="false"></div>
+
 <script>
+  // ════════════ TAB ROUTING + SMOOTH TRANSITIONS ════════════
   const navLinks = document.querySelectorAll('.nav-link');
   const panels = ['home','vote','trade','me'];
+  let currentTab = 'home';
+  let tabAnimating = false;
+
   function goTab(name){
+    if(name===currentTab || tabAnimating) {
+      navLinks.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
+      return;
+    }
+    tabAnimating = true;
     navLinks.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
-    panels.forEach(p=>document.getElementById('tab-'+p).classList.toggle('hidden', p!==name));
-    window.scrollTo({top:0, behavior:'smooth'});
+
+    const prev = document.getElementById('tab-'+currentTab);
+    const next = document.getElementById('tab-'+name);
+
+    // exit prev
+    prev.classList.remove('tab-enter');
+    prev.classList.add('tab-exit');
+    setTimeout(()=>{
+      prev.classList.add('hidden');
+      prev.classList.remove('tab-exit');
+
+      // enter next
+      next.classList.remove('hidden');
+      next.classList.add('tab-enter');
+      requestAnimationFrame(()=>{
+        next.classList.add('tab-enter-active');
+        setTimeout(()=>{
+          next.classList.remove('tab-enter','tab-enter-active');
+          tabAnimating = false;
+        }, 220);
+      });
+
+      window.scrollTo({top:0, behavior:'smooth'});
+      currentTab = name;
+    }, 130);
   }
   navLinks.forEach(t=>t.addEventListener('click', ()=>goTab(t.dataset.tab)));
   window.goTab = goTab;
@@ -1997,26 +2185,759 @@
   }
   window.toggleTheme = toggleTheme;
 
-  const feedSeed = [
-    {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s'},
-    {kind:'vote', who:'feathers.sol', what:'voted CHICKEN.PNG',     amount:'+820',   unit:'wt',    t:'9s'},
-    {kind:'buy',  who:'roost.sol',    what:'bought $CLUCK',         amount:'+4.80M', unit:'CLUCK', t:'14s'},
-    {kind:'sell', who:'7Hk2…3FaR',    what:'sold $CLUCK',           amount:'−820K',  unit:'CLUCK', t:'22s'},
-    {kind:'vote', who:'corn.sol',     what:'voted PECK',            amount:'+2.4K',  unit:'wt',    t:'31s'},
-    {kind:'buy',  who:'9Pq8…uX2K',    what:'bought $CLUCK',         amount:'+540K',  unit:'CLUCK', t:'45s'},
-    {kind:'vote', who:'yolk.sol',     what:'submitted "CLUCKZILLA"',amount:'NEW',    unit:'',      t:'1m'},
-    {kind:'sell', who:'nest.sol',     what:'sold $CLUCK',           amount:'−2.00M', unit:'CLUCK', t:'1m'},
+  // ════════════════════════════════════════════════════════════
+  // ════════════════════ LIVE SIMULATION CORE ════════════════════
+  // ════════════════════════════════════════════════════════════
+
+  // ── global state ────────────────────────────────────────────
+  const STATE = {
+    cluck: {
+      price: 0.000142,
+      price24hAgo: 0.000126,
+      history: [],     // last 240 ticks for chart
+      holders: 3217,
+      trades: 14820,
+      mcap: 142_000,   // synthetic mkt cap
+    },
+    cycle: {
+      number: 14,
+      airdropPool: 412.0,
+      totalVotes: 8712,
+      totalWallets: 5890,
+    },
+    user: {
+      connected: false,
+      wallet: null,
+      addr: null,
+      cluck: 2_100_000,
+      cluckEntry: 0.000118,
+      sol: 18.4,
+      weight: 14200,
+      votedFor: { name:'CLUCK', ticker:'$CLUCK', logo:'CHICKEN.PNG' },
+      proposalsSubmitted: [],
+    },
+    slippage: 1.0,
+    range: '1d',
+  };
+
+  // ── format helpers ──────────────────────────────────────────
+  function fmtCluck(n){
+    if(n >= 1e9) return (n/1e9).toFixed(2)+'B';
+    if(n >= 1e6) return (n/1e6).toFixed(2)+'M';
+    if(n >= 1e3) return (n/1e3).toFixed(1)+'K';
+    return Math.round(n).toLocaleString();
+  }
+  function fmtSol(n, dp=3){ return n.toFixed(dp) }
+  function fmtPrice(n){ return n.toFixed(6) }
+  function pad2(n){ return String(n).padStart(2,'0') }
+  function relTime(secAgo){
+    if(secAgo < 5) return 'now';
+    if(secAgo < 60) return `${Math.round(secAgo)}s ago`;
+    if(secAgo < 3600) return `${Math.round(secAgo/60)}m ago`;
+    return `${Math.round(secAgo/3600)}h ago`;
+  }
+  const fakeWallets = [
+    'chicken.sol','feathers.sol','roost.sol','corn.sol','nest.sol',
+    'yolk.sol','peck.sol','7Hk2…3FaR','9Pq8…uX2K','Bk4t…aLm9',
+    '4xVm…81jP','GfT8…29wQ','Lp3E…5uXR','3MbN…aQv2','Hn7d…YkL4',
   ];
-  const feedEl = document.getElementById('feed-list');
-  feedSeed.forEach(r=>{
-    const row = document.createElement('div'); row.className='feed-row';
-    row.innerHTML = `
-      <div class="feed-icon ${r.kind}">${r.kind==='buy'?'B':r.kind==='sell'?'S':'V'}</div>
-      <div><div class="who">${r.who}</div><div class="what">${r.what} · ${r.t} ago</div></div>
-      <div class="amount">${r.amount}<span class="u"> ${r.unit}</span></div>
-    `;
-    feedEl.appendChild(row);
+  function randWallet(){ return fakeWallets[Math.floor(Math.random()*fakeWallets.length)] }
+  function randSize(mode){
+    // typical SOL trade sizes between 0.05 and 5
+    const r = Math.random();
+    if(r < 0.55) return 0.05 + Math.random()*0.5;
+    if(r < 0.85) return 0.5 + Math.random()*1.5;
+    return 2 + Math.random()*4;
+  }
+
+  // ── toasts ──────────────────────────────────────────────────
+  const toastHost = document.getElementById('toast-host');
+  function toast(kind, title, sub){
+    const el = document.createElement('div');
+    el.className = `toast ${kind||'info'}`;
+    const icon = kind==='success' ? '✓' : kind==='error' ? '!' : '★';
+    el.innerHTML = `<div class="ti">${icon}</div><div class="body"><strong>${title}</strong>${sub?`<small>${sub}</small>`:''}</div>`;
+    toastHost.appendChild(el);
+    setTimeout(()=>{
+      el.classList.add('exit');
+      setTimeout(()=>el.remove(), 220);
+    }, 3400);
+  }
+  window.toast = toast;
+
+  // ════════════ CHART (SVG path, theme-aware) ════════════
+  const CHART_POINTS = 72;
+  const CHART_W = 600, CHART_H = 320, CHART_PAD = 12;
+  function seedHistory(){
+    // synthesize uptrend from 0.000115 to 0.000142 with noise
+    const start = STATE.cluck.price * 0.81;
+    const end   = STATE.cluck.price;
+    STATE.cluck.history = [];
+    for(let i=0;i<CHART_POINTS;i++){
+      const t = i/(CHART_POINTS-1);
+      const trend = start + (end-start)*Math.pow(t, 0.9);
+      const noise = (Math.sin(i*0.7)*0.013) + (Math.cos(i*1.3)*0.009) + (Math.random()-0.5)*0.012;
+      STATE.cluck.history.push(trend * (1+noise));
+    }
+    STATE.cluck.history[STATE.cluck.history.length-1] = STATE.cluck.price;
+  }
+  function getViewHistory(){
+    const r = STATE.range;
+    const h = STATE.cluck.history;
+    if(r==='1h')   return h.slice(-12);
+    if(r==='4h')   return h.slice(-30);
+    if(r==='1d')   return h.slice(-CHART_POINTS);
+    return h; // cycle = full
+  }
+  function renderChart(){
+    const data = getViewHistory();
+    if(data.length<2) return;
+    const min = Math.min(...data) * 0.985;
+    const max = Math.max(...data) * 1.015;
+    const range = Math.max(max-min, 1e-12);
+    const stepX = CHART_W / (data.length-1);
+    let line = '', last = [0,0];
+    for(let i=0;i<data.length;i++){
+      const x = i*stepX;
+      const y = CHART_H - CHART_PAD - ((data[i]-min)/range)*(CHART_H - CHART_PAD*2);
+      line += (i===0 ? 'M' : ' L') + x.toFixed(1) + ',' + y.toFixed(1);
+      if(i===data.length-1) last = [x,y];
+    }
+    const fill = line + ` L${CHART_W},${CHART_H} L0,${CHART_H} Z`;
+    const fillEl = document.getElementById('chart-fill');
+    const lineEl = document.getElementById('chart-line');
+    const dotEl  = document.getElementById('chart-dot');
+    if(fillEl) fillEl.setAttribute('d', fill);
+    if(lineEl) lineEl.setAttribute('d', line);
+    if(dotEl){ dotEl.setAttribute('cx', last[0].toFixed(1)); dotEl.setAttribute('cy', last[1].toFixed(1)); }
+  }
+  // range buttons
+  document.querySelectorAll('#ranges .range-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#ranges .range-btn').forEach(x=>x.removeAttribute('aria-pressed'));
+      b.setAttribute('aria-pressed','true');
+      STATE.range = b.dataset.range;
+      renderChart();
+    });
   });
+
+  // ── price-tick visual ──
+  function flashPriceTick(delta){
+    const el = document.getElementById('price-tick');
+    if(!el) return;
+    el.textContent = (delta>=0?'▲ ':'▼ ') + (Math.abs(delta)*1e6).toFixed(2);
+    el.className = 'price-tick show ' + (delta>=0?'up':'down');
+    clearTimeout(flashPriceTick._t);
+    flashPriceTick._t = setTimeout(()=>{
+      el.classList.remove('show');
+    }, 1100);
+  }
+
+  // ── propagate price across all bound elements ──
+  function syncPriceLabels(){
+    const p = STATE.cluck.price;
+    const pct = ((p - STATE.cluck.price24hAgo)/STATE.cluck.price24hAgo)*100;
+    const sgn = pct>=0 ? '+' : '';
+    const dp = sgn + pct.toFixed(1) + '%';
+
+    const set = (id, v) => { const e=document.getElementById(id); if(e) e.textContent = v };
+    set('hero-price', fmtPrice(p));
+    set('hero-delta', dp);
+    set('cb-price', fmtPrice(p) + ' SOL');
+    set('cb-delta', dp);
+    set('ident-price', fmtPrice(p));
+    set('ident-delta', dp + ' · 24H');
+    // hero-meta delta color toggle
+    const hd = document.getElementById('hero-delta');
+    if(hd){ hd.classList.toggle('up', pct>=0); hd.style.color = pct>=0 ? '' : 'var(--tomato)' }
+    const cd = document.getElementById('cb-delta');
+    if(cd){
+      cd.classList.toggle('up', pct>=0);
+      cd.classList.toggle('dn', pct<0);
+    }
+    recalcQty();
+    syncPositionUI();
+  }
+
+  // ── trades table ──
+  function prependTradeRow(trade){
+    const tbody = document.getElementById('trades-tbody');
+    if(!tbody) return;
+    const tr = document.createElement('tr');
+    tr.classList.add(trade.type==='buy'?'flash-up':'flash-down');
+    tr.innerHTML = `
+      <td class="${trade.type==='buy'?'b':'s'}">${trade.type.toUpperCase()}</td>
+      <td>${trade.who}</td>
+      <td>${fmtCluck(trade.qty)}</td>
+      <td>${fmtSol(trade.sol,3)}</td>
+      <td>${fmtPrice(trade.price)}</td>
+      <td>${trade.t}</td>
+    `;
+    tbody.insertBefore(tr, tbody.firstChild);
+    while(tbody.children.length > 20) tbody.lastChild.remove();
+  }
+
+  // ── activity feed ──
+  const feedEl = document.getElementById('feed-list');
+  function prependFeed(row){
+    if(!feedEl) return;
+    const el = document.createElement('div');
+    el.className = 'feed-row new';
+    const letter = row.kind==='buy'?'B':row.kind==='sell'?'S':'V';
+    el.innerHTML = `
+      <div class="feed-icon ${row.kind}">${letter}</div>
+      <div><div class="who">${row.who}</div><div class="what">${row.what} · ${row.t}</div></div>
+      <div class="amount">${row.amount}<span class="u"> ${row.unit||''}</span></div>
+    `;
+    feedEl.insertBefore(el, feedEl.firstChild);
+    while(feedEl.children.length > 18) feedEl.lastChild.remove();
+    setTimeout(()=>el.classList.remove('new'), 280);
+  }
+
+  // ── holders panel ──
+  const holdersSeed = [
+    {who:'chicken.sol',  qty:8.4,  pct:8.4},
+    {who:'roost.sol',    qty:6.1,  pct:6.1},
+    {who:'feathers.sol', qty:5.2,  pct:5.2},
+    {who:'nest.sol',     qty:4.8,  pct:4.8},
+    {who:'7Hk2…3FaR',    qty:3.9,  pct:3.9},
+    {who:'corn.sol',     qty:3.2,  pct:3.2},
+    {who:'9Pq8…uX2K',    qty:2.7,  pct:2.7},
+    {who:'yolk.sol',     qty:2.4,  pct:2.4},
+    {who:'peck.sol',     qty:2.0,  pct:2.0},
+    {who:'4xVm…81jP',    qty:1.7,  pct:1.7},
+    {who:'GfT8…29wQ',    qty:1.4,  pct:1.4},
+    {who:'Bk4t…aLm9',    qty:1.2,  pct:1.2},
+  ];
+  function renderHolders(){
+    const list = document.getElementById('holders-list');
+    if(!list) return;
+    list.innerHTML = holdersSeed.map((h,i)=>`
+      <li class="holder-row">
+        <div class="h-rank">#${i+1}</div>
+        <div class="h-who">${h.who}</div>
+        <div class="h-qty">${(h.pct*1.45).toFixed(2)}M</div>
+        <div class="h-pct">${h.pct.toFixed(2)}%</div>
+        <div class="h-pct-bar"><span style="width:${Math.min(h.pct*8,100)}%"></span></div>
+      </li>
+    `).join('');
+  }
+
+  // ── chat panel ──
+  const chatSeed = [
+    {who:'chicken.sol',  txt:'gm flock 🐔',                       when:'2m ago'},
+    {who:'roost.sol',    txt:'CLUCK to graduation. easy.',         when:'2m ago'},
+    {who:'feathers.sol', txt:'who voted CHICKEN.PNG? top tier',    when:'1m ago'},
+    {who:'corn.sol',     txt:'fee → airdrop split is the play',    when:'1m ago'},
+    {who:'7Hk2…3FaR',    txt:'just sold a chunk, will buy back',   when:'40s ago'},
+    {who:'nest.sol',     txt:'wen $CLUCK 0.0002',                  when:'25s ago'},
+    {who:'yolk.sol',     txt:'next cycle gonna be $YOLK ofc',      when:'12s ago'},
+  ];
+  let chatHistory = chatSeed.slice();
+  function renderChat(){
+    const log = document.getElementById('chat-log');
+    if(!log) return;
+    log.innerHTML = chatHistory.map(m=>`
+      <div class="chat-msg ${m.you?'you':''}">
+        <div class="meta-row"><span class="who">${m.you?'you':m.who}</span><span class="when">${m.when}</span></div>
+        <div class="txt">${escHtml(m.txt)}</div>
+      </div>
+    `).join('');
+    log.scrollTop = log.scrollHeight;
+  }
+  function pushChat(msg){
+    chatHistory.push(msg);
+    if(chatHistory.length > 80) chatHistory.shift();
+    renderChat();
+  }
+
+  // ── trade subtab switching ──
+  document.querySelectorAll('#trade-subtabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const which = btn.dataset.panel;
+      document.querySelectorAll('#trade-subtabs button').forEach(b=>b.setAttribute('aria-selected', b===btn));
+      ['trades','holders','chat'].forEach(p=>{
+        document.getElementById('panel-'+p).classList.toggle('hidden', p!==which);
+      });
+    });
+  });
+
+  // ── position card sync ──
+  function syncPositionUI(){
+    const u = STATE.user;
+    const p = STATE.cluck.price;
+    const sol = u.cluck * p;
+    const pnlPct = u.cluckEntry > 0 ? ((p - u.cluckEntry)/u.cluckEntry)*100 : 0;
+    const set = (id, v) => { const e=document.getElementById(id); if(e) e.textContent = v };
+    set('pos-qty', fmtCluck(u.cluck));
+    set('pos-sol', fmtSol(sol, 3));
+    set('pos-entry', fmtPrice(u.cluckEntry));
+    const pnlEl = document.getElementById('pos-pnl');
+    if(pnlEl){
+      pnlEl.textContent = (pnlPct>=0?'+':'') + pnlPct.toFixed(1) + '% unrealized';
+      pnlEl.style.color = pnlPct>=0 ? 'var(--grass)' : 'var(--tomato)';
+    }
+  }
+
+  // ── recalcQty (replaces inline version) ──
+  function recalcQty(){
+    const a = parseFloat(document.getElementById('amt')?.value||0);
+    const out = a>0 ? Math.round(a / STATE.cluck.price).toLocaleString() : '0';
+    const el = document.getElementById('qty-out');
+    if(el) el.textContent = out;
+  }
+  window.recalcQty = recalcQty;
+
+  // ── trade execution ──
+  let userTradeMode = 'buy';
+  document.querySelectorAll('.bs-tabs button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      userTradeMode = b.dataset.mode;
+      const main = document.getElementById('trade-action');
+      if(!main) return;
+      if(userTradeMode==='buy'){
+        main.className = 'btn buy xl';
+        main.textContent = 'BUY $CLUCK';
+      } else {
+        main.className = 'btn sell xl';
+        main.textContent = 'SELL $CLUCK';
+      }
+      main.style.width = '100%';
+    });
+  });
+
+  function executeTrade(){
+    const amt = parseFloat(document.getElementById('amt').value || 0);
+    if(!STATE.user.connected){
+      toast('error','Wallet required','Connect a Solana wallet to trade');
+      openWallet();
+      return;
+    }
+    if(!amt || amt <= 0){
+      toast('error','Enter an amount','Amount must be greater than zero');
+      return;
+    }
+    if(userTradeMode==='buy'){
+      if(amt > STATE.user.sol){
+        toast('error','Insufficient SOL', `You have ${fmtSol(STATE.user.sol,2)} SOL`);
+        return;
+      }
+      const impact = Math.min(amt * 0.0014, 0.04);
+      const newPrice = STATE.cluck.price * (1 + impact);
+      const fillPrice = (STATE.cluck.price + newPrice)/2;
+      const slip = STATE.slippage/100;
+      const qty = (amt * (1 - slip*0.1)) / fillPrice;
+      // update
+      const oldPos = STATE.user.cluck;
+      STATE.user.cluck += qty;
+      STATE.user.cluckEntry = oldPos > 0
+        ? (STATE.user.cluckEntry*oldPos + fillPrice*qty)/STATE.user.cluck
+        : fillPrice;
+      STATE.user.sol -= amt;
+      STATE.cluck.price = newPrice;
+      STATE.cluck.history.push(newPrice);
+      if(STATE.cluck.history.length > 600) STATE.cluck.history.shift();
+      STATE.cluck.trades += 1;
+      flashPriceTick(newPrice - fillPrice);
+      prependTradeRow({type:'buy', who:STATE.user.addr||'you', qty, sol:amt, price:fillPrice, t:'now'});
+      prependFeed({kind:'buy', who:STATE.user.addr||'you', what:'bought $CLUCK', amount:'+'+fmtCluck(qty), unit:'CLUCK', t:'now'});
+      toast('success', `Bought ${fmtCluck(qty)} $CLUCK`, `${amt} SOL @ ${fmtPrice(fillPrice)}`);
+    } else {
+      if(amt > STATE.user.cluck * STATE.cluck.price){
+        toast('error','Not enough $CLUCK', `You have ${fmtCluck(STATE.user.cluck)} ($CLUCK)`);
+        return;
+      }
+      const impact = Math.min(amt * 0.0014, 0.04);
+      const newPrice = STATE.cluck.price * (1 - impact);
+      const fillPrice = (STATE.cluck.price + newPrice)/2;
+      const qty = amt / fillPrice;
+      const proceeds = amt * 0.99;
+      STATE.user.cluck = Math.max(0, STATE.user.cluck - qty);
+      STATE.user.sol += proceeds;
+      STATE.cluck.price = newPrice;
+      STATE.cluck.history.push(newPrice);
+      if(STATE.cluck.history.length > 600) STATE.cluck.history.shift();
+      STATE.cluck.trades += 1;
+      flashPriceTick(newPrice - fillPrice);
+      prependTradeRow({type:'sell', who:STATE.user.addr||'you', qty, sol:amt, price:fillPrice, t:'now'});
+      prependFeed({kind:'sell', who:STATE.user.addr||'you', what:'sold $CLUCK', amount:'−'+fmtCluck(qty), unit:'CLUCK', t:'now'});
+      toast('success', `Sold ${fmtCluck(qty)} $CLUCK`, `for ${fmtSol(proceeds,3)} SOL @ ${fmtPrice(fillPrice)}`);
+    }
+    syncPriceLabels();
+    renderChart();
+  }
+  const tradeActionBtn = document.getElementById('trade-action');
+  if(tradeActionBtn) tradeActionBtn.addEventListener('click', executeTrade);
+
+  // ── slippage editor ──
+  const slipEdit = document.getElementById('slippage-edit');
+  const slipTags = document.getElementById('slippage-tags');
+  if(slipEdit) slipEdit.addEventListener('click', ()=>{
+    slipTags.style.display = slipTags.style.display === 'none' ? 'flex' : 'none';
+  });
+  document.querySelectorAll('#slippage-tags button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#slippage-tags button').forEach(x=>x.removeAttribute('aria-pressed'));
+      b.setAttribute('aria-pressed','true');
+      STATE.slippage = parseFloat(b.dataset.s);
+      document.getElementById('slippage-val').textContent = STATE.slippage.toFixed(1);
+      slipTags.style.display = 'none';
+      toast('info', `Slippage set to ${STATE.slippage}%`);
+    });
+  });
+
+  // ── voting ──
+  function recalcVoteRow(vrow, totalVotes){
+    const meta = vrow.querySelector('.meta');
+    const bar  = vrow.querySelector('.pct-bar');
+    if(!meta || !bar) return;
+    const v = parseInt(vrow.dataset.votes||0,10);
+    const pct = totalVotes ? (v/totalVotes)*100 : 0;
+    meta.textContent = `${v.toLocaleString()} votes · ${pct.toFixed(1)}%`;
+    bar.style.setProperty('--pct', pct.toFixed(1)+'%');
+  }
+  function refreshColumn(col){
+    let total = 0;
+    col.querySelectorAll('.vrow').forEach(r=>{
+      // store initial votes from text if no dataset
+      if(!r.dataset.votes){
+        const m = r.querySelector('.meta')?.textContent || '';
+        const match = m.match(/([\d,]+)\s+votes/);
+        r.dataset.votes = match ? match[1].replace(/,/g,'') : '0';
+      }
+      total += parseInt(r.dataset.votes,10);
+    });
+    // sort descending
+    const rows = Array.from(col.querySelectorAll('.vrow'));
+    rows.sort((a,b)=>parseInt(b.dataset.votes,10)-parseInt(a.dataset.votes,10));
+    rows.forEach((r,i)=>{
+      col.appendChild(r);
+      r.classList.toggle('lead', i===0);
+      const rk = r.querySelector('.rank'); if(rk) rk.textContent = i+1;
+      recalcVoteRow(r, total);
+    });
+    // update header badge
+    const badge = col.querySelector('h3 .badge');
+    if(badge && rows[0]){
+      const leadName = rows[0].querySelector('.name')?.textContent || '';
+      const leadV = parseInt(rows[0].dataset.votes,10);
+      const pct = total ? (leadV/total)*100 : 0;
+      const isLogo = col.querySelector('.swatch');
+      const isTicker = leadName.startsWith('$');
+      if(isLogo)        badge.textContent = `${pct.toFixed(0)}% LEAD`;
+      else if(isTicker) badge.textContent = `${leadName} ${pct.toFixed(0)}%`;
+      else              badge.textContent = `${pct.toFixed(0)}% LEAD`;
+    }
+    // update total
+    let grand = 0;
+    document.querySelectorAll('.vcol').forEach(c=>{
+      c.querySelectorAll('.vrow').forEach(r=>{ grand += parseInt(r.dataset.votes||0,10) });
+    });
+    const tv = document.getElementById('total-votes');
+    if(tv) tv.textContent = grand.toLocaleString();
+  }
+
+  // wire VOTE buttons (and PROPOSE forms) — once tab-vote is in DOM
+  function wireVoteHandlers(){
+    document.querySelectorAll('.vcol').forEach(col=>refreshColumn(col));
+
+    document.querySelectorAll('.vrow .vote-btn').forEach(btn=>{
+      if(btn._wired) return; btn._wired = true;
+      btn.addEventListener('click', ()=>{
+        if(!STATE.user.connected){ toast('error','Wallet required','Connect to cast a vote'); openWallet(); return }
+        const row = btn.closest('.vrow');
+        const col = btn.closest('.vcol');
+        if(!row || !col) return;
+        // unvote any previously-voted row in this column
+        col.querySelectorAll('.vrow').forEach(r=>{
+          if(r === row) return;
+          if(r.classList.contains('voted-by-me')){
+            r.dataset.votes = String(Math.max(0, parseInt(r.dataset.votes,10) - STATE.user.weight));
+            r.classList.remove('voted-by-me');
+            const b = r.querySelector('.vote-btn');
+            if(b){ b.classList.remove('voted'); b.textContent = 'VOTE' }
+          }
+        });
+        if(row.classList.contains('voted-by-me')){
+          // un-vote
+          row.dataset.votes = String(Math.max(0, parseInt(row.dataset.votes,10) - STATE.user.weight));
+          row.classList.remove('voted-by-me');
+          btn.classList.remove('voted'); btn.textContent = 'VOTE';
+          toast('info','Vote removed', `Your ${fmtCluck(STATE.user.weight)} weight is free`);
+        } else {
+          row.dataset.votes = String(parseInt(row.dataset.votes,10) + STATE.user.weight);
+          row.classList.add('voted-by-me');
+          btn.classList.add('voted'); btn.textContent = 'VOTED';
+          const name = row.querySelector('.name')?.textContent || '';
+          toast('success',`Voted ${name}`, `${fmtCluck(STATE.user.weight)} weight applied`);
+          prependFeed({kind:'vote', who:STATE.user.addr||'you', what:`voted ${name}`, amount:'+'+fmtCluck(STATE.user.weight), unit:'wt', t:'now'});
+        }
+        refreshColumn(col);
+      });
+    });
+
+    // initial-state: existing 'VOTED' buttons mean user already voted in seed data
+    document.querySelectorAll('.vrow .vote-btn.voted').forEach(b=>{
+      const row = b.closest('.vrow');
+      if(row) row.classList.add('voted-by-me');
+    });
+
+    // PROPOSE forms (Name + Ticker columns)
+    document.querySelectorAll('.submit-card').forEach(card=>{
+      const proposeBtn = card.querySelector('.btn.lg');
+      const input = card.querySelector('input');
+      if(!proposeBtn || proposeBtn._wired) return;
+      proposeBtn._wired = true;
+      proposeBtn.addEventListener('click', e=>{
+        e.preventDefault();
+        if(!STATE.user.connected){ toast('error','Wallet required','Connect to submit a proposal'); openWallet(); return }
+        if(STATE.user.sol < 0.05){ toast('error','Need 0.05 SOL', `You have ${fmtSol(STATE.user.sol,2)} SOL`); return }
+        if(input){
+          const v = (input.value||'').trim();
+          if(!v){ toast('error','Empty proposal','Type a name first'); input.focus(); return }
+          // add row at bottom of vcol
+          const col = card.closest('.vcol');
+          const isTicker = card.querySelector('input')?.placeholder?.includes('IDEA');
+          const newName = isTicker
+            ? (v.startsWith('$') ? v : '$'+v).toUpperCase()
+            : v.toUpperCase();
+          // duplicate guard
+          const existing = Array.from(col.querySelectorAll('.vrow .name')).map(n=>n.textContent.trim());
+          if(existing.includes(newName)){ toast('error','Already proposed', `“${newName}” is on the list`); return }
+          const r = document.createElement('div'); r.className='vrow';
+          r.dataset.votes = '0';
+          r.innerHTML = `
+            <div class="rank">${col.querySelectorAll('.vrow').length+1}</div>
+            <div class="body">
+              <div class="name">${escHtml(newName)}</div>
+              <div class="meta">0 votes · 0%</div>
+              <div class="pct-bar" style="--pct:0%"></div>
+            </div>
+            <button class="btn vote-btn">VOTE</button>
+          `;
+          col.appendChild(r);
+          STATE.user.sol -= 0.05;
+          STATE.user.proposalsSubmitted.push(newName);
+          input.value='';
+          // wire the new VOTE button
+          const newBtn = r.querySelector('.vote-btn');
+          newBtn._wired = false;
+          wireVoteHandlers();
+          toast('success', `Proposed ${newName}`, `0.05 SOL fee · refundable if top-3`);
+          prependFeed({kind:'vote', who:STATE.user.addr||'you', what:`submitted "${newName}"`, amount:'NEW', unit:'', t:'now'});
+        } else {
+          // logo upload (column 3)
+          if(!STATE.user.proposalsSubmitted.includes('LOGO')){
+            STATE.user.sol -= 0.05;
+            STATE.user.proposalsSubmitted.push('LOGO');
+            toast('success','Logo proposal submitted','0.05 SOL · refundable if top-3');
+          } else {
+            toast('info','Already submitted a logo','You can vote on others');
+          }
+        }
+      });
+    });
+  }
+
+  // ════════════ TICK SIMULATOR ════════════
+  let cumulativeDrift = 0;
+  function fakeTick(){
+    // 60% chance buy, 35% sell, 5% vote-only
+    const r = Math.random();
+    if(r < 0.05){
+      // vote event only
+      const cands = ['CLUCK','PECK','EGG GANG','$CLUCK','$PECK','CHICKEN.PNG','CRACKED.JPG'];
+      const name = cands[Math.floor(Math.random()*cands.length)];
+      const wt = 200 + Math.floor(Math.random()*4800);
+      prependFeed({kind:'vote', who:randWallet(), what:`voted ${name}`, amount:'+'+fmtCluck(wt), unit:'wt', t:'now'});
+      return;
+    }
+    const buy = r < 0.62;
+    const sol = randSize();
+    const impact = Math.min(sol * 0.0006, 0.018);
+    const factor = buy ? (1 + impact*(0.4+Math.random()*0.6)) : (1 - impact*(0.4+Math.random()*0.6));
+    // gentle drift
+    const drift = (Math.random()-0.48)*0.0008;
+    cumulativeDrift = cumulativeDrift*0.96 + drift*0.04;
+    const newPrice = Math.max(0.00001, STATE.cluck.price * factor * (1+cumulativeDrift));
+    const fill = (STATE.cluck.price + newPrice)/2;
+    const qty = sol / fill;
+    STATE.cluck.price = newPrice;
+    STATE.cluck.history.push(newPrice);
+    if(STATE.cluck.history.length > 600) STATE.cluck.history.shift();
+    STATE.cluck.trades += 1;
+    if(buy && Math.random() < 0.06) STATE.cluck.holders += 1;
+    prependTradeRow({type:buy?'buy':'sell', who:randWallet(), qty, sol, price:fill, t:'now'});
+    prependFeed({kind:buy?'buy':'sell', who:randWallet(), what:(buy?'bought':'sold')+' $CLUCK', amount:(buy?'+':'−')+fmtCluck(qty), unit:'CLUCK', t:'now'});
+    syncPriceLabels();
+    renderChart();
+  }
+  function scheduleTick(){
+    const delay = 900 + Math.random()*1400;
+    setTimeout(()=>{ fakeTick(); scheduleTick() }, delay);
+  }
+
+  // chat simulator
+  const chatBots = [
+    'cluck to the moon',
+    '+ vote $CLUCK',
+    'roost.sol back at it',
+    'who is selling here? lol',
+    'chart looking like a staircase 📈',
+    'graduation in 3 days, hold tight',
+    'fees → airdrop is genuinely cracked',
+    'wen Raydium',
+    'CHICKEN.PNG is the only logo',
+    'next cycle prediction: $YOLK',
+  ];
+  function scheduleChat(){
+    const delay = 4500 + Math.random()*9000;
+    setTimeout(()=>{
+      pushChat({who:randWallet(), txt:chatBots[Math.floor(Math.random()*chatBots.length)], when:'now'});
+      scheduleChat();
+    }, delay);
+  }
+
+  // ── chat input ──
+  const chatForm = document.getElementById('chat-form');
+  if(chatForm) chatForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(!STATE.user.connected){ toast('error','Wallet required','Connect to chat'); openWallet(); return }
+    const inp = document.getElementById('chat-input');
+    const v = (inp.value||'').trim();
+    if(!v) return;
+    pushChat({who:STATE.user.addr||'you', txt:v, when:'now', you:true});
+    inp.value='';
+  });
+
+  // ════════════ wallet flow upgrade ════════════
+  const _origConnect = window.connect;
+  window.connect = function(name, addr){
+    STATE.user.connected = true;
+    STATE.user.wallet = name;
+    STATE.user.addr = addr;
+    document.body.dataset.connected = 'true';
+    const wa = document.getElementById('wallet-addr'); if(wa) wa.textContent = addr;
+    closeWallet();
+    toast('success', `${name} connected`, addr);
+    syncPositionUI();
+  };
+  const _origDisconnect = window.disconnect;
+  window.disconnect = function(){
+    STATE.user.connected = false;
+    STATE.user.wallet = null;
+    STATE.user.addr = null;
+    document.body.dataset.connected = 'false';
+    closeWalletMenu();
+    toast('info','Wallet disconnected');
+  };
+
+  // wallet pill dropdown menu
+  let walletMenu = null;
+  function ensureWalletMenu(){
+    if(walletMenu) return walletMenu;
+    const pill = document.querySelector('.wallet-pill');
+    if(!pill) return null;
+    // wrap pill for positioning
+    if(!pill.parentElement.classList.contains('wallet-pill-wrap')){
+      const wrap = document.createElement('div');
+      wrap.className = 'wallet-pill-wrap';
+      pill.parentElement.insertBefore(wrap, pill);
+      wrap.appendChild(pill);
+    }
+    walletMenu = document.createElement('div');
+    walletMenu.className = 'wallet-menu';
+    walletMenu.innerHTML = `
+      <button data-act="copy">Copy address</button>
+      <button data-act="me">View ME tab</button>
+      <button data-act="disc" class="danger">Disconnect</button>
+    `;
+    pill.parentElement.appendChild(walletMenu);
+    walletMenu.addEventListener('click', e=>{
+      const b = e.target.closest('button');
+      if(!b) return;
+      const act = b.dataset.act;
+      if(act==='copy'){
+        navigator.clipboard?.writeText(STATE.user.addr||'').catch(()=>{});
+        toast('success','Address copied', STATE.user.addr);
+      } else if(act==='me'){
+        goTab('me');
+      } else if(act==='disc'){
+        window.disconnect();
+      }
+      closeWalletMenu();
+    });
+    // override pill click so it opens the menu instead of immediately disconnecting
+    pill.removeAttribute('onclick');
+    pill.addEventListener('click', e=>{
+      e.stopPropagation();
+      walletMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', closeWalletMenu);
+    return walletMenu;
+  }
+  function closeWalletMenu(){ walletMenu?.classList.remove('open') }
+
+  // re-wire connect on wallet modal rows
+  document.querySelectorAll('.wallet-row').forEach(row=>{
+    const onclickAttr = row.getAttribute('onclick');
+    if(onclickAttr){
+      row.removeAttribute('onclick');
+      const m = onclickAttr.match(/connect\('([^']+)','([^']+)'\)/);
+      if(m){
+        row.addEventListener('click', ()=>{
+          window.connect(m[1], m[2]);
+          ensureWalletMenu();
+        });
+      }
+    }
+  });
+
+  // ── past cycles cards (clickable) ──
+  document.querySelectorAll('#tab-home .past-strip > *, .past-cycles > *, .past-cards > *').forEach(card=>{
+    if(!card._wired){
+      card._wired = true;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', ()=>{
+        const tk = card.querySelector('.nm, .ti, h4')?.textContent || 'a past cycle';
+        toast('info', `${tk}`, 'graduated · would open cycle history');
+      });
+    }
+  });
+
+  // ════════════ INIT ════════════
+  seedHistory();
+  renderChart();
+  // seed feed from initial set
+  const initialFeed = [
+    {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s ago'},
+    {kind:'vote', who:'feathers.sol', what:'voted CHICKEN.PNG',     amount:'+820',   unit:'wt',    t:'9s ago'},
+    {kind:'buy',  who:'roost.sol',    what:'bought $CLUCK',         amount:'+4.80M', unit:'CLUCK', t:'14s ago'},
+    {kind:'sell', who:'7Hk2…3FaR',    what:'sold $CLUCK',           amount:'−820K',  unit:'CLUCK', t:'22s ago'},
+    {kind:'vote', who:'corn.sol',     what:'voted PECK',            amount:'+2.4K',  unit:'wt',    t:'31s ago'},
+    {kind:'buy',  who:'9Pq8…uX2K',    what:'bought $CLUCK',         amount:'+540K',  unit:'CLUCK', t:'45s ago'},
+    {kind:'sell', who:'nest.sol',     what:'sold $CLUCK',           amount:'−2.00M', unit:'CLUCK', t:'1m ago'},
+  ];
+  initialFeed.reverse().forEach(f=>prependFeed(f));
+  // seed trades table
+  const initialTrades = [
+    {type:'buy',  who:'chicken.sol',  qty:1240000, sol:0.176, price:0.000142, t:'4s ago'},
+    {type:'sell', who:'7Hk2…3FaR',    qty:820000,  sol:0.116, price:0.000141, t:'11s ago'},
+    {type:'buy',  who:'feathers.sol', qty:3100000, sol:0.440, price:0.000141, t:'22s ago'},
+    {type:'buy',  who:'9Pq8…uX2K',    qty:540000,  sol:0.076, price:0.000140, t:'45s ago'},
+    {type:'sell', who:'nest.sol',     qty:2000000, sol:0.280, price:0.000140, t:'1m ago'},
+    {type:'buy',  who:'roost.sol',    qty:4800000, sol:0.671, price:0.000140, t:'1m ago'},
+    {type:'buy',  who:'Bk4t…aLm9',    qty:1200000, sol:0.167, price:0.000139, t:'2m ago'},
+    {type:'sell', who:'peck.sol',     qty:880000,  sol:0.122, price:0.000139, t:'2m ago'},
+  ];
+  initialTrades.reverse().forEach(t=>prependTradeRow(t));
+  renderHolders();
+  renderChat();
+  wireVoteHandlers();
+  syncPriceLabels();
+  syncPositionUI();
+  scheduleTick();
+  scheduleChat();
 </script>
 </body>
 </html>
