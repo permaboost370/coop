@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <!-- egg shape -->
+  <path d="M 100 22 Q 154 22 160 100 Q 162 168 100 180 Q 38 168 40 100 Q 46 22 100 22 Z"
+        fill="#FFFFFF" stroke="#0A0A0A" stroke-width="7"/>
+  <!-- crack -->
+  <polyline points="60,90 80,82 76,98 96,90 92,108 116,98 112,118 132,108"
+            fill="none" stroke="#FFD400" stroke-width="6" stroke-linejoin="miter"/>
+  <polyline points="60,90 80,82 76,98 96,90 92,108 116,98 112,118 132,108"
+            fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linejoin="miter"/>
+</svg>

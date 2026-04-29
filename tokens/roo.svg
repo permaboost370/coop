@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <!-- big rooster comb (3 peaks) -->
+  <path d="M 60 50 L 76 14 L 92 50 L 108 14 L 124 50 L 140 14 L 156 50 Z" fill="#FF3B30"/>
+  <!-- eyes -->
+  <circle cx="78" cy="105" r="13" fill="#0A0A0A"/>
+  <circle cx="122" cy="105" r="13" fill="#0A0A0A"/>
+  <!-- wattle -->
+  <ellipse cx="100" cy="150" rx="9" ry="14" fill="#FF3B30"/>
+  <!-- beak -->
+  <polygon points="86,135 114,135 100,158" fill="#FFD400"/>
+</svg>

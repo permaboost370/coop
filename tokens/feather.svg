@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <!-- feather shaft -->
+  <line x1="62" y1="170" x2="142" y2="40" stroke="#0A0A0A" stroke-width="5" stroke-linecap="round"/>
+  <!-- feather body -->
+  <path d="M 142 40 Q 78 50 64 110 Q 58 142 76 156 Q 110 152 130 122 Q 148 88 142 40 Z"
+        fill="#FFD400" stroke="#0A0A0A" stroke-width="6" stroke-linejoin="round"/>
+  <!-- barb hints -->
+  <line x1="92"  y1="138" x2="112" y2="118" stroke="#0A0A0A" stroke-width="3"/>
+  <line x1="84"  y1="124" x2="118" y2="92"  stroke="#0A0A0A" stroke-width="3"/>
+  <line x1="84"  y1="106" x2="124" y2="74"  stroke="#0A0A0A" stroke-width="3"/>
+</svg>

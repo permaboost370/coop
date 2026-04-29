@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <!-- chick body (round) -->
+  <ellipse cx="100" cy="118" rx="58" ry="52" fill="#FFD400" stroke="#0A0A0A" stroke-width="6"/>
+  <!-- head -->
+  <circle cx="100" cy="74" r="36" fill="#FFD400" stroke="#0A0A0A" stroke-width="6"/>
+  <!-- eyes -->
+  <circle cx="88"  cy="72" r="5" fill="#0A0A0A"/>
+  <circle cx="112" cy="72" r="5" fill="#0A0A0A"/>
+  <!-- beak -->
+  <polygon points="92,86 108,86 100,100" fill="#FF3B30" stroke="#0A0A0A" stroke-width="3"/>
+  <!-- feet -->
+  <line x1="84"  y1="170" x2="84"  y2="184" stroke="#FF3B30" stroke-width="6" stroke-linecap="round"/>
+  <line x1="116" y1="170" x2="116" y2="184" stroke="#FF3B30" stroke-width="6" stroke-linecap="round"/>
+</svg>

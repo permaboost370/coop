@@ -662,6 +662,21 @@
   footer a:hover{color:var(--yolk)}
   footer .tagline{font-family:'Tektur',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.01em}
 
+  /* token images render cleanly inside any round/square container */
+  .winner-logo img,
+  .vrow .swatch img,
+  .identity-bar .logo-mini img,
+  .bag-row .logo-mini img,
+  .past-tile .thumb img{
+    width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit;
+  }
+  .past-tile .thumb{
+    width:36px;height:36px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-sm);
+    overflow:hidden;background:var(--surface);
+    margin-bottom:10px;
+  }
+
   .hidden{display:none !important}
 
   /* ── responsive ───────────────────────────────── */
@@ -741,7 +756,7 @@
         <div>
           <span class="sticker">WINNING IDENTITY</span>
           <div class="winner" style="margin-top:14px">
-            <div class="winner-logo">🐔</div>
+            <div class="winner-logo"><img src="tokens/cluck.svg" alt="CLUCK"/></div>
             <div>
               <h3>CLUCK</h3>
               <div class="ticker">$CLUCK · CHICKEN.PNG</div>
@@ -806,7 +821,7 @@
           <div class="meta">2,418 votes · 41%</div>
           <div class="pct-bar" style="--pct:41%"></div>
         </div>
-        <div class="swatch" style="background:#FFD400">🐔</div>
+        <div class="swatch"><img src="tokens/cluck.svg" alt=""/></div>
       </div>
       <div class="vrow">
         <div class="rank">2</div>
@@ -815,7 +830,7 @@
           <div class="meta">1,652 votes · 28%</div>
           <div class="pct-bar" style="--pct:28%"></div>
         </div>
-        <div class="swatch" style="background:var(--bg-2)">🪶</div>
+        <div class="swatch"><img src="tokens/feather.svg" alt=""/></div>
       </div>
       <div class="vrow">
         <div class="rank">3</div>
@@ -824,7 +839,7 @@
           <div class="meta">1,121 votes · 19%</div>
           <div class="pct-bar" style="--pct:19%"></div>
         </div>
-        <div class="swatch" style="background:var(--yolk-soft)">🥚</div>
+        <div class="swatch"><img src="tokens/egg.svg" alt=""/></div>
       </div>
       <button class="btn vote lg" style="width:100%;margin-top:18px" onclick="goTab('vote')">CAST YOUR VOTE</button>
     </div>
@@ -854,12 +869,12 @@
   <section>
     <div class="section-title lg">Past cycles</div>
     <div class="past-strip">
-      <div class="past-tile"><div class="n">#13 · WORM</div><div class="t">$WORM 🪱</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
-      <div class="past-tile"><div class="n">#12 · ROOSTER</div><div class="t">$ROO 🐓</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
-      <div class="past-tile"><div class="n">#11 · NEST</div><div class="t">$NEST 🪺</div><div class="x"><span>820 holders</span><span class="dn">−42%</span></div></div>
-      <div class="past-tile"><div class="n">#10 · CORN</div><div class="t">$CORN 🌽</div><div class="x"><span>2.1K holders</span><span class="up">+512%</span></div></div>
-      <div class="past-tile"><div class="n">#09 · YOLK</div><div class="t">$YOLK 🟡</div><div class="x"><span>3.4K holders</span><span class="up">+221%</span></div></div>
-      <div class="past-tile"><div class="n">#08 · PEEP</div><div class="t">$PEEP 🐤</div><div class="x"><span>1.9K holders</span><span class="up">+98%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/worm.svg" alt=""/></div><div class="n">#13 · WORM</div><div class="t">$WORM</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/roo.svg" alt=""/></div><div class="n">#12 · ROOSTER</div><div class="t">$ROO</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/nest.svg" alt=""/></div><div class="n">#11 · NEST</div><div class="t">$NEST</div><div class="x"><span>820 holders</span><span class="dn">−42%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/corn.svg" alt=""/></div><div class="n">#10 · CORN</div><div class="t">$CORN</div><div class="x"><span>2.1K holders</span><span class="up">+512%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/yolk.svg" alt=""/></div><div class="n">#09 · YOLK</div><div class="t">$YOLK</div><div class="x"><span>3.4K holders</span><span class="up">+221%</span></div></div>
+      <div class="past-tile"><div class="thumb"><img src="tokens/peep.svg" alt=""/></div><div class="n">#08 · PEEP</div><div class="t">$PEEP</div><div class="x"><span>1.9K holders</span><span class="up">+98%</span></div></div>
     </div>
   </section>
 </main>
@@ -926,11 +941,11 @@
         <p>PNG/SVG · 1:1 · &lt;200KB · 0.05 SOL</p>
         <button class="btn lg" style="width:100%">UPLOAD IMAGE</button>
       </div>
-      <div class="vrow lead"><div class="rank">1</div><div class="swatch" style="background:#FFD400">🐔</div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
-      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:var(--yolk-soft)">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn">VOTE</button></div>
-      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:var(--bg-2)">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn">VOTE</button></div>
-      <div class="vrow"><div class="rank">4</div><div class="swatch" style="background:var(--bg-2)">🌽</div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
-      <div class="vrow"><div class="rank">5</div><div class="swatch">🐤</div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow lead"><div class="rank">1</div><div class="swatch"><img src="tokens/cluck.svg" alt=""/></div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="swatch"><img src="tokens/egg.svg" alt=""/></div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="swatch"><img src="tokens/feather.svg" alt=""/></div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="swatch"><img src="tokens/corn.svg" alt=""/></div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="swatch"><img src="tokens/peep.svg" alt=""/></div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
     </div>
   </section>
 </main>
@@ -940,7 +955,7 @@
   <section class="trade-grid">
     <div>
       <div class="identity-bar">
-        <div class="logo-mini">🐔</div>
+        <div class="logo-mini"><img src="tokens/cluck.svg" alt="CLUCK"/></div>
         <div>
           <h2>CLUCK</h2>
           <div class="tk">$CLUCK · CYCLE #14 · CURRENT WINNING IDENTITY</div>
@@ -1062,19 +1077,19 @@
       <div class="delta">+20.3% · +0.050 SOL unrealized</div>
       <div class="bag-rows">
         <div class="bag-row">
-          <div class="logo-mini">🐔</div>
+          <div class="logo-mini"><img src="tokens/cluck.svg" alt="CLUCK"/></div>
           <div><div class="nm">CLUCK</div><div class="ti">$CLUCK · cycle #14 · live</div></div>
           <div class="qty">2.1M</div>
           <div class="val">0.298</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:var(--bg-2)">🪱</div>
+          <div class="logo-mini"><img src="tokens/worm.svg" alt=""/></div>
           <div><div class="nm">WORM</div><div class="ti">$WORM · cycle #13 · graduated</div></div>
           <div class="qty">410K</div>
           <div class="val">0.082</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:var(--yolk-soft)">🐓</div>
+          <div class="logo-mini"><img src="tokens/roo.svg" alt=""/></div>
           <div><div class="nm">ROO</div><div class="ti">$ROO · cycle #12 · graduated</div></div>
           <div class="qty">88K</div>
           <div class="val">0.041</div>
