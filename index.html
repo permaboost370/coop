@@ -10,26 +10,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* sourced from logo.png — minimal mark: red comb triangle + two black eyes + yellow beak */
-    --bg:#FDF6E8;          /* warm cream (their page bg) */
-    --surface:#FFFFFF;     /* pure white — matches the logo's white body */
-    --ink:#0A0A0A;         /* pure black — matches logo eyes */
-    --ink-soft:#2A2A2A;
-    --muted:#6E6E6E;       /* neutral grey */
+    /* DUO SYSTEM — cream base + yellow accent (à la pump.fun's dark+green) */
+    --bg:#FDF6E8;          /* cream — base */
+    --bg-2:#F5EDD8;        /* slightly deeper cream for stripes/second surface */
+    --surface:#FFFFFF;
+    --ink:#0A0A0A;
+    --ink-soft:#222222;
+    --muted:#8A8472;       /* warm taupe-grey — neutral text */
     --line:#0A0A0A;
-    --yolk:#FFD400;        /* bright yellow — logo beak */
-    --yolk-soft:#FFE36B;   /* lighter yolk for fills */
-    --tomato:#FF3B30;      /* vivid red — logo comb */
-    --grass:#00C853;       /* primary green — buy */
-    --civic:#0A0A0A;       /* vote — ink */
-    --sand:#FFE9A8;        /* phase fairlaunch */
-    --cream-mid:#FFD96B;   /* phase bonding (yolk-tinted) */
-    --coral:#FFC0B8;       /* phase graduating (red-tinted) */
-    --shadow:4px 4px 0 var(--ink);
-    --shadow-lg:6px 6px 0 var(--ink);
-    --shadow-sm:3px 3px 0 var(--ink);
-    --r:0px;
+    --yolk:#FFD400;        /* THE distinct — used everywhere brand expression matters */
+    --yolk-soft:#FFEC8A;   /* lower-key yellow for backgrounds */
+    --yolk-deep:#E5BD00;   /* hover/pressed yellow */
+    /* trade-only functional colors (kept narrow, like pump.fun's red/green) */
+    --grass:#00C853;
+    --tomato:#FF3B30;
+
+    /* shape */
+    --r-xl:20px;
+    --r-lg:16px;
+    --r-md:12px;
+    --r-sm:10px;
+    --r-pill:999px;
     --bw:2.5px;
+    --bw-thick:3px;
+
+    /* shadows — hard + chunky (no blur) */
+    --sh-sm:2px 2px 0 var(--ink);
+    --sh:4px 4px 0 var(--ink);
+    --sh-lg:6px 6px 0 var(--ink);
+    --sh-xl:8px 8px 0 var(--ink);
+
+    /* motion */
+    --ease:cubic-bezier(0.2,0.7,0.2,1);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -37,641 +49,646 @@
     background:var(--bg);
     color:var(--ink);
     font-family:'Space Grotesk',system-ui,sans-serif;
-    font-size:15px;
-    line-height:1.4;
+    font-size:15px;line-height:1.45;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
+  ::selection{background:var(--yolk);color:var(--ink)}
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-feature-settings:"tnum"}
-  .display{font-family:'Tektur',sans-serif;letter-spacing:-0.01em;line-height:0.95}
+  .display{font-family:'Tektur',sans-serif;letter-spacing:-0.015em;line-height:0.95}
 
-  /* === LAYOUT ====================================================== */
-  .shell{max-width:1320px;margin:0 auto;padding:0 24px}
+  /* ── shell ─────────────────────────────────────── */
+  .shell{max-width:1340px;margin:0 auto;padding:0 28px}
 
-  /* === TOP BAR ===================================================== */
+  /* ── topbar ────────────────────────────────────── */
   .topbar{
     position:sticky;top:0;z-index:50;
     background:var(--bg);
-    border-bottom:var(--bw) solid var(--line);
+    border-bottom:var(--bw-thick) solid var(--line);
   }
   .topbar-inner{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    align-items:center;
-    gap:16px;
-    height:64px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    align-items:center;gap:18px;height:74px;
   }
   .logo{
-    display:flex;align-items:center;gap:8px;
-    font-family:'Tektur',sans-serif;
-    font-size:24px;letter-spacing:-0.02em;
+    display:flex;align-items:center;gap:12px;
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:26px;letter-spacing:-0.02em;
     text-decoration:none;color:var(--ink);
   }
   .logo .chick{
-    width:44px;height:44px;background:var(--surface);
-    border:var(--bw) solid var(--ink);
-    box-shadow:var(--shadow-sm);
+    width:48px;height:48px;background:var(--surface);
+    border:var(--bw) solid var(--ink);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
     display:inline-flex;align-items:center;justify-content:center;
     flex-shrink:0;overflow:hidden;
+    transition:transform 220ms var(--ease);
   }
-  .logo .chick img{width:100%;height:100%;display:block;object-fit:contain;padding:4px}
+  .logo:hover .chick{transform:rotate(-6deg) translateY(-1px)}
+  .logo .chick img{width:100%;height:100%;object-fit:contain;padding:5px;display:block}
+
   .cycle-strip{
     display:flex;align-items:center;justify-content:center;
-    gap:14px;flex-wrap:wrap;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;text-transform:uppercase;
-    letter-spacing:0.04em;
+    gap:10px;flex-wrap:wrap;
   }
   .pill{
-    border:var(--bw) solid var(--line);
-    padding:5px 10px;
-    background:var(--surface);
-    font-weight:600;
-    display:inline-flex;align-items:center;gap:6px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    padding:6px 12px;background:var(--surface);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:600;
+    text-transform:uppercase;letter-spacing:0.04em;
+    display:inline-flex;align-items:center;gap:7px;
   }
+  .pill.live{background:var(--surface)}
   .pill.live::before{
-    content:"";width:8px;height:8px;background:var(--tomato);
-    border:1.5px solid var(--ink);display:inline-block;
-    animation:blink 1.4s infinite;
+    content:"";width:8px;height:8px;border-radius:50%;
+    background:var(--tomato);animation:blink 1.4s infinite;
+    box-shadow:0 0 0 2px rgba(255,59,48,0.25);
   }
-  .pill.bonding{background:var(--cream-mid)}
-  .pill.fair{background:var(--sand)}
-  .pill.grad{background:var(--coral)}
-  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0.25}}
+  .pill.bonding{background:var(--yolk-soft)}
+  .pill.fair{background:var(--bg-2)}
+  .pill.grad{background:var(--yolk)}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0.3}}
 
-  .topbar-actions{display:flex;align-items:center;gap:8px}
+  .topbar-actions{display:flex;align-items:center;gap:10px}
 
-  /* === BUTTONS ===================================================== */
+  /* ── buttons ───────────────────────────────────── */
   .btn{
-    display:inline-flex;align-items:center;justify-content:center;
-    gap:8px;
-    border:var(--bw) solid var(--line);
-    background:var(--surface);
-    color:var(--ink);
-    font-weight:700;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:14px;
-    padding:10px 16px;
-    cursor:pointer;
-    text-decoration:none;
-    box-shadow:var(--shadow-sm);
-    transition:transform 70ms ease,box-shadow 70ms ease;
-    text-transform:uppercase;
-    letter-spacing:0.02em;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    background:var(--surface);color:var(--ink);
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;
+    padding:11px 18px;cursor:pointer;text-decoration:none;
+    box-shadow:var(--sh-sm);
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
+    text-transform:uppercase;letter-spacing:0.03em;
   }
-  .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
-  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .btn:hover{transform:translate(-1.5px,-1.5px);box-shadow:4px 4px 0 var(--ink)}
+  .btn:active{transform:translate(2px,2px);box-shadow:0px 0px 0 var(--ink)}
   .btn.primary{background:var(--yolk)}
   .btn.buy{background:var(--grass);color:#fff}
   .btn.sell{background:var(--tomato);color:#fff}
-  .btn.vote{background:var(--civic);color:#fff}
-  .btn.ghost{background:transparent;box-shadow:none;border-color:transparent}
-  .btn.ghost:hover{background:var(--surface);box-shadow:var(--shadow-sm);border-color:var(--line)}
-  .btn.lg{padding:14px 22px;font-size:16px;box-shadow:var(--shadow)}
-  .btn.xl{padding:18px 28px;font-size:18px;box-shadow:var(--shadow-lg)}
-  .btn.sm{padding:6px 10px;font-size:12px;box-shadow:2px 2px 0 var(--ink)}
+  .btn.vote{background:var(--yolk);color:var(--ink)}
+  .btn.ghost{background:transparent;border-color:transparent;box-shadow:none;padding:8px 12px}
+  .btn.ghost:hover{background:var(--surface);border-color:var(--line);box-shadow:var(--sh-sm)}
+  .btn.lg{padding:15px 22px;font-size:15px;box-shadow:var(--sh)}
+  .btn.lg:hover{box-shadow:var(--sh-lg)}
+  .btn.xl{padding:18px 26px;font-size:17px;border-radius:var(--r-lg);box-shadow:var(--sh-lg)}
+  .btn.xl:hover{box-shadow:var(--sh-xl)}
+  .btn.sm{padding:6px 10px;font-size:11.5px}
 
-  /* === TABS ======================================================== */
+  /* ── tabs ──────────────────────────────────────── */
   .tabs{
-    display:flex;gap:0;
-    border-bottom:var(--bw) solid var(--line);
+    display:flex;gap:8px;
+    padding:14px 0;
+    overflow-x:auto;
   }
   .tab{
-    flex:0 0 auto;padding:14px 22px;
-    font-family:'Tektur',sans-serif;
-    font-size:15px;letter-spacing:0.02em;
-    text-transform:uppercase;
-    background:transparent;border:0;
-    border-right:var(--bw) solid var(--line);
-    cursor:pointer;color:var(--ink);
-    position:relative;
+    flex:0 0 auto;
+    padding:11px 20px;
+    font-family:'Tektur',sans-serif;font-weight:700;
+    font-size:14px;letter-spacing:0.03em;text-transform:uppercase;
+    background:var(--surface);color:var(--ink);
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    cursor:pointer;box-shadow:var(--sh-sm);
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
   }
-  .tab:last-child{border-right:0}
-  .tab[aria-selected="true"]{
-    background:var(--yolk);
-  }
+  .tab:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
+  .tab[aria-selected="true"]{background:var(--yolk);transform:none;box-shadow:var(--sh)}
   .tab .dot{
-    display:inline-block;width:7px;height:7px;background:var(--tomato);
-    border:1.5px solid var(--ink);margin-left:8px;vertical-align:middle;
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--tomato);margin-left:8px;vertical-align:middle;
+    box-shadow:0 0 0 1.5px var(--ink);
   }
 
-  /* === CARDS ======================================================= */
+  /* ── cards ─────────────────────────────────────── */
   .card{
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow);
-    padding:20px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh);
+    padding:24px;
   }
-  .card.flat{box-shadow:none}
-  .card .label{
+  .card.flat{box-shadow:var(--sh-sm)}
+  .card.tight{padding:18px}
+  .card.lift{transition:transform 140ms var(--ease),box-shadow 140ms var(--ease);cursor:pointer}
+  .card.lift:hover{transform:translate(-2px,-2px);box-shadow:var(--sh-lg)}
+  .label{
     font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:0.06em;
+    font-size:10.5px;letter-spacing:0.08em;
     text-transform:uppercase;color:var(--muted);
-    margin:0 0 6px;
+    margin:0 0 6px;font-weight:600;
   }
 
-  /* === HERO (cycle hub) ============================================ */
-  .hero{
-    margin:24px 0 0;
-    background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow-lg);
-    overflow:hidden;
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.1fr 0.9fr;
-  }
-  .hero-left{
-    padding:32px;
-    border-right:var(--bw) solid var(--line);
-    background:
-      repeating-linear-gradient(45deg, transparent 0 22px, rgba(0,0,0,0.04) 22px 23px),
-      var(--cream-mid);
-  }
-  .cycle-tag{
+  /* sticker — slight rotation for personality */
+  .sticker{
     display:inline-block;
     background:var(--ink);color:var(--bg);
+    border-radius:var(--r-pill);
     font-family:'JetBrains Mono',monospace;
-    font-size:12px;font-weight:700;
-    letter-spacing:0.08em;text-transform:uppercase;
-    padding:6px 10px;margin-bottom:18px;
+    font-size:11.5px;font-weight:700;letter-spacing:0.1em;
+    text-transform:uppercase;
+    padding:7px 14px;
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--sh-sm);
+    transform:rotate(-2deg);
+    transition:transform 220ms var(--ease);
+  }
+  .sticker:hover{transform:rotate(0)}
+  .sticker.yolk{background:var(--yolk);color:var(--ink);transform:rotate(2deg)}
+  .sticker.tomato{background:var(--tomato);color:#fff}
+  .sticker.grass{background:var(--grass);color:#fff}
+
+  /* ── hero ──────────────────────────────────────── */
+  .hero{
+    margin:32px 0 0;
+    background:var(--surface);
+    border:var(--bw-thick) solid var(--line);border-radius:var(--r-xl);
+    box-shadow:var(--sh-xl);
+    overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr}
+  .hero-left{
+    padding:40px;
+    border-right:var(--bw) solid var(--line);
+    background:
+      repeating-linear-gradient(45deg, transparent 0 28px, rgba(0,0,0,0.05) 28px 29px),
+      var(--yolk);
+    position:relative;
+  }
+  .hero-left::after{
+    /* watermark logo, subtle */
+    content:"";
+    position:absolute;right:-40px;bottom:-40px;
+    width:240px;height:240px;
+    background:url('logo.png') no-repeat center/contain;
+    opacity:0.07;pointer-events:none;
+    transform:rotate(-12deg);
   }
   .phase-title{
-    font-family:'Tektur',sans-serif;
-    font-size:clamp(48px,7vw,96px);
-    line-height:0.92;letter-spacing:-0.02em;
-    margin:0 0 8px;
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:clamp(54px,7.4vw,108px);
+    line-height:0.92;letter-spacing:-0.025em;
+    margin:14px 0 14px;
   }
   .phase-sub{
-    font-size:16px;color:var(--ink-soft);
-    max-width:38ch;margin:0 0 24px;
+    font-size:17px;color:var(--ink-soft);
+    max-width:38ch;margin:0 0 28px;line-height:1.5;
   }
-  .countdown{
-    display:flex;gap:10px;margin:0 0 26px;
-  }
+  .countdown{display:flex;gap:12px;margin:0 0 30px}
   .cd-block{
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow-sm);
-    width:74px;height:84px;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    width:80px;height:92px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
   .cd-block .num{
-    font-family:'Tektur',sans-serif;
-    font-size:34px;line-height:1;
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:38px;line-height:1;
   }
   .cd-block .unit{
     font-family:'JetBrains Mono',monospace;
-    font-size:10px;letter-spacing:0.08em;
-    text-transform:uppercase;color:var(--muted);
-    margin-top:4px;
-  }
-  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-
-  .hero-right{
-    padding:28px;
-    display:flex;flex-direction:column;gap:18px;
-    background:var(--surface);
-  }
-  .winner{
-    display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center;
-  }
-  .winner-logo{
-    width:88px;height:88px;
-    border:var(--bw) solid var(--line);
-    background:var(--yolk);
-    box-shadow:var(--shadow-sm);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Tektur',sans-serif;font-size:42px;
-  }
-  .winner h3{
-    font-family:'Tektur',sans-serif;
-    font-size:30px;margin:0;line-height:1;
-  }
-  .winner .ticker{
-    font-family:'JetBrains Mono',monospace;
-    font-size:13px;color:var(--muted);
-    letter-spacing:0.04em;
-  }
-  .winner-meta{
-    display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;
-  }
-  .price-row{
-    display:grid;grid-template-columns:1fr 1fr;
-    gap:0;
-    border:var(--bw) solid var(--line);
-  }
-  .price-cell{padding:14px 16px}
-  .price-cell + .price-cell{border-left:var(--bw) solid var(--line)}
-  .price-cell .v{
-    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;
-  }
-  .price-cell .v.up{color:var(--grass)}
-  .price-cell .v.dn{color:var(--tomato)}
-
-  /* === STAT ROW ==================================================== */
-  .stat-row{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:0;
-    margin:24px 0 0;
-    border:var(--bw) solid var(--line);
-    background:var(--surface);
-    box-shadow:var(--shadow);
-  }
-  .stat{
-    padding:18px 20px;
-    border-right:var(--bw) solid var(--line);
-  }
-  .stat:last-child{border-right:0}
-  .stat .v{
-    font-family:'Tektur',sans-serif;
-    font-size:28px;line-height:1;
-  }
-  .stat .l{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:0.06em;
+    font-size:10px;letter-spacing:0.1em;
     text-transform:uppercase;color:var(--muted);
     margin-top:6px;
   }
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+  .hero-right{
+    padding:32px;display:flex;flex-direction:column;gap:20px;
+    background:var(--surface);
+  }
+  .winner{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:center}
+  .winner-logo{
+    width:96px;height:96px;background:var(--yolk);
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh-sm);
+    display:flex;align-items:center;justify-content:center;
+    font-size:46px;
+  }
+  .winner h3{
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:34px;margin:0;line-height:1;
+  }
+  .winner .ticker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;color:var(--muted);letter-spacing:0.05em;margin-top:6px;
+  }
+  .winner-meta{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+  .winner-meta .pill{font-size:10.5px;padding:4px 10px}
+  .price-row{
+    display:grid;grid-template-columns:1fr 1fr;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    overflow:hidden;
+  }
+  .price-cell{padding:16px 18px}
+  .price-cell + .price-cell{border-left:var(--bw) solid var(--line)}
+  .price-cell .v{
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.01em;
+  }
+  .price-cell .v.up{color:var(--grass)}
+  .price-cell .v.dn{color:var(--tomato)}
+  .price-cell .v small{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:500;margin-left:4px}
+
+  /* ── stat row ──────────────────────────────────── */
+  .stat-row{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0 0;
+  }
+  .stat{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh-sm);
+    padding:20px 22px;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
+    position:relative;overflow:hidden;
+  }
+  .stat:hover{transform:translate(-1.5px,-1.5px);box-shadow:var(--sh)}
+  .stat .v{font-family:'Tektur',sans-serif;font-weight:900;font-size:30px;line-height:1}
+  .stat .l{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);
+    margin-top:8px;font-weight:600;
+  }
   .stat.airdrop{background:var(--yolk)}
-
-  /* === SPLIT 2COL ================================================== */
-  .split{
-    display:grid;grid-template-columns:1.5fr 1fr;
-    gap:24px;margin:24px 0 0;
+  .stat.airdrop .l{color:var(--ink-soft)}
+  .stat::before{
+    content:"";position:absolute;top:0;left:0;height:5px;width:100%;
+    background:var(--yolk);
   }
+  /* removed multi-color top */
+  /* removed multi-color top */
+  .stat.airdrop::before{display:none}
 
-  /* === FEED ======================================================== */
-  .feed-list{
-    display:flex;flex-direction:column;
+  /* ── split / split-3 ──────────────────────────── */
+  .split{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;margin:32px 0 0}
+  .split-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:24px 0 0}
+
+  /* ── section title ────────────────────────────── */
+  .section-title{
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:24px;letter-spacing:-0.01em;
+    margin:0 0 16px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
   }
+  .section-title.lg{font-size:30px;margin:32px 0 18px}
+  .section-title .right{display:flex;gap:8px;align-items:center}
+
+  /* ── live feed ─────────────────────────────────── */
+  .feed-list{display:flex;flex-direction:column}
   .feed-row{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    gap:12px;align-items:center;
-    padding:12px 0;
-    border-bottom:1.5px dashed var(--line);
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:14px;align-items:center;
+    padding:13px 0;
+    border-bottom:1.5px dashed rgba(0,0,0,0.18);
   }
   .feed-row:last-child{border-bottom:0}
   .feed-icon{
-    width:28px;height:28px;
+    width:32px;height:32px;border-radius:var(--r-pill);
     border:var(--bw) solid var(--line);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Tektur',sans-serif;
-    font-size:14px;
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:13px;
   }
   .feed-icon.buy{background:var(--grass);color:#fff}
   .feed-icon.sell{background:var(--tomato);color:#fff}
-  .feed-icon.vote{background:var(--civic);color:#fff}
-  .feed-row .who{font-weight:700}
-  .feed-row .what{color:var(--muted);font-size:13.5px}
-  .feed-row .amount{
-    font-family:'JetBrains Mono',monospace;font-weight:700;
-  }
-  .feed-row .amount .u{color:var(--muted);font-size:11px;margin-left:2px}
+  .feed-icon.vote{background:var(--yolk);color:var(--ink)}
+  .feed-row .who{font-weight:700;font-size:14px}
+  .feed-row .what{color:var(--muted);font-size:13px;margin-top:2px}
+  .feed-row .amount{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;text-align:right}
+  .feed-row .amount .u{color:var(--muted);font-size:11px;margin-left:3px}
 
-  /* === HOW IT WORKS ================================================ */
-  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:24px 0 0}
-  .how .card{padding:22px}
+  /* ── voting snapshot ──────────────────────────── */
+  .vote-snap{background:var(--yolk-soft)}
+  .vrow{
+    background:var(--surface);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    padding:14px 16px;margin-bottom:10px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
+  }
+  .vrow:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
+  .vrow:last-child{margin-bottom:0}
+  .vrow .rank{
+    font-family:'Tektur',sans-serif;font-weight:900;
+    font-size:24px;width:30px;text-align:center;color:var(--ink);
+  }
+  .vrow .body .name{font-weight:900;font-family:'Tektur',sans-serif;font-size:18px;line-height:1.1}
+  .vrow .body .meta{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);margin-top:3px}
+  .vrow .pct-bar{
+    height:7px;border-radius:var(--r-pill);background:rgba(0,0,0,0.08);
+    margin-top:9px;width:100%;overflow:hidden;position:relative;
+  }
+  .vrow .pct-bar::after{
+    content:"";display:block;height:100%;border-radius:var(--r-pill);
+    background:var(--ink);width:var(--pct,0%);
+    transition:width 700ms var(--ease);
+  }
+  .vrow.lead{background:var(--yolk)}
+  .vrow.lead .pct-bar::after{background:var(--ink)}
+  .vrow .swatch{
+    width:48px;height:48px;border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;
+  }
+  .vrow .vote-btn{padding:8px 14px;font-size:12.5px;border-radius:var(--r-pill)}
+  .vrow .vote-btn.voted{background:var(--yolk);color:var(--ink)}
+
+  /* ── how it works ─────────────────────────────── */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0 0}
+  .how .card{padding:26px;position:relative}
   .how .step{
     display:inline-flex;align-items:center;justify-content:center;
-    width:36px;height:36px;background:var(--ink);color:var(--bg);
-    font-family:'Tektur',sans-serif;font-size:20px;
-    margin-bottom:14px;
+    width:42px;height:42px;background:var(--ink);color:var(--bg);
+    border-radius:var(--r-md);
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:22px;
+    margin-bottom:16px;transform:rotate(-3deg);box-shadow:var(--sh-sm);
   }
-  .how h4{font-family:'Tektur',sans-serif;font-size:20px;margin:0 0 6px}
-  .how p{margin:0;color:var(--ink-soft);font-size:14px}
+  .how .card:nth-child(2) .step{background:var(--yolk);color:var(--ink);transform:rotate(3deg)}
+  /* step 3 keeps default black */
+  .how h4{font-family:'Tektur',sans-serif;font-weight:900;font-size:22px;margin:0 0 8px}
+  .how p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
 
-  /* === PAST CYCLES ================================================= */
-  .past{margin:24px 0 0}
-  .past h3{
-    font-family:'Tektur',sans-serif;
-    font-size:22px;margin:0 0 12px;
-  }
-  .past-strip{
-    display:grid;grid-template-columns:repeat(6,1fr);
-    gap:12px;
-  }
+  /* ── past cycles ──────────────────────────────── */
+  .past-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
   .past-tile{
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow-sm);
-    padding:14px;
-    cursor:pointer;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    padding:14px 16px;cursor:pointer;
+    transition:transform 130ms var(--ease),box-shadow 130ms var(--ease);
   }
-  .past-tile:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
-  .past-tile .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
-  .past-tile .t{font-family:'Tektur',sans-serif;font-size:18px;margin:4px 0 6px}
-  .past-tile .x{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .past-tile:hover{transform:translate(-2px,-2px) rotate(-1deg);box-shadow:var(--sh)}
+  .past-tile:nth-child(2n):hover{transform:translate(-2px,-2px) rotate(1deg)}
+  .past-tile .n{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);font-weight:600;letter-spacing:0.06em}
+  .past-tile .t{font-family:'Tektur',sans-serif;font-weight:900;font-size:20px;margin:6px 0 8px;line-height:1}
+  .past-tile .x{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px}
   .past-tile .x .up{color:var(--grass);font-weight:700}
   .past-tile .x .dn{color:var(--tomato);font-weight:700}
 
-  /* === VOTE TAB ==================================================== */
-  .vote-header{
-    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;margin:24px 0 0;
-  }
-  .vote-cols{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:24px;margin:24px 0 0;
-  }
+  /* ── vote tab ─────────────────────────────────── */
+  .vote-header{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px;margin:32px 0 0}
+  .vote-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:24px 0 0}
   .vcol h3{
-    font-family:'Tektur',sans-serif;
-    font-size:22px;margin:0 0 12px;
-    display:flex;align-items:center;gap:10px;
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:22px;
+    margin:0 0 14px;display:flex;align-items:center;gap:10px;
   }
   .vcol h3 .badge{
-    background:var(--ink);color:var(--bg);
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:0.08em;
-    padding:3px 8px;text-transform:uppercase;
+    background:var(--ink);color:var(--bg);border-radius:var(--r-pill);
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.08em;
+    padding:4px 10px;text-transform:uppercase;font-weight:700;
   }
-  .vrow{
-    background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow-sm);
-    padding:14px;margin-bottom:12px;
-    display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
-  }
-  .vrow .rank{
-    font-family:'Tektur',sans-serif;
-    font-size:22px;width:34px;text-align:center;
-  }
-  .vrow .body .name{font-weight:700;font-family:'Tektur',sans-serif;font-size:18px}
-  .vrow .body .meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:2px}
-  .vrow .pct-bar{
-    height:8px;background:var(--bg);
-    border:1.5px solid var(--line);
-    margin-top:8px;width:100%;position:relative;overflow:hidden;
-  }
-  .vrow .pct-bar::after{
-    content:"";display:block;height:100%;background:var(--civic);
-    width:var(--pct,0%);
-  }
-  .vrow.lead{background:var(--cream-mid)}
-  .vrow .swatch{
-    width:46px;height:46px;border:var(--bw) solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Tektur',sans-serif;font-size:22px;
-  }
-  .vrow .vote-btn{padding:8px 12px;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
-  .vrow .vote-btn.voted{background:var(--ink);color:var(--bg)}
-
   .submit-card{
     background:var(--yolk);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow);
-    padding:18px;margin-bottom:14px;
+    border:var(--bw-thick) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh);
+    padding:20px;margin-bottom:14px;
   }
-  .submit-card h4{margin:0 0 6px;font-family:'Tektur',sans-serif;font-size:18px}
-  .submit-card p{margin:0 0 12px;font-size:13.5px}
+  .submit-card h4{margin:0 0 6px;font-family:'Tektur',sans-serif;font-weight:900;font-size:18px}
+  .submit-card p{margin:0 0 14px;font-size:13px;color:var(--ink-soft)}
   .submit-card input{
-    width:100%;border:var(--bw) solid var(--line);
-    padding:10px 12px;background:var(--surface);
-    font-family:'JetBrains Mono',monospace;font-size:14px;
-    border-radius:0;outline:none;
+    width:100%;border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    padding:11px 14px;background:var(--surface);
+    font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;
+    outline:none;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
   }
-  .submit-card input:focus{box-shadow:var(--shadow-sm);transform:translate(-1px,-1px)}
-  .submit-card .row{display:flex;gap:8px;margin-top:8px}
+  .submit-card input:focus{box-shadow:var(--sh-sm);transform:translate(-1px,-1px)}
+  .submit-card .row{display:flex;gap:8px;margin-top:10px}
 
-  /* === TRADE TAB =================================================== */
-  .trade-grid{
-    display:grid;grid-template-columns:1.45fr 1fr;
-    gap:24px;margin:24px 0 0;
-  }
+  /* ── trade tab ────────────────────────────────── */
+  .trade-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin:32px 0 0}
   .identity-bar{
-    display:grid;grid-template-columns:auto 1fr auto;
-    gap:14px;align-items:center;
+    display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow-sm);
-    padding:14px 16px;margin-bottom:14px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh-sm);
+    padding:16px 18px;margin-bottom:16px;
   }
   .identity-bar .logo-mini{
-    width:54px;height:54px;background:var(--yolk);
-    border:var(--bw) solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Tektur',sans-serif;font-size:26px;
+    width:60px;height:60px;background:var(--yolk);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    display:flex;align-items:center;justify-content:center;font-size:30px;
   }
-  .identity-bar h2{
-    margin:0;font-family:'Tektur',sans-serif;font-size:24px;line-height:1;
-  }
-  .identity-bar .tk{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:4px}
-  .identity-bar .price{
-    font-family:'Tektur',sans-serif;font-size:26px;text-align:right;
-  }
-  .identity-bar .delta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--grass);text-align:right}
+  .identity-bar h2{margin:0;font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;line-height:1}
+  .identity-bar .tk{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:5px}
+  .identity-bar .price{font-family:'Tektur',sans-serif;font-weight:900;font-size:28px;text-align:right;line-height:1}
+  .identity-bar .delta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--grass);text-align:right;margin-top:4px;font-weight:700}
 
-  /* time-progress bar (the coop differentiator) */
-  .timebar-wrap{margin:0 0 14px}
+  /* time-progress bar — coop differentiator */
+  .timebar-wrap{margin:0 0 16px}
   .timebar-head{
     display:flex;justify-content:space-between;
-    font-family:'JetBrains Mono',monospace;font-size:11.5px;
-    letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);
-    margin-bottom:6px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:8px;font-weight:600;
   }
   .timebar{
-    height:18px;border:var(--bw) solid var(--line);background:var(--surface);
-    box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+    height:22px;border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    background:var(--surface);box-shadow:var(--sh-sm);
+    position:relative;overflow:hidden;display:flex;
   }
-  .timebar .seg{height:100%;float:left;border-right:1.5px solid var(--line)}
+  .timebar .seg{height:100%;border-right:1.5px solid var(--line);position:relative}
   .timebar .seg:last-child{border-right:0}
-  .timebar .seg.fair{background:var(--sand)}
-  .timebar .seg.bond{background:var(--cream-mid);position:relative}
+  .timebar .seg.fair{background:var(--bg-2)}
+  .timebar .seg.bond{background:var(--yolk-soft)}
   .timebar .seg.bond .fill{
     height:100%;background:var(--yolk);width:64%;
-    border-right:2px solid var(--ink);
+    border-right:2.5px solid var(--ink);
   }
-  .timebar .seg.grad{background:var(--coral)}
+  .timebar .seg.grad{background:var(--yolk-deep)}
 
   .chart-wrap{
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow);
-    padding:14px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh);
+    padding:16px;
   }
   .chart{
-    height:330px;width:100%;
+    height:340px;width:100%;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
     background:
-      linear-gradient(to right, rgba(10,10,10,0.06) 1px, transparent 1px) 0 0/40px 40px,
-      linear-gradient(to bottom, rgba(10,10,10,0.06) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(to right, rgba(10,10,10,0.04) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(to bottom, rgba(10,10,10,0.04) 1px, transparent 1px) 0 0/40px 40px,
       var(--bg);
-    border:var(--bw) solid var(--line);
     position:relative;overflow:hidden;
   }
   .chart svg{position:absolute;inset:0;width:100%;height:100%}
-  .chart-toolbar{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:10px;
-  }
-  .chart-toolbar .ranges{display:flex;gap:4px}
+  .chart-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .chart-toolbar .ranges{display:flex;gap:6px}
   .range-btn{
-    padding:5px 10px;border:var(--bw) solid var(--line);
-    background:var(--surface);font-family:'JetBrains Mono',monospace;font-size:11.5px;
-    cursor:pointer;font-weight:700;
+    padding:6px 12px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    background:var(--surface);
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    cursor:pointer;letter-spacing:0.04em;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
   }
+  .range-btn:hover{transform:translate(-1px,-1px);box-shadow:var(--sh-sm)}
   .range-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 
   .tradetabs{
-    display:flex;border:var(--bw) solid var(--line);margin:14px 0 0;background:var(--surface);
+    display:flex;gap:6px;margin:16px 0 0;
   }
   .tradetabs button{
-    flex:1;padding:12px;background:transparent;border:0;border-right:var(--bw) solid var(--line);
-    font-family:'Tektur',sans-serif;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;
+    flex:1;padding:11px;
+    background:var(--surface);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    font-family:'Tektur',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;
     cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
   }
-  .tradetabs button:last-child{border-right:0}
+  .tradetabs button:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
   .tradetabs button[aria-selected="true"]{background:var(--yolk)}
   .tradepanel{
     background:var(--surface);
-    border:var(--bw) solid var(--line);border-top:0;
-    padding:14px;max-height:280px;overflow-y:auto;
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh-sm);
+    padding:16px;margin-top:14px;max-height:300px;overflow-y:auto;
   }
   .trades-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12.5px}
   .trades-table th{
-    text-align:left;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;
-    color:var(--muted);font-weight:700;padding:6px 4px;border-bottom:1.5px solid var(--line);
+    text-align:left;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;padding:8px 6px;border-bottom:1.5px solid var(--line);
   }
-  .trades-table td{padding:8px 4px;border-bottom:1px dashed rgba(0,0,0,0.15)}
+  .trades-table td{padding:9px 6px;border-bottom:1px dashed rgba(0,0,0,0.12)}
+  .trades-table tr:last-child td{border-bottom:0}
   .trades-table .b{color:var(--grass);font-weight:700}
   .trades-table .s{color:var(--tomato);font-weight:700}
 
-  /* trade pane (right) */
-  .trade-pane{position:sticky;top:88px;align-self:start}
+  /* trade pane (sticky) */
+  .trade-pane{position:sticky;top:96px;align-self:start}
   .bs-tabs{
-    display:grid;grid-template-columns:1fr 1fr;
-    border:var(--bw) solid var(--line);
-    border-bottom:0;
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;
   }
   .bs-tabs button{
-    padding:14px;background:var(--surface);border:0;
-    font-family:'Tektur',sans-serif;font-size:16px;letter-spacing:0.02em;
+    padding:14px;background:var(--surface);
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--sh-sm);
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:16px;letter-spacing:0.02em;
     cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease);
   }
+  .bs-tabs button:hover{transform:translate(-1px,-1px);box-shadow:var(--sh)}
   .bs-tabs button[data-mode="buy"][aria-selected="true"]{background:var(--grass);color:#fff}
   .bs-tabs button[data-mode="sell"][aria-selected="true"]{background:var(--tomato);color:#fff}
+
   .bs-body{
     background:var(--surface);
-    border:var(--bw) solid var(--line);
-    box-shadow:var(--shadow);
-    padding:18px;
+    border:var(--bw) solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--sh);
+    padding:20px;margin-top:14px;
   }
   .amt-input{
-    display:grid;grid-template-columns:1fr auto;
-    border:var(--bw) solid var(--line);align-items:center;
+    display:grid;grid-template-columns:1fr auto;align-items:stretch;
+    border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    overflow:hidden;
   }
   .amt-input input{
-    border:0;outline:0;padding:14px;background:transparent;
-    font-family:'Tektur',sans-serif;font-size:24px;width:100%;
+    border:0;outline:0;padding:14px 16px;background:transparent;
+    font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;width:100%;
     -moz-appearance:textfield;
   }
-  .amt-input input::-webkit-outer-spin-button,.amt-input input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .amt-input input::-webkit-outer-spin-button,
+  .amt-input input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .amt-input .currency{
-    padding:0 14px;font-family:'Tektur',sans-serif;font-size:14px;
+    padding:0 16px;font-family:'Tektur',sans-serif;font-weight:900;font-size:14px;
     border-left:var(--bw) solid var(--line);background:var(--bg);
-    align-self:stretch;display:flex;align-items:center;
+    display:flex;align-items:center;
   }
-  .quick-amts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:10px 0 14px;border:var(--bw) solid var(--line)}
+  .quick-amts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 16px}
   .quick-amts button{
-    border:0;border-right:var(--bw) solid var(--line);background:var(--surface);
-    padding:10px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;cursor:pointer;
+    border:var(--bw) solid var(--line);border-radius:var(--r-pill);
+    background:var(--surface);box-shadow:var(--sh-sm);
+    padding:9px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;
+    transition:transform 100ms var(--ease),box-shadow 100ms var(--ease),background 100ms var(--ease);
   }
-  .quick-amts button:last-child{border-right:0}
-  .quick-amts button:hover{background:var(--yolk)}
+  .quick-amts button:hover{transform:translate(-1px,-1px);box-shadow:var(--sh);background:var(--yolk)}
   .quote{
-    background:var(--bg);border:var(--bw) solid var(--line);padding:12px;margin-bottom:14px;
+    background:var(--bg);border:var(--bw) solid var(--line);border-radius:var(--r-md);
+    padding:14px 16px;margin-bottom:16px;
     font-family:'JetBrains Mono',monospace;font-size:12.5px;
   }
-  .quote .row{display:flex;justify-content:space-between;padding:3px 0}
-  .quote .row .l{color:var(--muted)}
-
+  .quote .row{display:flex;justify-content:space-between;padding:4px 0}
+  .quote .row .l{color:var(--muted);font-weight:600}
+  .quote .row.airdrop{color:var(--ink-soft);font-weight:700}
+  .quote .row.airdrop strong{color:var(--ink)}
   .small-note{
     font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
-    text-align:center;margin-top:10px;
+    text-align:center;margin-top:12px;letter-spacing:0.04em;
   }
 
-  /* === ME TAB ====================================================== */
-  .me-grid{
-    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:24px;margin:24px 0 0;
-  }
-  .bag .v{font-family:'Tektur',sans-serif;font-size:54px;line-height:1;margin:0}
-  .bag .delta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--grass);margin-top:6px}
-  .bag-rows{margin-top:18px;border-top:var(--bw) solid var(--line)}
+  /* ── me tab ───────────────────────────────────── */
+  .me-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:24px;margin:32px 0 0}
+  .bag .v{font-family:'Tektur',sans-serif;font-weight:900;font-size:60px;line-height:1;margin:8px 0 0}
+  .bag .delta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--grass);font-weight:700;margin-top:8px}
+  .bag-rows{margin-top:22px;border-top:var(--bw) solid var(--line);padding-top:6px}
   .bag-row{
-    display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;
-    padding:12px 0;border-bottom:1.5px dashed var(--line);
+    display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;
+    padding:14px 0;border-bottom:1.5px dashed rgba(0,0,0,0.18);
   }
+  .bag-row:last-child{border-bottom:0}
   .bag-row .logo-mini{
-    width:36px;height:36px;border:var(--bw) solid var(--line);
+    width:40px;height:40px;border:var(--bw) solid var(--line);border-radius:var(--r-md);
     background:var(--yolk);display:flex;align-items:center;justify-content:center;
-    font-family:'Tektur',sans-serif;font-size:16px;
+    font-size:18px;
   }
-  .bag-row .nm{font-family:'Tektur',sans-serif;font-size:14px}
-  .bag-row .ti{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)}
-  .bag-row .qty{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right}
-  .bag-row .val{font-family:'Tektur',sans-serif;font-size:14px;text-align:right}
+  .bag-row .nm{font-family:'Tektur',sans-serif;font-weight:900;font-size:15px}
+  .bag-row .ti{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+  .bag-row .qty{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;font-weight:600}
+  .bag-row .val{font-family:'Tektur',sans-serif;font-weight:900;font-size:15px;text-align:right}
 
   .airdrop-card{background:var(--yolk)}
-  .airdrop-card .v{font-family:'Tektur',sans-serif;font-size:42px;line-height:1;margin:0}
-  .airdrop-card p{font-size:13.5px;margin:10px 0 0}
+  .airdrop-card .v{font-family:'Tektur',sans-serif;font-weight:900;font-size:46px;line-height:1;margin:8px 0 0}
+  .airdrop-card p{font-size:13.5px;margin:14px 0 0;line-height:1.5}
 
   .votes-card .vline{
     display:flex;justify-content:space-between;align-items:center;
-    padding:9px 0;border-bottom:1.5px dashed var(--line);font-size:14px;
+    padding:10px 0;border-bottom:1.5px dashed rgba(0,0,0,0.18);font-size:14px;
   }
   .votes-card .vline:last-child{border-bottom:0}
-  .votes-card .vline .v{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+  .votes-card .vline .v{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);font-weight:600}
 
-  /* === FOOTER ====================================================== */
+  /* ── footer ───────────────────────────────────── */
   footer{
-    margin-top:48px;border-top:var(--bw) solid var(--line);
+    margin-top:60px;
     background:var(--ink);color:var(--bg);
+    border-top:var(--bw-thick) solid var(--line);
   }
-  footer .shell{padding:28px 24px}
+  footer .shell{padding:32px 28px}
   footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
-  footer .links{display:flex;gap:16px;flex-wrap:wrap}
-  footer a{color:var(--bg);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.04em;text-transform:uppercase}
+  footer .links{display:flex;gap:18px;flex-wrap:wrap}
+  footer a{color:var(--bg);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600}
   footer a:hover{color:var(--yolk)}
-
-  /* === MISC ======================================================== */
-  .section-title{
-    font-family:'Tektur',sans-serif;
-    font-size:22px;margin:24px 0 12px;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .marquee{
-    background:var(--ink);color:var(--bg);
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;
-    padding:8px 0;border-bottom:var(--bw) solid var(--line);
-    overflow:hidden;white-space:nowrap;
-  }
-  .marquee .track{display:inline-block;animation:scroll 40s linear infinite;padding-left:100%}
-  .marquee .track span{margin-right:48px}
-  .marquee .track .pos{color:var(--grass)}
-  .marquee .track .neg{color:var(--tomato)}
-  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+  footer .tagline{font-family:'Tektur',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.01em}
 
   .hidden{display:none !important}
 
-  /* === RESPONSIVE ================================================== */
-  @media (max-width:980px){
-    .hero-grid,.split,.trade-grid,.me-grid,.how,.vote-cols{grid-template-columns:1fr}
+  /* ── responsive ───────────────────────────────── */
+  @media (max-width:1080px){
+    .hero-grid,.split,.split-3,.trade-grid,.me-grid,.how,.vote-cols,.vote-header{grid-template-columns:1fr}
     .hero-left{border-right:0;border-bottom:var(--bw) solid var(--line)}
     .stat-row{grid-template-columns:repeat(2,1fr)}
-    .stat:nth-child(2){border-right:0}
-    .stat:nth-child(1),.stat:nth-child(2){border-bottom:var(--bw) solid var(--line)}
-    .past-strip{grid-template-columns:repeat(2,1fr)}
-    .topbar-inner{grid-template-columns:auto auto;height:auto;padding:10px 0}
-    .cycle-strip{display:none}
+    .past-strip{grid-template-columns:repeat(3,1fr)}
     .trade-pane{position:static}
+  }
+  @media (max-width:680px){
+    .shell{padding:0 16px}
+    .topbar-inner{grid-template-columns:auto auto;height:auto;padding:12px 0;gap:10px}
+    .cycle-strip{display:none}
+    .stat-row{grid-template-columns:1fr 1fr}
+    .past-strip{grid-template-columns:repeat(2,1fr)}
+    .countdown{gap:8px}
+    .cd-block{width:64px;height:78px}
+    .cd-block .num{font-size:30px}
+    .hero-left,.hero-right{padding:24px}
+    .phase-title{font-size:48px}
   }
 </style>
 </head>
 <body>
 
-<!-- =========================== TOPBAR ============================== -->
+<!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
 <div class="topbar">
   <div class="shell topbar-inner">
     <a href="#" class="logo">
@@ -680,9 +697,9 @@
     </a>
     <div class="cycle-strip">
       <span class="pill live">LIVE</span>
-      <span class="pill bonding mono" id="phase-pill">CYCLE #14 · BONDING CURVE</span>
-      <span class="pill mono" id="cd-mini">3D 14H 22M LEFT</span>
-      <span class="pill mono">PRICE <strong style="margin-left:6px">0.000142 SOL</strong></span>
+      <span class="pill bonding" id="phase-pill">CYCLE&nbsp;#14 · BONDING</span>
+      <span class="pill" id="cd-mini">3D 14H 22M LEFT</span>
+      <span class="pill">PRICE 0.000142 SOL</span>
     </div>
     <div class="topbar-actions">
       <button class="btn ghost" title="Search">⌘K</button>
@@ -699,15 +716,15 @@
   </div>
 </div>
 
-<!-- =========================== HOME ================================ -->
+<!-- ═══════════════════════ HOME ═══════════════════════ -->
 <main class="shell" id="tab-home">
 
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-left">
-        <span class="cycle-tag">CYCLE #14 · ROOST</span>
-        <h1 class="phase-title">THE FLOCK<br/>IS BUYING.</h1>
-        <p class="phase-sub">Bonding curve is open. Price moves with time. Cycle ends in:</p>
+        <span class="sticker yolk">CYCLE&nbsp;#14 · ROOST</span>
+        <h1 class="phase-title">The flock<br/>is buying.</h1>
+        <p class="phase-sub">Bonding curve is open. Price moves with time, not market cap. Cycle ends in:</p>
         <div class="countdown" id="cd">
           <div class="cd-block"><div class="num" id="cd-d">03</div><div class="unit">days</div></div>
           <div class="cd-block"><div class="num" id="cd-h">14</div><div class="unit">hrs</div></div>
@@ -716,21 +733,21 @@
         </div>
         <div class="hero-cta">
           <button class="btn buy xl" onclick="goTab('trade')">BUY $CLUCK →</button>
-          <button class="btn lg" onclick="goTab('vote')">VOTE ON IDENTITY</button>
+          <button class="btn xl" onclick="goTab('vote')">CAST VOTE</button>
         </div>
       </div>
 
       <div class="hero-right">
         <div>
-          <div class="label">CURRENT WINNING IDENTITY</div>
-          <div class="winner">
+          <span class="sticker">WINNING IDENTITY</span>
+          <div class="winner" style="margin-top:14px">
             <div class="winner-logo">🐔</div>
             <div>
               <h3>CLUCK</h3>
               <div class="ticker">$CLUCK · CHICKEN.PNG</div>
               <div class="winner-meta">
-                <span class="pill" style="font-size:11px">NAME · 41% LEAD</span>
-                <span class="pill" style="font-size:11px">LOGO · 52% LEAD</span>
+                <span class="pill">NAME · 41% LEAD</span>
+                <span class="pill">LOGO · 52% LEAD</span>
               </div>
             </div>
           </div>
@@ -739,7 +756,7 @@
         <div class="price-row">
           <div class="price-cell">
             <div class="label">PRICE</div>
-            <div class="v">0.000142 <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+            <div class="v">0.000142<small>SOL</small></div>
           </div>
           <div class="price-cell">
             <div class="label">24H</div>
@@ -750,18 +767,17 @@
         <div class="price-row">
           <div class="price-cell">
             <div class="label">MARKET CAP</div>
-            <div class="v">142.0K <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+            <div class="v">142.0K<small>SOL</small></div>
           </div>
           <div class="price-cell">
             <div class="label">VOLUME 24H</div>
-            <div class="v">1,284 <span style="font-size:12px;color:var(--muted)">SOL</span></div>
+            <div class="v">1,284<small>SOL</small></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- stat row -->
   <section class="stat-row">
     <div class="stat"><div class="v">3,217</div><div class="l">Holders this cycle</div></div>
     <div class="stat"><div class="v">14,820</div><div class="l">Trades</div></div>
@@ -772,21 +788,18 @@
     </div>
   </section>
 
-  <!-- live feed + voting strip -->
   <section class="split">
     <div class="card">
-      <div class="section-title" style="margin-top:0">
-        LIVE ACTIVITY
-        <span class="pill live" style="font-size:11px">REAL-TIME</span>
+      <div class="section-title">
+        Live activity
+        <span class="pill live">REAL-TIME</span>
       </div>
-      <div class="feed-list" id="feed-list">
-        <!-- filled by JS -->
-      </div>
+      <div class="feed-list" id="feed-list"></div>
     </div>
 
-    <div class="card flat" style="background:var(--cream-mid);border:var(--bw) solid var(--line);box-shadow:var(--shadow)">
-      <div class="section-title" style="margin-top:0">VOTING SNAPSHOT</div>
-      <div class="vrow lead" style="margin-bottom:10px">
+    <div class="card vote-snap">
+      <div class="section-title">Voting snapshot</div>
+      <div class="vrow lead">
         <div class="rank">1</div>
         <div class="body">
           <div class="name">CLUCK</div>
@@ -795,14 +808,14 @@
         </div>
         <div class="swatch" style="background:#FFD400">🐔</div>
       </div>
-      <div class="vrow" style="margin-bottom:10px">
+      <div class="vrow">
         <div class="rank">2</div>
         <div class="body">
           <div class="name">PECK</div>
           <div class="meta">1,652 votes · 28%</div>
           <div class="pct-bar" style="--pct:28%"></div>
         </div>
-        <div class="swatch" style="background:#FFE9A8">🪶</div>
+        <div class="swatch" style="background:var(--bg-2)">🪶</div>
       </div>
       <div class="vrow">
         <div class="rank">3</div>
@@ -811,37 +824,35 @@
           <div class="meta">1,121 votes · 19%</div>
           <div class="pct-bar" style="--pct:19%"></div>
         </div>
-        <div class="swatch" style="background:#FFC0B8">🥚</div>
+        <div class="swatch" style="background:var(--yolk-soft)">🥚</div>
       </div>
-      <button class="btn vote lg" style="width:100%;margin-top:14px" onclick="goTab('vote')">CAST YOUR VOTE</button>
+      <button class="btn vote lg" style="width:100%;margin-top:18px" onclick="goTab('vote')">CAST YOUR VOTE</button>
     </div>
   </section>
 
-  <!-- how it works -->
   <section>
-    <div class="section-title">HOW A CYCLE WORKS</div>
+    <div class="section-title lg">How a cycle works</div>
     <div class="how">
       <div class="card">
         <div class="step">1</div>
-        <h4>FAIRLAUNCH</h4>
+        <h4>Fairlaunch</h4>
         <p>Fixed price for 24h. Bots can't snipe — everyone enters at the same price. Vote on the cycle's name, ticker and logo while you buy.</p>
       </div>
-      <div class="card" style="background:var(--cream-mid)">
+      <div class="card" style="background:var(--yolk-soft)">
         <div class="step">2</div>
-        <h4>BONDING CURVE</h4>
-        <p>Price moves with <em>time</em>, not market cap. The longer the cycle runs, the more it costs to enter. Trade freely, leaderboard updates live.</p>
+        <h4>Bonding curve</h4>
+        <p>Price moves with <em>time</em>, not market cap. The longer the cycle runs, the more it costs to enter. Trade freely — leaderboard updates live.</p>
       </div>
       <div class="card">
         <div class="step">3</div>
-        <h4>GRADUATION</h4>
-        <p>Cycle ends, token auto-lists on Raydium. 50% of fees route to the COOP airdrop. Then the next cycle begins. One token at a time.</p>
+        <h4>Graduation</h4>
+        <p>Cycle ends, token auto-lists on Raydium. 50% of all fees route to the COOP airdrop. Then the next cycle begins. One token at a time.</p>
       </div>
     </div>
   </section>
 
-  <!-- past cycles -->
-  <section class="past">
-    <div class="section-title">PAST CYCLES</div>
+  <section>
+    <div class="section-title lg">Past cycles</div>
     <div class="past-strip">
       <div class="past-tile"><div class="n">#13 · WORM</div><div class="t">$WORM 🪱</div><div class="x"><span>1.2K holders</span><span class="up">+318%</span></div></div>
       <div class="past-tile"><div class="n">#12 · ROOSTER</div><div class="t">$ROO 🐓</div><div class="x"><span>4.8K holders</span><span class="up">+1,402%</span></div></div>
@@ -853,31 +864,31 @@
   </section>
 </main>
 
-<!-- =========================== VOTE ================================ -->
+<!-- ═══════════════════════ VOTE ═══════════════════════ -->
 <main class="shell hidden" id="tab-vote">
   <section class="vote-header">
-    <div class="card" style="background:var(--civic);color:#fff;border-color:var(--ink)">
-      <div class="label" style="color:rgba(255,255,255,0.7)">YOUR VOTING WEIGHT</div>
-      <div style="font-family:'Tektur',sans-serif;font-size:42px;line-height:1">14.2K</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;opacity:0.85">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
+    <div class="card" style="background:var(--ink);color:#fff;border-color:var(--ink)">
+      <div class="label" style="color:rgba(255,255,255,0.6)">YOUR VOTING WEIGHT</div>
+      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:46px;line-height:1;margin-top:4px">14.2K</div>
+      <div class="mono" style="font-size:12px;margin-top:8px;opacity:0.85">based on $CLUCK held during fairlaunch · weight locks at curve start</div>
     </div>
     <div class="card">
       <div class="label">VOTING ENDS WITH CYCLE</div>
-      <div style="font-family:'Tektur',sans-serif;font-size:30px;line-height:1">3D 14H</div>
-      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px">winner auto-applies to Raydium listing</div>
+      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:34px;line-height:1;margin-top:4px">3D 14H</div>
+      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:600">winner auto-applies to Raydium listing</div>
     </div>
     <div class="card">
       <div class="label">TOTAL VOTES</div>
-      <div style="font-family:'Tektur',sans-serif;font-size:30px;line-height:1">8,712</div>
-      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px">across 5,890 wallets</div>
+      <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:34px;line-height:1;margin-top:4px">8,712</div>
+      <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:600">across 5,890 wallets</div>
     </div>
   </section>
 
   <section class="vote-cols">
     <div class="vcol">
-      <h3>NAME <span class="badge">41% lead</span></h3>
+      <h3>Name <span class="badge">41% LEAD</span></h3>
       <div class="submit-card">
-        <h4>SUBMIT A NAME</h4>
+        <h4>Submit a name</h4>
         <p>Costs 0.05 SOL. Refunded if you finish top-3.</p>
         <input placeholder="e.g. CLUCKZILLA" maxlength="22" />
         <div class="row"><button class="btn lg" style="flex:1">PROPOSE</button></div>
@@ -887,60 +898,44 @@
         <div class="body"><div class="name">CLUCK</div><div class="meta">2,418 votes · 41%</div><div class="pct-bar" style="--pct:41%"></div></div>
         <button class="btn vote-btn voted">VOTED</button>
       </div>
-      <div class="vrow">
-        <div class="rank">2</div>
-        <div class="body"><div class="name">PECK</div><div class="meta">1,652 votes · 28%</div><div class="pct-bar" style="--pct:28%"></div></div>
-        <button class="btn vote-btn vote">VOTE</button>
-      </div>
-      <div class="vrow">
-        <div class="rank">3</div>
-        <div class="body"><div class="name">EGG GANG</div><div class="meta">1,121 votes · 19%</div><div class="pct-bar" style="--pct:19%"></div></div>
-        <button class="btn vote-btn vote">VOTE</button>
-      </div>
-      <div class="vrow">
-        <div class="rank">4</div>
-        <div class="body"><div class="name">FEATHER</div><div class="meta">418 votes · 7%</div><div class="pct-bar" style="--pct:7%"></div></div>
-        <button class="btn vote-btn vote">VOTE</button>
-      </div>
-      <div class="vrow">
-        <div class="rank">5</div>
-        <div class="body"><div class="name">CHICK INC</div><div class="meta">298 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div>
-        <button class="btn vote-btn vote">VOTE</button>
-      </div>
+      <div class="vrow"><div class="rank">2</div><div class="body"><div class="name">PECK</div><div class="meta">1,652 votes · 28%</div><div class="pct-bar" style="--pct:28%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="body"><div class="name">EGG GANG</div><div class="meta">1,121 votes · 19%</div><div class="pct-bar" style="--pct:19%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="body"><div class="name">FEATHER</div><div class="meta">418 votes · 7%</div><div class="pct-bar" style="--pct:7%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="body"><div class="name">CHICK INC</div><div class="meta">298 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
     </div>
 
     <div class="vcol">
-      <h3>TICKER <span class="badge">$CLUCK 38%</span></h3>
+      <h3>Ticker <span class="badge">$CLUCK 38%</span></h3>
       <div class="submit-card">
-        <h4>SUBMIT A TICKER</h4>
+        <h4>Submit a ticker</h4>
         <p>3–6 chars. Costs 0.05 SOL.</p>
         <input placeholder="$YOURIDEA" maxlength="7" />
         <div class="row"><button class="btn lg" style="flex:1">PROPOSE</button></div>
       </div>
       <div class="vrow lead"><div class="rank">1</div><div class="body"><div class="name">$CLUCK</div><div class="meta">2,201 votes · 38%</div><div class="pct-bar" style="--pct:38%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
-      <div class="vrow"><div class="rank">2</div><div class="body"><div class="name">$PECK</div><div class="meta">1,490 votes · 26%</div><div class="pct-bar" style="--pct:26%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">3</div><div class="body"><div class="name">$COOP</div><div class="meta">1,212 votes · 21%</div><div class="pct-bar" style="--pct:21%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">4</div><div class="body"><div class="name">$EGG</div><div class="meta">510 votes · 9%</div><div class="pct-bar" style="--pct:9%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">5</div><div class="body"><div class="name">$YOLK</div><div class="meta">340 votes · 6%</div><div class="pct-bar" style="--pct:6%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="body"><div class="name">$PECK</div><div class="meta">1,490 votes · 26%</div><div class="pct-bar" style="--pct:26%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="body"><div class="name">$COOP</div><div class="meta">1,212 votes · 21%</div><div class="pct-bar" style="--pct:21%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="body"><div class="name">$EGG</div><div class="meta">510 votes · 9%</div><div class="pct-bar" style="--pct:9%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="body"><div class="name">$YOLK</div><div class="meta">340 votes · 6%</div><div class="pct-bar" style="--pct:6%"></div></div><button class="btn vote-btn">VOTE</button></div>
     </div>
 
     <div class="vcol">
-      <h3>LOGO <span class="badge">52% lead</span></h3>
+      <h3>Logo <span class="badge">52% LEAD</span></h3>
       <div class="submit-card">
-        <h4>SUBMIT A LOGO</h4>
+        <h4>Submit a logo</h4>
         <p>PNG/SVG · 1:1 · &lt;200KB · 0.05 SOL</p>
         <button class="btn lg" style="width:100%">UPLOAD IMAGE</button>
       </div>
       <div class="vrow lead"><div class="rank">1</div><div class="swatch" style="background:#FFD400">🐔</div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
-      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:#FFC0B8">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:#FFE9A8">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">4</div><div class="swatch" style="background:#E6D4A8">🌽</div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">5</div><div class="swatch">🐤</div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:var(--yolk-soft)">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:var(--bg-2)">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">4</div><div class="swatch" style="background:var(--bg-2)">🌽</div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
+      <div class="vrow"><div class="rank">5</div><div class="swatch">🐤</div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn">VOTE</button></div>
     </div>
   </section>
 </main>
 
-<!-- =========================== TRADE =============================== -->
+<!-- ═══════════════════════ TRADE ═══════════════════════ -->
 <main class="shell hidden" id="tab-trade">
   <section class="trade-grid">
     <div>
@@ -948,7 +943,7 @@
         <div class="logo-mini">🐔</div>
         <div>
           <h2>CLUCK</h2>
-          <div class="tk">$CLUCK · CYCLE #14 · current winning identity</div>
+          <div class="tk">$CLUCK · CYCLE #14 · CURRENT WINNING IDENTITY</div>
         </div>
         <div>
           <div class="price">0.000142</div>
@@ -966,7 +961,7 @@
           <div class="seg bond" style="width:71%"><div class="fill"></div></div>
           <div class="seg grad" style="width:15%"></div>
         </div>
-        <div class="timebar-head" style="margin-top:6px">
+        <div class="timebar-head" style="margin-top:8px">
           <span>FAIRLAUNCH ✓</span>
           <span>BONDING (you are here)</span>
           <span>GRADUATION</span>
@@ -975,7 +970,7 @@
 
       <div class="chart-wrap">
         <div class="chart-toolbar">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">PRICE · SOL</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:600">PRICE · SOL</div>
           <div class="ranges">
             <button class="range-btn">1H</button>
             <button class="range-btn">4H</button>
@@ -986,15 +981,16 @@
         <div class="chart">
           <svg viewBox="0 0 600 320" preserveAspectRatio="none">
             <defs>
-              <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y="0" x2="0" y2="6" stroke="#FFD400" stroke-width="3"/>
-              </pattern>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFD400" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#FFD400" stop-opacity="0"/>
+              </linearGradient>
             </defs>
             <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80 L600,320 L0,320 Z"
-                  fill="url(#hatch)" opacity="0.55"/>
+                  fill="url(#g1)"/>
             <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80"
-                  fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
-            <circle cx="600" cy="80" r="6" fill="#FFD400" stroke="#0A0A0A" stroke-width="2.5"/>
+                  fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="600" cy="80" r="7" fill="#FFD400" stroke="#0A0A0A" stroke-width="2.5"/>
           </svg>
         </div>
       </div>
@@ -1041,28 +1037,28 @@
           <div class="row"><span class="l">YOU GET</span><span><strong id="qty-out">3,521,126</strong> $CLUCK</span></div>
           <div class="row"><span class="l">PRICE IMPACT</span><span>0.42%</span></div>
           <div class="row"><span class="l">SLIPPAGE</span><span>1.0% <button class="btn sm" style="margin-left:6px">EDIT</button></span></div>
-          <div class="row"><span class="l">FEE (50% → AIRDROP)</span><span>0.005 SOL</span></div>
+          <div class="row airdrop"><span class="l">FEE → AIRDROP (50%)</span><span><strong>0.0025 SOL</strong></span></div>
         </div>
         <button class="btn buy xl" style="width:100%">BUY $CLUCK</button>
         <div class="small-note">no migration · auto-graduates to raydium</div>
       </div>
 
-      <div class="card" style="margin-top:18px;padding:16px">
+      <div class="card tight" style="margin-top:18px">
         <div class="label">YOUR POSITION</div>
-        <div style="font-family:'Tektur',sans-serif;font-size:24px;line-height:1;margin-top:6px">2.1M $CLUCK</div>
-        <div class="mono" style="font-size:12px;color:var(--muted);margin-top:4px">≈ 0.298 SOL · entry 0.000118</div>
-        <div class="mono" style="font-size:12px;color:var(--grass);font-weight:700;margin-top:4px">+20.3% unrealized</div>
+        <div style="font-family:'Tektur',sans-serif;font-weight:900;font-size:26px;line-height:1;margin-top:4px">2.1M $CLUCK</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:600">≈ 0.298 SOL · entry 0.000118</div>
+        <div class="mono" style="font-size:12.5px;color:var(--grass);font-weight:700;margin-top:4px">+20.3% unrealized</div>
       </div>
     </aside>
   </section>
 </main>
 
-<!-- =========================== ME ================================== -->
+<!-- ═══════════════════════ ME ═══════════════════════ -->
 <main class="shell hidden" id="tab-me">
   <section class="me-grid">
     <div class="card bag">
       <div class="label">YOUR BAG · CYCLE 14</div>
-      <p class="v">0.298 <span style="font-size:24px;color:var(--muted)">SOL</span></p>
+      <p class="v">0.298 <span style="font-size:24px;color:var(--muted);font-weight:600">SOL</span></p>
       <div class="delta">+20.3% · +0.050 SOL unrealized</div>
       <div class="bag-rows">
         <div class="bag-row">
@@ -1072,13 +1068,13 @@
           <div class="val">0.298</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:#FFE9A8">🪱</div>
+          <div class="logo-mini" style="background:var(--bg-2)">🪱</div>
           <div><div class="nm">WORM</div><div class="ti">$WORM · cycle #13 · graduated</div></div>
           <div class="qty">410K</div>
           <div class="val">0.082</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:#FFC0B8">🐓</div>
+          <div class="logo-mini" style="background:var(--yolk-soft)">🐓</div>
           <div><div class="nm">ROO</div><div class="ti">$ROO · cycle #12 · graduated</div></div>
           <div class="qty">88K</div>
           <div class="val">0.041</div>
@@ -1090,28 +1086,28 @@
       <div class="label">YOUR ESTIMATED AIRDROP</div>
       <p class="v">14,820 <span style="font-size:18px">$COOP</span></p>
       <p>Earned by paying fees this cycle. 50% of every fee is split among traders by volume. Claim opens when COOP launches.</p>
-      <div class="mono" style="margin-top:14px;font-size:11.5px">SHARE OF POOL · 0.083%<br/>POOL · 412 SOL · GROWING</div>
+      <div class="mono" style="margin-top:14px;font-size:11.5px;font-weight:600">SHARE OF POOL · 0.083%<br/>POOL · 412 SOL · GROWING</div>
     </div>
 
     <div class="card votes-card">
       <div class="label">YOUR VOTES THIS CYCLE</div>
-      <div class="vline"><span><strong>NAME</strong> · CLUCK</span><span class="v">winning · +14.2K weight</span></div>
-      <div class="vline"><span><strong>TICKER</strong> · $CLUCK</span><span class="v">winning · +14.2K weight</span></div>
-      <div class="vline"><span><strong>LOGO</strong> · CHICKEN.PNG</span><span class="v">winning · +14.2K weight</span></div>
-      <button class="btn vote lg" style="width:100%;margin-top:14px" onclick="goTab('vote')">CHANGE VOTES</button>
-      <div class="label" style="margin-top:18px">CYCLES JOINED</div>
-      <div class="vline"><span>#13 WORM</span><span class="v">+318% · still holding</span></div>
-      <div class="vline"><span>#12 ROO</span><span class="v">+1,402% · still holding</span></div>
+      <div class="vline"><span><strong>NAME</strong> · CLUCK</span><span class="v">winning · +14.2K</span></div>
+      <div class="vline"><span><strong>TICKER</strong> · $CLUCK</span><span class="v">winning · +14.2K</span></div>
+      <div class="vline"><span><strong>LOGO</strong> · CHICKEN.PNG</span><span class="v">winning · +14.2K</span></div>
+      <button class="btn vote lg" style="width:100%;margin-top:18px" onclick="goTab('vote')">CHANGE VOTES</button>
+      <div class="label" style="margin-top:22px">CYCLES JOINED</div>
+      <div class="vline"><span>#13 WORM</span><span class="v">+318% · holding</span></div>
+      <div class="vline"><span>#12 ROO</span><span class="v">+1,402% · holding</span></div>
       <div class="vline"><span>#10 CORN</span><span class="v">−12% · sold</span></div>
     </div>
   </section>
 </main>
 
-<!-- =========================== FOOTER ============================== -->
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
 <footer>
   <div class="shell">
     <div class="row">
-      <div style="font-family:'Tektur',sans-serif;font-size:18px">COOP — ONE CYCLE. ONE TOKEN. ONE FLOCK.</div>
+      <div class="tagline">COOP — One cycle. One token. One flock.</div>
       <div class="links">
         <a href="#">DOCS</a>
         <a href="#">TELEGRAM</a>
@@ -1124,20 +1120,16 @@
 </footer>
 
 <script>
-  // === tabs ============================================================
   const tabs = document.querySelectorAll('.tab');
   const panels = ['home','vote','trade','me'];
   function goTab(name){
     tabs.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
-    panels.forEach(p=>{
-      document.getElementById('tab-'+p).classList.toggle('hidden', p!==name);
-    });
+    panels.forEach(p=>document.getElementById('tab-'+p).classList.toggle('hidden', p!==name));
     window.scrollTo({top:0, behavior:'smooth'});
   }
   tabs.forEach(t=>t.addEventListener('click', ()=>goTab(t.dataset.tab)));
   window.goTab = goTab;
 
-  // === buy/sell tabs ===================================================
   document.querySelectorAll('.bs-tabs button').forEach(b=>{
     b.addEventListener('click', ()=>{
       document.querySelectorAll('.bs-tabs button').forEach(x=>x.setAttribute('aria-selected', x===b));
@@ -1147,7 +1139,6 @@
     });
   });
 
-  // === quick amounts ===================================================
   document.querySelectorAll('.quick-amts button').forEach(b=>{
     b.addEventListener('click', ()=>{
       document.getElementById('amt').value = b.dataset.v;
@@ -1161,7 +1152,6 @@
   }
   document.getElementById('amt').addEventListener('input', recalcQty);
 
-  // === countdown =======================================================
   let total = (3*86400 + 14*3600 + 22*60 + 7);
   function tick(){
     total--; if(total<0) total = 3*86400;
@@ -1177,7 +1167,6 @@
   }
   tick(); setInterval(tick, 1000);
 
-  // === live feed =======================================================
   const feedSeed = [
     {kind:'buy',  who:'chicken.sol',  what:'bought $CLUCK',         amount:'+1.24M', unit:'CLUCK', t:'4s'},
     {kind:'vote', who:'feathers.sol', what:'voted CHICKEN.PNG',     amount:'+820',   unit:'wt',    t:'9s'},
