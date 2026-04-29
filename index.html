@@ -4,27 +4,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>COOP — The Gamified Memecoin Launchpad on Solana</title>
+<link rel="icon" type="image/png" href="logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* sourced from coop.meme logo + site stylesheet */
-    --bg:#FDF6E8;          /* warm cream (their site bg) */
-    --surface:#FFFBF1;     /* lightest cream */
-    --ink:#1E1712;         /* warm brown-black (their text) */
-    --ink-soft:#3A2A1F;
-    --muted:#6B5A42;       /* taupe (their secondary text) */
-    --line:#1E1712;
-    --yolk:#F4C455;        /* chicken body (logo) */
-    --yolk-deep:#E8A63C;   /* chicken shadow (logo) */
-    --burn:#C87C15;        /* chicken outline (logo) */
-    --grass:#3F8A3A;       /* buy — warm forest green that works on cream */
-    --tomato:#D64A2E;      /* terracotta — chicken comb (logo) */
-    --civic:#1E1712;       /* vote — ink (high contrast, palette-coherent) */
-    --sand:#D4C5A0;        /* phase fairlaunch */
-    --cream-mid:#E6D4A8;   /* phase bonding */
-    --coral:#F4B5A8;       /* phase graduating */
+    /* sourced from logo.png — minimal mark: red comb triangle + two black eyes + yellow beak */
+    --bg:#FDF6E8;          /* warm cream (their page bg) */
+    --surface:#FFFFFF;     /* pure white — matches the logo's white body */
+    --ink:#0A0A0A;         /* pure black — matches logo eyes */
+    --ink-soft:#2A2A2A;
+    --muted:#6E6E6E;       /* neutral grey */
+    --line:#0A0A0A;
+    --yolk:#FFD400;        /* bright yellow — logo beak */
+    --yolk-soft:#FFE36B;   /* lighter yolk for fills */
+    --tomato:#FF3B30;      /* vivid red — logo comb */
+    --grass:#00C853;       /* primary green — buy */
+    --civic:#0A0A0A;       /* vote — ink */
+    --sand:#FFE9A8;        /* phase fairlaunch */
+    --cream-mid:#FFD96B;   /* phase bonding (yolk-tinted) */
+    --coral:#FFC0B8;       /* phase graduating (red-tinted) */
     --shadow:4px 4px 0 var(--ink);
     --shadow-lg:6px 6px 0 var(--ink);
     --shadow-sm:3px 3px 0 var(--ink);
@@ -67,13 +67,13 @@
     text-decoration:none;color:var(--ink);
   }
   .logo .chick{
-    width:36px;height:36px;background:var(--surface);
+    width:44px;height:44px;background:var(--surface);
     border:var(--bw) solid var(--ink);
     box-shadow:var(--shadow-sm);
     display:inline-flex;align-items:center;justify-content:center;
-    flex-shrink:0;
+    flex-shrink:0;overflow:hidden;
   }
-  .logo .chick svg{width:28px;height:28px;display:block}
+  .logo .chick img{width:100%;height:100%;display:block;object-fit:contain;padding:4px}
   .cycle-strip{
     display:flex;align-items:center;justify-content:center;
     gap:14px;flex-wrap:wrap;
@@ -675,31 +675,7 @@
 <div class="topbar">
   <div class="shell topbar-inner">
     <a href="#" class="logo">
-      <span class="chick" aria-hidden="true">
-        <svg viewBox="0 0 48 48" style="overflow:visible">
-          <style>
-            @keyframes hh-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
-            @keyframes hh-peck{0%,45%,100%{transform:rotate(0)}55%,68%{transform:rotate(26deg)}80%{transform:rotate(0)}}
-            @keyframes hh-wing{0%,45%,100%{transform:scaleX(1)}55%,68%{transform:scaleX(1.55) translateX(1px)}80%{transform:scaleX(1)}}
-            .hh-float{animation:hh-float 2.4s ease-in-out infinite}
-            .hh-peck{transform-box:fill-box;transform-origin:50% 100%;animation:hh-peck 4s ease-in-out infinite}
-            .hh-wing{transform-box:fill-box;transform-origin:0% 50%;animation:hh-wing 4s ease-in-out infinite}
-          </style>
-          <g class="hh-float">
-            <ellipse cx="24" cy="29" rx="15" ry="13" fill="#F4C455"/>
-            <ellipse cx="20" cy="30" rx="6" ry="8" fill="#E8A63C"/>
-            <path d="M20 42 l-1 3 M21 42 l0 3 M22 42 l1 3" stroke="#C87C15" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M27 42 l-1 3 M28 42 l0 3 M29 42 l1 3" stroke="#C87C15" stroke-width="1.5" stroke-linecap="round"/>
-            <g class="hh-wing"><path d="M32 17 l5 1 l-5 2 z" fill="#C87C15"/></g>
-            <g class="hh-peck">
-              <circle cx="24" cy="17" r="10" fill="#F4C455"/>
-              <path d="M19 8 q1 -4 3 -2 q1 -3 3 0 q2 -3 3 1 q2 0 1 3 z" fill="#D64A2E"/>
-              <circle cx="27" cy="15" r="1.6" fill="#1E1712"/>
-              <circle cx="27.5" cy="14.5" r="0.5" fill="#fff"/>
-            </g>
-          </g>
-        </svg>
-      </span>
+      <span class="chick" aria-hidden="true"><img src="logo.png" alt="" /></span>
       COOP
     </a>
     <div class="cycle-strip">
@@ -817,7 +793,7 @@
           <div class="meta">2,418 votes · 41%</div>
           <div class="pct-bar" style="--pct:41%"></div>
         </div>
-        <div class="swatch" style="background:#F4C455">🐔</div>
+        <div class="swatch" style="background:#FFD400">🐔</div>
       </div>
       <div class="vrow" style="margin-bottom:10px">
         <div class="rank">2</div>
@@ -826,7 +802,7 @@
           <div class="meta">1,652 votes · 28%</div>
           <div class="pct-bar" style="--pct:28%"></div>
         </div>
-        <div class="swatch" style="background:#D4C5A0">🪶</div>
+        <div class="swatch" style="background:#FFE9A8">🪶</div>
       </div>
       <div class="vrow">
         <div class="rank">3</div>
@@ -835,7 +811,7 @@
           <div class="meta">1,121 votes · 19%</div>
           <div class="pct-bar" style="--pct:19%"></div>
         </div>
-        <div class="swatch" style="background:#F4B5A8">🥚</div>
+        <div class="swatch" style="background:#FFC0B8">🥚</div>
       </div>
       <button class="btn vote lg" style="width:100%;margin-top:14px" onclick="goTab('vote')">CAST YOUR VOTE</button>
     </div>
@@ -955,9 +931,9 @@
         <p>PNG/SVG · 1:1 · &lt;200KB · 0.05 SOL</p>
         <button class="btn lg" style="width:100%">UPLOAD IMAGE</button>
       </div>
-      <div class="vrow lead"><div class="rank">1</div><div class="swatch" style="background:#F4C455">🐔</div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
-      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:#F4B5A8">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
-      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:#D4C5A0">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow lead"><div class="rank">1</div><div class="swatch" style="background:#FFD400">🐔</div><div class="body"><div class="name">CHICKEN.PNG</div><div class="meta">3,015 votes · 52%</div><div class="pct-bar" style="--pct:52%"></div></div><button class="btn vote-btn voted">VOTED</button></div>
+      <div class="vrow"><div class="rank">2</div><div class="swatch" style="background:#FFC0B8">🥚</div><div class="body"><div class="name">CRACKED.JPG</div><div class="meta">1,420 votes · 24%</div><div class="pct-bar" style="--pct:24%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
+      <div class="vrow"><div class="rank">3</div><div class="swatch" style="background:#FFE9A8">🪶</div><div class="body"><div class="name">FEATHER.SVG</div><div class="meta">820 votes · 14%</div><div class="pct-bar" style="--pct:14%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
       <div class="vrow"><div class="rank">4</div><div class="swatch" style="background:#E6D4A8">🌽</div><div class="body"><div class="name">FEED.PNG</div><div class="meta">315 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
       <div class="vrow"><div class="rank">5</div><div class="swatch">🐤</div><div class="body"><div class="name">PEEP.PNG</div><div class="meta">300 votes · 5%</div><div class="pct-bar" style="--pct:5%"></div></div><button class="btn vote-btn vote">VOTE</button></div>
     </div>
@@ -1011,14 +987,14 @@
           <svg viewBox="0 0 600 320" preserveAspectRatio="none">
             <defs>
               <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y="0" x2="0" y2="6" stroke="#F4C455" stroke-width="3"/>
+                <line x1="0" y="0" x2="0" y2="6" stroke="#FFD400" stroke-width="3"/>
               </pattern>
             </defs>
             <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80 L600,320 L0,320 Z"
                   fill="url(#hatch)" opacity="0.55"/>
             <path d="M0,260 L40,250 L80,240 L120,235 L160,220 L200,224 L240,200 L280,180 L320,170 L360,150 L400,160 L440,130 L480,110 L520,120 L560,90 L600,80"
-                  fill="none" stroke="#1E1712" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
-            <circle cx="600" cy="80" r="6" fill="#F4C455" stroke="#1E1712" stroke-width="2.5"/>
+                  fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
+            <circle cx="600" cy="80" r="6" fill="#FFD400" stroke="#0A0A0A" stroke-width="2.5"/>
           </svg>
         </div>
       </div>
@@ -1096,13 +1072,13 @@
           <div class="val">0.298</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:#D4C5A0">🪱</div>
+          <div class="logo-mini" style="background:#FFE9A8">🪱</div>
           <div><div class="nm">WORM</div><div class="ti">$WORM · cycle #13 · graduated</div></div>
           <div class="qty">410K</div>
           <div class="val">0.082</div>
         </div>
         <div class="bag-row">
-          <div class="logo-mini" style="background:#F4B5A8">🐓</div>
+          <div class="logo-mini" style="background:#FFC0B8">🐓</div>
           <div><div class="nm">ROO</div><div class="ti">$ROO · cycle #12 · graduated</div></div>
           <div class="qty">88K</div>
           <div class="val">0.041</div>
